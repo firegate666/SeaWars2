@@ -1,0 +1,5 @@
+php_flag magic_quotes_gpc Off
+
+ErrorDocument 404 index.php?class=error&method=show&id=404
+ErrorDocument 500 index.php?class=error&method=show&id=500
+ErrorDocument 403 index.php?class=error&method=show&id=403

@@ -8,6 +8,11 @@
 	$id		= $_REQUEST["id"];
 	$vars	= $_REQUEST;
 	
+	if(isset($admin)) {
+		include('admin.php');
+		die();
+	}
+	
 	if(empty($class)) $class="Login";
 	if(empty($method)) $method="show";
 	
@@ -21,13 +26,13 @@
 		print "<tr>\n";
 		print "<td width=100>&nbsp;</td>\n";
 		print "<td>";
-		print_a($_COOKIES);
+		print $_COOKIE["username"];
 		print "</td>\n";
 		print "</tr>\n";
 		print "<tr>\n";
 		print "<td width=100>".($class->getNavigation())."</td>\n";
 		print "<td>$result</td>\n";
-		print "</tr>\n";
+		print "</tr>\n</table>\n";
       	print "</body></html>\n";
       } else if(is_array($result)) {
       		switch($result['content']) {

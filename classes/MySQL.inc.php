@@ -47,7 +47,7 @@
     function select($query) {
       $dblink = $this->connect();
       $result = MYSQL_QUERY($query) or die("MySQL select error: ".mysql_error());
-      $return = "";
+      $return = array();
       $counter = 0;
       while($line=MYSQL_FETCH_ARRAY($result, MYSQL_NUM)) $return[$counter++]=$line;
       $this->disconnect($dblink);

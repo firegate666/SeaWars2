@@ -9,7 +9,8 @@
 	protected $language;
 	
 	function getNavigation(){
-		return Navigation::show();
+		$nav = new Navigation();
+		return $nav->show();
 	}
 	
 	function set($key, $value) {

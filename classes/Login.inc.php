@@ -1,6 +1,10 @@
 <?
 class Login extends AbstractNoNavigationClass {
 		
+	function isLoggedIn() {
+		return isset($_COOKIE["username"]);
+	}
+	
 	function denied(){
 		$o = '';
 		$o .= '<h1>Denied.</h1>';
@@ -8,16 +12,23 @@ class Login extends AbstractNoNavigationClass {
 		return $o;
 	}
 
+	function logout(&$vars) {
+		setcookie("username","",0);
+		$result['content']="URL";
+		$result['target']="index.php";
+		return $result;
+	}
+
 	function login(&$vars){
+		if($this->isLoggedIn()) $this->logout(&$vars);
 		$DB = new MySQL();
 		// Passwort überprüfen
 		$username = $vars['username'];
 		$password = $vars['password'];
-		$array = $DB->executeSql("SELECT id FROM spieler WHERE username='$username' AND password='$password'");
+		$array = $DB->select("SELECT id FROM spieler WHERE username='$username' AND password='$password'");
 		$result['content']="URL";
-		if(isset($array['id'])) {
-			$session = new Session($array['id']);
-			setcookie("username",$username,3600);
+		if(count($array)==1) {
+			setcookie("username",$username, NULL);
 			$result['target']="index.php?class=Insel";
 		} else {
 			$result['target']="index.php?class=Login&method=denied";
@@ -26,13 +37,8 @@ class Login extends AbstractNoNavigationClass {
 	}
 	
 	function show(&$vars){
-		$o = "";
-		$o .= "<h3>Login</h3>";
-		$form[] = array('input' => '<input type="text" name="username">', 'descr' => 'Benutzername');
-		$form[] = array('input' => '<input type="password" name="password">', 'descr' => 'Passwort');
-		$form[] = array('input' => '<input type="submit">', 'descr' => '&nbsp;');
-		$o .= $this->getForm($form,'login','login','submit_login','GET');
-		return $o;
+		$array = array("title" => "Login", "lbl_username" => "Benutzername", "lbl_password" => "Passwort", "lbl_login" => "Anmelden");
+		return $this->getLayout($array, "login_window");
 	}
 }
 ?>

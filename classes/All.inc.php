@@ -6,6 +6,7 @@
 
   require_once $d.'Error.inc.php';
   require_once $d.'Template.inc.php';
+  require_once $d.'Login.inc.php';
 
   require_once $d.'AbstractClass.inc.php';
   require_once $d.'AbstractTimestampClass.inc.php';

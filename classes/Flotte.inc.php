@@ -1,4 +1,4 @@
 <?
   class Flotte extends AbstractTimestampClass {
   }
-?>                                   	
+?>

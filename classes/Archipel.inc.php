@@ -1,4 +1,4 @@
 <?
   class Archipel extends AbstractClass {
   }
-?>                                   	
+?> 

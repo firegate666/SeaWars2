@@ -1,4 +1,4 @@
 <?
   class Kartenabschnitt extends AbstractClass {
   }
-?>                                   	
+?> 

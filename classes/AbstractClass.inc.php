@@ -7,6 +7,10 @@
 	
 	protected $language;
 	
+	function getNavigation(){
+		return Navigation::show();
+	}
+	
 	function set($key, $value) {
 		$this->data[$key] = $value;
 	}

@@ -1,4 +1,4 @@
 <?
   class Bauplan extends AbstractClass {
   }
-?>                                   	
+?>

@@ -1,6 +1,6 @@
 <?
   class Session extends AbstractClass {
-    protected $sid;
+    var $sid;
 
     function Session($userid) {
       $this->data["uid"]=$userid;

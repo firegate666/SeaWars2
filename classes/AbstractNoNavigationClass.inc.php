@@ -1,12 +1,9 @@
 <?
 class AbstractNoNavigationClass {
-    // $data is an array containing all table fields
-    // keep in mind, that is a table representation, keep track that non-numeric fields
-    // have to be set in ' '
-    protected $data;
-    protected $id;
 	
-	protected $language;
+    var $data;
+    var $id;
+	var $language;
 
 	function set($key, $value) {
 		$this->data[$key] = $value;

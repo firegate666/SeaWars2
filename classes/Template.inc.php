@@ -1,6 +1,6 @@
 <?
 class Template {
-	protected $layout;
+	var $layout;
 	
 	function Template(){
 	}

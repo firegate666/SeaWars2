@@ -1,6 +1,6 @@
 <?
   class Messenger extends AbstractClass {
-  	protected $mitteilungen;
+  	var $mitteilungen;
   	
   }
 ?>

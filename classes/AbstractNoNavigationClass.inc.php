@@ -1,6 +1,14 @@
 <?
 class AbstractNoNavigationClass {
 	
+	/**
+		checks whether it is allowed to call method from outside
+		or who is allowed to call.
+	*/
+	function acl($method) {
+		return false;
+	}
+	
 	function getLayout($array, $layout) {
 		$string = Template::getLayout(get_class($this),$layout);
 		$keys = array_keys($array);

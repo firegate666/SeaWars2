@@ -10,6 +10,8 @@
  include('../classes/MySQL.inc.php');
  
  $database = new MySQL();
- $database->
+ 
+ // hier einmal der Reihe nach alle .sql Dateien einlesen und ausführen
+ 
  
 ?>

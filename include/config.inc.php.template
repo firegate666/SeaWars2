@@ -1,6 +1,7 @@
 <?
-  $dbserver    = "localhost";  // Datenbankserver
-  $dbuser      = "web4";       // Datenbankbenutzer
-  $dbpassword  = "sw666#GHf";  // Benutzerpasswort
-  $dbdatabase = "usr_web4_2"; // Datenbank
+  // copy to config.inc.php and replace with valid values
+  $dbserver   = "<servername>"; // Datenbankserver
+  $dbuser     = "<username>";   // Datenbankbenutzer
+  $dbpassword = "<password>";   // Benutzerpasswort
+  $dbdatabase = "<database>";   // Datenbank
 ?>

@@ -20,7 +20,7 @@
 	if(class_exists($class)){
     	$newclass = new $class($id);
     	if(method_exists($newclass, $method)) {
-      		if(!$newclass->acl($method)) error("DENIED",$class,$method);
+      		if(!$newclass->acl($method)) error("DENIED", $class, $method);
       		$result = $newclass->$method($vars);
       		if(strtolower($class)=="page") {
       			print $result;

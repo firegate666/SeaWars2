@@ -1,0 +1,22 @@
+classes/Mitteilung.php	cMitteilung	o12
+include/All.inc.php	g$d	o8	g$d	o52	g$d	o88
+classes/Session.inc.php	cSession	o12	vsid	o60	kSession	o81	mregister	o371	misRegistered	o427
+classes/Spieler.inc.php	cSpieler	o12
+classes/Kartenabschnitt.php	cKartenabschnitt	o12
+classes/Bauplan.php	cBauplan	o12
+classes/AbstractClass.inc.php	cAbstractClass	o12	vdata	o217	vtemplate	o239	vlanguage	o262	mset	o286	kAbstractClass	o355	mload_template	o418	mload_language	o535	misRegisteredSession	o661	mload	o745	mshow	o1004	mstore	o1037	mprintout	o1878
+classes/All.inc.php	g$d	o8	g$d	o52	g$d	o88	g$d	o132	g$d	o167	g$d	o203	g$d	o240	g$d	o275
+install/create_database.php	g$database	o247	g$database	o274
+classes/Lager.php	cSchiff	o12
+index.php	g$class	o172	g$_REQUEST	o182	g$method	o204	g$_REQUEST	o214	g$id	o237	g$_REQUEST	o244	g$vars	o263	g$_REQUEST	o271	g$test	o309	g$test	o333	g$test	o354	g$test	o385	g$_REQUEST	o464	g$vars	o487	g$class	o516	g$class	o531	g$class	o544	g$id	o551	g$class	o579	g$method	o587	g$class	o604	g$method	o612	g$vars	o620	g$class	o684	g$method	o692	g$class	o743	g$method	o750
+classes/Archipel.php	cArchipel	o12
+classes/MySQL.inc.php	g$d	o34	g$d	o78	cMySQL	o107	mconnect	o324	p133	l176	g$dbserver	o350	g$dbuser	o375	g$dbpassword	o398	g$dbdatabase	o425	mdisconnect	o784	p700	l69	minsert	o943	p849	l79	mselect	o1285	p1178	l92	mexecuteSql	o1706	p1623	l68	mupdate	o2084	p1981	l88
+classes/Schiff.inc.php	cSchiff	o12
+include/globals.inc.php	ferror	o15	fprint_a	o129	fdistance	o412	p223	l176	fgetClientIP	o638	p567	l58
+classes/Insel.inc.php	cInsel	o11
+classes/Allianz.php	cAllianz	o12
+classes/Flotte.php	cFlotte	o12
+classes/SQL.inc.php	cSQL	o151	p6	l135	mconnect	o271	p164	l92	mdisconnect	o381	p297	l69	minsert	o511	p417	l79	mselect	o649	p542	l92	mupdate	o783	p680	l88
+include/config.inc.php	g$dbserver	o6	g$dbuser	o57	g$dbpassword	o110	g$dbdatabase	o162
+classes/Spiel.inc.php	cSpiel	o12
+classes/AbstractTimestampClass.php	cAbstractTimestampClass	o11	mstore	o70

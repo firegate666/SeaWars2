@@ -1,0 +1,4 @@
+<?
+  class Flotte extends AbstractTimestampClass {
+  }
+?>                                   	

@@ -1,0 +1,4 @@
+<?
+  class Spieler extends AbstractClass {
+  }
+?>

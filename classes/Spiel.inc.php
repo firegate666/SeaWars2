@@ -1,0 +1,5 @@
+<?
+  class Spiel extends AbstractClass {
+  }
+?>                                  	
+

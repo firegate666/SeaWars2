@@ -1,0 +1,4 @@
+<?
+	class Insel extends AbstractTimestampClass {
+	}
+?>

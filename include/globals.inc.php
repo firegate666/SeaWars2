@@ -1,4 +1,9 @@
 <?
+	function redirect($target){
+		$result = array('content'=>'URL', 'target' => $target);
+		return $result;
+	}		
+
   function error($error, $class, $method) {
     $error = new Error($error,$class,$method);
     die($error->show());

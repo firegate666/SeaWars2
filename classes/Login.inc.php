@@ -18,17 +18,18 @@ class Login extends AbstractNoNavigationClass {
 	}
 	
 	function denied(){
-		$o = '';
-		$o .= '<h1>Denied.</h1>';
-		$o .= '<a href="index.php?class=Login">Zurück</a>';
-		return $o;
+		return error("Zugang verweigert",get_class($this),"denied");
+//		$o = '';
+//		$o .= '<h1>Denied.</h1>';
+//		$o .= '<a href="index.php?class=Login">Zurück</a>';
+//		return $o;
 	}
 
 	function logout(&$vars) {
 		setcookie("username","",0);
-		$result['content']="URL";
-		$result['target']="index.php";
-		return $result;
+		//$result['content']="URL";
+		//$result['target']="index.php";
+		return redirect("index.php");
 	}
 
 	function login(&$vars){
@@ -39,13 +40,16 @@ class Login extends AbstractNoNavigationClass {
 		$password = $vars['password'];
 		$array = $DB->select("SELECT id FROM spieler WHERE username='$username' AND password='$password'");
 		$result['content']="URL";
+		$target = '';
 		if(count($array)==1) {
 			setcookie("username",$username, NULL);
 			$result['target']="index.php?class=Insel";
+			$target = "index.php?class=Insel";
 		} else {
 			$result['target']="index.php?class=Login&method=denied";
+			$target = "index.php?class=Login&method=denied";
 		}
-		return $result;
+		return redirect($target);
 	}
 	
 	function show(&$vars){

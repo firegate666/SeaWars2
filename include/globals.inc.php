@@ -1,6 +1,7 @@
 <?
   function error($error, $class, $method) {
-    die("<p><b>Fehler: ($class/$method):</b> $error</p>");
+    $error = new Error($error,$class,$method);
+    die($error->show());
   }
   
   function print_a($array) {

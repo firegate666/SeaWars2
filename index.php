@@ -1,4 +1,5 @@
 <?
+	require_once dirname(__FILE__).'/config/All.inc.php';
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
@@ -13,7 +14,7 @@
 		die();
 	}
 	
-	if(empty($class)) $class="Login";
+	if(empty($class))  $class="Page";
 	if(empty($method)) $method="show";
 	
 	if(class_exists($class)){

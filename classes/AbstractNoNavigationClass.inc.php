@@ -14,7 +14,7 @@ class AbstractNoNavigationClass {
 	}
 	
 	function get_template($layout){
-		return getLayout(get_class($this), $name);
+		return $this->getLayout(get_class($this), $name);
 	}
 	
 	function load_language($language,$class){

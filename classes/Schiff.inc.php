@@ -1,4 +1,6 @@
 <?
-  class Schiff extends AbstractClass {
-  }
+class Schiff extends AbstractClass {
+	function setname($newname) {
+	}
+}
 ?>

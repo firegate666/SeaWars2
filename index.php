@@ -8,6 +8,7 @@
 	$id		= $_REQUEST["id"];
 	$vars	= $_REQUEST;
 	
+	if(empty($class)) $class="Login";
 	if(empty($method)) $method="show";
 	
 	if(class_exists($class)){
@@ -19,7 +20,9 @@
 		print "<table width=100% border=1>\n";
 		print "<tr>\n";
 		print "<td width=100>&nbsp;</td>\n";
-		print "<td>&nbsp;</td>\n";
+		print "<td>";
+		print_a($_COOKIES);
+		print "</td>\n";
 		print "</tr>\n";
 		print "<tr>\n";
 		print "<td width=100>".($class->getNavigation())."</td>\n";

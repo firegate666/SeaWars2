@@ -2,22 +2,26 @@ classes/Kartenabschnitt.inc.php	cKartenabschnitt	o12
 classes/Flotte.inc.php	cFlotte	o12
 include/All.inc.php	g$d	o8	g$d	o52	g$d	o88
 classes/Archipel.inc.php	cArchipel	o12
-classes/All.inc.php	g$d	o8	g$d	o52	g$d	o85	g$d	o121	g$d	o156	g$d	o195	g$d	o238	g$d	o291	g$d	o328	g$d	o366	g$d	o403	g$d	o439	g$d	o474	g$d	o519	g$d	o554	g$d	o593	g$d	o633	g$d	o673	g$d	o709	g$d	o746	g$d	o783	g$d	o818
-classes/AbstractClass.inc.php	cAbstractClass	o12	vdata	o217	vlanguage	o239	mset	o263	kAbstractClass	o332	mget_template	o395	mload_language	o482	misRegisteredSession	o608	mload	o692	mshow	o951	mstore	o984	mprintout	o1825
+classes/AbstractNoNavigationClass.inc.php	cAbstractNoNavigationClass	o10	mgetNavigation	o49	mgetForm	o102
+classes/AbstractClass.inc.php	cAbstractClass	o12	vdata	o251	vlanguage	o273	mgetNavigation	o297	mset	o362	kAbstractClass	o431	mget_template	o494	mload_language	o581	misRegisteredSession	o707	mload	o791	mshow	o1050	mstore	o1083	mprintout	o1924
+classes/All.inc.php	g$d	o8	g$d	o52	g$d	o85	g$d	o120	g$d	o155	g$d	o210	g$d	o253	g$d	o306	g$d	o341	g$d	o379	g$d	o415	g$d	o452	g$d	o490	g$d	o527	g$d	o563	g$d	o598	g$d	o643	g$d	o678	g$d	o717	g$d	o757	g$d	o797	g$d	o833	g$d	o870	g$d	o907	g$d	o942
 install/create_database.php	g$database	o247	g$database	o274
-index.php	g$class	o188	g$_REQUEST	o198	g$method	o220	g$_REQUEST	o230	g$id	o253	g$_REQUEST	o260	g$vars	o279	g$_REQUEST	o287	g$test	o325	g$test	o349	g$test	o370	g$test	o401	g$_REQUEST	o480	g$vars	o503	g$class	o532	g$class	o547	g$class	o560	g$id	o567	g$class	o595	g$method	o603	g$class	o620	g$method	o628	g$vars	o636	g$class	o700	g$method	o708	g$class	o759	g$method	o766
+index.php	g$class	o172	g$_REQUEST	o182	g$method	o204	g$_REQUEST	o214	g$id	o237	g$_REQUEST	o244	g$vars	o263	g$_REQUEST	o271	g$method	o296	g$method	o306	g$class	o343	g$class	o359	g$class	o372	g$id	o379	g$class	o407	g$method	o415	g$result	o434	g$class	o444	g$method	o452	g$vars	o460	g$result	o488	g$class	o731	g$result	o878	g$result	o906	g$result	o983	g$class	o1093	g$method	o1101	g$class	o1152	g$method	o1159
 classes/Schiff.inc.php	cSchiff	o12
 classes/Template.inc.php	cTemplate	o10	vlayout	o34	kTemplate	o56	mload	o86	mgetLayout	o118
 include/globals.inc.php	ferror	o15	fprint_a	o129	fdistance	o412	p223	l176	fgetClientIP	o638	p567	l58
-classes/Insel.inc.php	cInsel	o11
+classes/Insel.inc.php	cInsel	o11	mshow	o62
+classes/Navigation.inc.php	cNavigation	o10	mshow	o34
 classes/Allianz.inc.php	cAllianz	o12
-classes/Navigation.inc.php	cNavigation	o12
 classes/AbstractTimestampClass.inc.php	cAbstractTimestampClass	o11	mstore	o70
 classes/Spiel.inc.php	cSpiel	o12
+classes/HTML.inc.php	cHTML	o10	mtr	o28
 include/config.inc.php	g$dbserver	o6	g$dbuser	o57	g$dbpassword	o110	g$dbdatabase	o162
-admin.php
+index.old.php	g$class	o188	g$_REQUEST	o198	g$method	o220	g$_REQUEST	o230	g$id	o253	g$_REQUEST	o260	g$vars	o279	g$_REQUEST	o287	g$vars	o444	g$html	o480	g$vars	o514	g$_REQUEST	o592	g$vars	o615	g$class	o644	g$class	o659	g$class	o672	g$id	o679	g$class	o707	g$method	o715	g$class	o732	g$method	o740	g$vars	o748	g$class	o812	g$method	o820	g$class	o871	g$method	o878
+admin.php	fgetTemplateClasses	o14	fgetTemplateLayouts	o141	g$template	o767
 classes/Spieler.inc.php	cSpieler	o12
 classes/Session.inc.php	cSession	o12	vsid	o60	kSession	o81	mregister	o371	misRegistered	o427
+classes/Login.inc.php	cLogin	o11	mlogin	o65	mshow	o221
 classes/SeaWars.inc.php	cSeaWars	o12
 classes/Messenger.inc.php	cMessenger	o12	vmitteilungen	o61
 classes/MySQL.inc.php	cMySQL	o12	mconnect	o229	p38	l176	g$dbserver	o255	g$dbuser	o280	g$dbpassword	o303	g$dbdatabase	o330	mdisconnect	o689	p605	l69	minsert	o848	p754	l79	mselect	o1190	p1083	l92	mexecuteSql	o1611	p1528	l68	mupdate	o1989	p1886	l88

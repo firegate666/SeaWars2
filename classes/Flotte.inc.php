@@ -1,4 +1,6 @@
 <?
-  class Flotte extends AbstractTimestampClass {
-  }
+class Flotte extends AbstractTimestampClass {
+	function setname($newname) {
+	}
+}
 ?>

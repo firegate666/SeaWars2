@@ -4,6 +4,7 @@
     // keep in mind, that is a table representation, keep track that non-numeric fields
     // have to be set in ' '
     protected $data;
+    protected $id;
 	
 	protected $language;
 	
@@ -16,7 +17,8 @@
 	}
 	
 	function AbstractClass($id='') {
-		$this->load($id);
+		$this->id=$id;
+		$this->load();
 	}
 	
 	function get_template($layout){
@@ -56,6 +58,7 @@
       $tablename = get_class($this);
       if($this->id=='') {
 	      $query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
+	      echo($query);
 	      $autoid = $sql->insert($query);
       } else {
 		  $query  = "UPDATE $tablename SET";

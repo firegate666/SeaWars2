@@ -1,4 +1,4 @@
 <?
   class Allianz extends AbstractClass {
   }
-?>     
+?>

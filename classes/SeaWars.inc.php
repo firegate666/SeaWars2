@@ -1,4 +1,4 @@
 <?
   class SeaWars extends AbstractClass {
   }
-?>                                   	
+?>

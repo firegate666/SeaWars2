@@ -3,13 +3,15 @@
 
   require_once $d.'SQL.inc.php';
   require_once $d.'MySQL.inc.php';
+  require_once $d.'HTML.inc.php';
+
+  require_once $d.'AbstractNoNavigationClass.inc.php';
+  require_once $d.'AbstractClass.inc.php';
+  require_once $d.'AbstractTimestampClass.inc.php';
 
   require_once $d.'Error.inc.php';
   require_once $d.'Template.inc.php';
   require_once $d.'Login.inc.php';
-
-  require_once $d.'AbstractClass.inc.php';
-  require_once $d.'AbstractTimestampClass.inc.php';
 
   require_once $d.'Allianz.inc.php';
   require_once $d.'Archipel.inc.php';

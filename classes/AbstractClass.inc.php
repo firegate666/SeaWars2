@@ -1,5 +1,5 @@
 <?
-  class AbstractClass {
+  class AbstractClass extends AbstractNoNavigationClass {
     // $data is an array containing all table fields
     // keep in mind, that is a table representation, keep track that non-numeric fields
     // have to be set in ' '

@@ -3,4 +3,4 @@
   	protected $mitteilungen;
   	
   }
-?>                                   	
+?>

@@ -1,5 +1,4 @@
 <?
   class Schiff extends AbstractClass {
   }
-?>                                   	
-
+?>

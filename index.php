@@ -6,7 +6,7 @@
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
 	$id		= $_REQUEST["id"];
-	$vars	= $_REQUEST["vars"];
+	$vars	= $_REQUEST;
 	
 	if(empty($method)) $method="show";
 	
@@ -26,6 +26,10 @@
 		print "<td>$result</td>\n";
 		print "</tr>\n";
       	print "</body></html>\n";
+      } else if(is_array($result)) {
+      		switch($result['content']) {
+      			case strtoupper("URL") : header("Location: ".$result['target']); break;
+      		}
       }
     }
     else

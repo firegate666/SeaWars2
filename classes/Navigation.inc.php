@@ -1,4 +1,4 @@
 <?
-  class Lager extends AbstractClass {
+  class Navigation extends AbstractClass {
   }
 ?>                                   	

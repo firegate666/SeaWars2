@@ -14,7 +14,9 @@
   require_once $d.'Kartenabschnitt.inc.php';
   require_once $d.'Lager.inc.php';
   require_once $d.'Mitteilung.inc.php';
+  require_once $d.'Navigation.inc.php';
   require_once $d.'Schiff.inc.php';
+  require_once $d.'SeaWars.inc.php';
   require_once $d.'Session.inc.php';
   require_once $d.'Spiel.inc.php';
   require_once $d.'Spieler.inc.php';

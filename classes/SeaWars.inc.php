@@ -1,4 +1,5 @@
 <?
-  class SeaWars extends AbstractClass {
-  }
+class SeaWars extends AbstractClass {
+	
+}
 ?>

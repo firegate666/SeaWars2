@@ -2,6 +2,8 @@
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
+  	// TEST
+  
  	/* try to make sense of the query string */
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];

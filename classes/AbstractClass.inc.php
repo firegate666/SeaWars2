@@ -5,7 +5,6 @@
     // have to be set in ' '
     protected $data;
 	
-	protected $template;
 	protected $language;
 	
 	function set($key, $value) {
@@ -16,9 +15,8 @@
 		$this->load($id);
 	}
 	
-	function load_template($template){
-		include("templates/$template");
-		$this->template = new $template();
+	function get_template($layout){
+		return getLayout(get_class($this), $name);
 	}
 	
 	function load_language($language,$class){

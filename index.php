@@ -17,31 +17,23 @@
 	if(empty($method)) $method="show";
 	
 	if(class_exists($class)){
-    	$class = new $class($id);
-    if(method_exists($class, $method)) {
-      $result = $class->$method($vars);
-      if(is_string($result)) {
-      	print "<html>\n<body>\n";
-		print "<table width=100% border=1>\n";
-		print "<tr>\n";
-		print "<td width=100>&nbsp;</td>\n";
-		print "<td>";
-		print $_COOKIE["username"];
-		print "</td>\n";
-		print "</tr>\n";
-		print "<tr>\n";
-		print "<td width=100>".($class->getNavigation())."</td>\n";
-		print "<td>$result</td>\n";
-		print "</tr>\n</table>\n";
-      	print "</body></html>\n";
-      } else if(is_array($result)) {
+    	$newclass = new $class($id);
+    	if(method_exists($newclass, $method)) {
+      	if(!$newclass->acl($method)) error("DENIED",$class,$method);
+      	$result = $newclass->$method($vars);
+      	if(is_string($result)) {
+	      	$game = new SeaWars($newclass->getMainLayout());
+      		$game->setNavigation($newclass->getNavigation());
+      		$game->setMainBody($result);
+      		print $game->show();
+      	} else if(is_array($result)) {
       		switch($result['content']) {
       			case strtoupper("URL") : header("Location: ".$result['target']); break;
       		}
-      }
+      	}
     }
     else
-      error("Method not not found",get_class($class),$method);
+      error("Method not not found",$class,$method);
   } else {
     error("Class not found",$class,$method);
   }  

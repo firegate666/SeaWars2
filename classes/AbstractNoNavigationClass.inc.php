@@ -5,6 +5,10 @@ class AbstractNoNavigationClass {
     var $id;
 	var $language;
 
+	function getMainLayout() {
+		return 'main';
+	}
+
 	function set($key, $value) {
 		$this->data[$key] = $value;
 	}

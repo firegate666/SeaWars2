@@ -1,6 +1,18 @@
 <?
 class Login extends AbstractNoNavigationClass {
 		
+	function getMainLayout() {
+		return 'login_logout';
+	}
+
+	function acl($method) {
+		$method=strtolower($method);
+		if($method=='logout') return true;
+		else if($method=='login') return true;
+		else if($method=='show') return true;
+		else return false;
+	}
+	
 	function isLoggedIn() {
 		return isset($_COOKIE["username"]);
 	}

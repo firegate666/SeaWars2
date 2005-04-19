@@ -1,4 +1,7 @@
 <?
+
+  $mysql = new MySQL();
+  
   class MySQL extends SQL{
 
     /**

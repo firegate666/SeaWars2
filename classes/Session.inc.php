@@ -2,6 +2,20 @@
   class Session extends AbstractClass {
     var $sid;
 
+    function getCookie($name) {
+      return $_COOKIE[$name];
+    }
+    function setCookie($name, $value) {
+      setcookie($name, $value, NULL);
+    }
+    function removeCookie($name){
+      	setcookie($name,"",0);
+    }
+    function cleanUpCookies(){
+                             	$_COOKIES = array();
+    }
+
+
     function Session($userid) {
       $this->data["uid"]=$userid;
       $this->data["client_ip"]=getClientIP();

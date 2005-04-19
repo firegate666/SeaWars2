@@ -3,8 +3,12 @@ class Inselliste extends AbstractClass {
 	function load() {
 	}
 	
+	function acl(){
+          return Login::isLoggedIn();
+        }
+
 	function show(&$vars) {
-		$mode = "ALL";
+		$mode = "OWN";
 		if(isset($vars["mode"])) {
 			$mode = $vars["mode"];
 		}
@@ -30,6 +34,20 @@ class Inselliste extends AbstractClass {
 	}
 
 	function show_own(&$vars) {
+	        global $mysql;
+       		$result = $mysql->select("SELECT i.id, i.name, i.groesse, a.name
+                                          FROM insel i, archipel a
+                                          WHERE a.id = i.archipel_id AND i.spieler_id=".Session::getCookie('spieler_id').";");
+       		$rows = '';
+       		foreach($result as $row) {
+                    $array['id']      = $row[0];
+                    $array['name']    = $row[1];
+                    $array['groesse'] = $row[2];
+                    $array['archipel']= $row[3];
+                    $rows .= $this->getLayout($array, "row");
+       		}
+		$array = array('inseln' => $rows);
+		return $this->getLayout($array, "page");
 	}
 }
 ?>

@@ -24,11 +24,16 @@ class AbstractNoNavigationClass {
 		return session_is_registered(session);
 	}
 	
+	function exists() {
+	   return empty($this->id);
+	}
+
 	function load() {
+        //if(!$this->exists()) return;
     	$id 		= $this->id;
     	$tablename 	= get_class($this);
     	$sql = new MySQL();
-    	$this->data = $sql->executeSql("SELECT * FROM ".get_class($this)."");
+    	$this->data = $sql->executeSql("SELECT * FROM ".get_class($this)." WHERE id=$id;");
     	$this->id	= $this->data[id];
     	unset($this->data[id]);
     }
@@ -58,7 +63,7 @@ class AbstractNoNavigationClass {
 	      $query .= " WHERE id=".$this->id.";";
 	      $sql->update($query);
       }
-      echo("<p>SQL Statement: $query</p>");
+      //echo("<p>SQL Statement: $query</p>");
     }
     
     function printout() {
@@ -80,12 +85,13 @@ class AbstractNoNavigationClass {
 	
 	function getLayout($array, $layout) {
 		$string = Template::getLayout(get_class($this),$layout);
+		if(empty($array)) return $string;
 		$keys = array_keys($array);
 		foreach($keys as $key) {
 			$string = str_replace('${'.$key.'}',$array[$key],$string);
 		}
 		return $string;
-	}	
+	}
 	
 	function getNavigation() {
 		return "&nbsp;";

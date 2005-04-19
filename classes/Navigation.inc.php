@@ -1,11 +1,10 @@
 <?
 class Navigation extends AbstractClass {
 	function show() {
-		$links[0]["lbl"] = "Startseite"; 		
-		$links[0]["lnk"] = ""; 		
-		$links[1]["lbl"] = "Logout"; 		
-		$links[1]["lnk"] = "index.php?class=login&method=logout";
-		
+		//$links[] = array("lbl" => "Startseite", "lnk" => "");
+		$links[] = array("lbl" => "Inselliste", "lnk" => "index.php?class=inselliste&method=show&mode=own");
+		$links[] = array("lbl" => "Logout",     "lnk" => "index.php?class=login&method=logout");
+
 		$rows = '';
 		foreach($links as $link) {
 			$array = array("lbl"=>$link["lbl"], "lnk"=>$link["lnk"]);

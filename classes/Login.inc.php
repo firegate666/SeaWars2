@@ -33,7 +33,7 @@ class Login extends AbstractNoNavigationClass {
 	}
 
 	function login(&$vars){
-		if($this->isLoggedIn()) $this->logout(&$vars);
+		if($this->isLoggedIn()) $this->logout($vars);
 		$DB = new MySQL();
 		// Passwort überprüfen
 		$username = $vars['username'];
@@ -42,9 +42,10 @@ class Login extends AbstractNoNavigationClass {
 		$result['content']="URL";
 		$target = '';
 		if(count($array)==1) {
-			setcookie("username",$username, NULL);
-			$result['target']="index.php?class=Insel";
-			$target = "index.php?class=Insel";
+			setcookie("username"  , $username, NULL);
+			setcookie("spieler_id", $array[0][0], NULL);
+			$result['target']="index.php?class=inselliste&mode=OWN";
+			$target = "index.php?class=Inselliste";
 		} else {
 			$result['target']="index.php?class=Login&method=denied";
 			$target = "index.php?class=Login&method=denied";

@@ -17,7 +17,10 @@ if($_CONFIG["cms"]) {
 	require_once $d.'Page.inc.php';
 	require_once $d.'Error.inc.php';
 	require_once $d.'Template.inc.php';
-}	
+	require_once $d.'Image.inc.php';
+	require_once $d.'PLink.inc.php';
+	require_once $d.'Link.inc.php';
+}
 
 if($_CONFIG["game"]) {
 	require_once $d.'Login.inc.php';
@@ -26,6 +29,7 @@ if($_CONFIG["game"]) {
 	require_once $d.'Bauplan.inc.php';
 	require_once $d.'Flotte.inc.php';
 	require_once $d.'Insel.inc.php';
+	require_once $d.'Inselliste.inc.php';
 	require_once $d.'Kartenabschnitt.inc.php';
 	require_once $d.'Lager.inc.php';
 	require_once $d.'Messenger.inc.php';

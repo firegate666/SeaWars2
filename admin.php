@@ -53,7 +53,7 @@
 					?></table><?
 				if(isset($layout)) {
 					?>
-					<form action="index.php">
+					<form action="index.php" method="post">
 					<p><input type="submit" value="Änderungen speichern"></p>
 					<textarea name=content cols=80 rows=25><?=Template::getLayout($class, $layout);?></textarea>
 					<p><input type="submit" value="Änderungen speichern"></p>

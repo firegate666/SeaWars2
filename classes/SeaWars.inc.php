@@ -17,6 +17,10 @@ class SeaWars extends AbstractClass {
 	
 	function show(){
 		$array = array("navigation" => $this->navigation, "content" => $this->mainbody);
+		if(Login::isLoggedIn())
+                  $array['username'] = Session::getCookie("username");
+                else
+                  $array['username'] = "";
 		return $this->getLayout($array, $this->layoutname);
 	}	
 }

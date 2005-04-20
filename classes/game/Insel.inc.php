@@ -2,7 +2,7 @@
 	function Rohstoffproduktion($insel_id) {
 		global $mysql;
 		$array = $mysql->select("SELECT rp.wachstum_prozent, rp.produktion_stunde, r.sem_id, r.name
-	                               FROM Rohstoffproduktion rp, Rohstoff r
+	                               FROM rohstoffproduktion rp, rohstoff r
 	                               WHERE rp.insel_id=".$insel_id." AND rp.rohstoff_id=r.id;");
 		foreach ($array as $item) {
 			$this->data[] = array ('name' => $item[3], 'id' => $item[2], 'wp' => $item[0], 'ps' => $item[1]);
@@ -61,4 +61,3 @@ class Insel extends AbstractTimestampClass {
 	}
 }
 ?>
-

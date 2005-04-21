@@ -84,13 +84,8 @@ class AbstractNoNavigationClass {
 	}
 	
 	function getLayout($array, $layout) {
-		$string = Template::getLayout(get_class($this),$layout);
-		if(empty($array)) return $string;
-		$keys = array_keys($array);
-		foreach($keys as $key) {
-			$string = str_replace('${'.$key.'}',$array[$key],$string);
-		}
-		return $string;
+		$t = new Template();
+		return $t->getLayout(get_class($this),$layout,$array);
 	}
 	
 	function getNavigation() {

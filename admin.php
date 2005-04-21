@@ -3,7 +3,15 @@
 		$DB = new MySQL();
 		$query = "UPDATE template SET content='$content' WHERE class='$class' AND layout = '$layout';";
 		$DB->update($query);
-		unset($class);
+		//unset($class);
+		unset($layout);
+	}
+	if(isset($addlayout)) {
+		Template::createTemplate($class, $layoutname);
+	}
+	if(isset($delete)) {
+		Template::deleteTemplate($class, $layout);
+		unset($delete);
 		unset($layout);
 	}
 ?>
@@ -26,36 +34,56 @@
 					?>
 					<table border=0>
 					    <tr>
-					      <th><a href="index.php?admin&template">Templateklasse</a>
-					      (add class)
-					      <? if(isset($class)) { echo("/ $class (add layout to class)"); } ?>
-					      </th>
+					      <th align="left" valign="top" colspan><a href="index.php?admin&template">Templateklasse</a>
+					      <? if(isset($class)) { ?>
+					      	/ Class: <?=$class?></th> 
+					      	  <td align="left" valign="top"><form>
+					      	    <input type="hidden" name="addlayout">
+					      	    <input type="hidden" name="admin">
+					      	    <input type="hidden" name="template">
+					      	    <input type="hidden" name="class" value="<?=$class?>">
+					      	    <input type="text"   name="layoutname">
+					      	    <input type="submit" value="Add Layout">
+					      	  </form></td>
+					      <? } else echo("</th>"); ?>
 					    </tr>
 					<?
 					$array = array();
-					if(!isset($class)) {
+					//if(!isset($class)) {
 						$link = "index.php?admin&template&&class=";
 						$array = Template::getClasses();
+						
+						$options = '<option></option>';
 						foreach($array as $items) {
-							?><tr><td>- <a href="<?=$link?><?=$items[0]?>"><?=$items[0]?></a></td></tr><?
+							$options .= '<option>'.$items[0].'</option>';
 						}
-					}
-					else {
+						?>
+						<tr><td>
+						<form name="selectclass">
+						<input type="hidden" name="admin">
+						<input type="hidden" name="template">
+						<select name="class" onChange="this.form.submit()"><?=$options?></select>
+						</form></td>
+						<?
+					//}
+					if(isset($class)) {
+						echo("<td align=left valign=top><table>");
 						$link = "index.php?admin&template&class=$class&layout=";
 						$array = Template::getLayouts($class);
 						foreach($array as $items) {
-							?><tr><td>- <?=$items[0]?>
+							?><td>- <?=$items[0]?>
 							<a href="<?=$link?><?=$items[0]?>">(edit)</a>
-							(delete)
+							<a href="<?=$link?><?=$items[0]?>&delete">(delete)</a>
 							</td></tr><?
 						}
-					} 
+						echo("</table></td>");
+					} else echo("</tr>");
 					?></table><?
 				if(isset($layout)) {
 					?>
 					<form action="index.php" method="post">
 					<p><input type="submit" value="Änderungen speichern"></p>
-					<textarea name=content cols=80 rows=25><?=Template::getLayout($class, $layout);?></textarea>
+					<textarea name=content cols=80 rows=25><?=Template::getLayout($class, $layout,array(),true);?></textarea>
 					<p><input type="submit" value="Änderungen speichern"></p>
 					<input type="hidden" name="template" value="">
 					<input type="hidden" name="admin" value="">

@@ -37,7 +37,7 @@
     */
     function insert($query) {
       $dblink = $this->connect();
-      $result = MYSQL_QUERY($query) or die("MySQL insert error: ".mysql_error());
+      $result = MYSQL_QUERY($query) or die("MySQL insert error: ".mysql_error()." / Query "+$query);
       $id = MYSQL_INSERT_ID();
       $this->disconnect($dblink);
       return $id;
@@ -49,7 +49,7 @@
     */
     function select($query) {
       $dblink = $this->connect();
-      $result = MYSQL_QUERY($query) or die("MySQL select error: ".mysql_error());
+      $result = MYSQL_QUERY($query) or die("MySQL select error: ".mysql_error()." / Query "+$query);
       $return = array();
       $counter = 0;
       while($line=MYSQL_FETCH_ARRAY($result, MYSQL_NUM)) $return[$counter++]=$line;
@@ -63,7 +63,7 @@
     */
     function executeSql($query) {
       $dblink = $this->connect();
-      $result = MYSQL_QUERY($query) or die("MySQL select error: ".mysql_error());
+      $result = MYSQL_QUERY($query) or die("MySQL executeSql error: ".mysql_error()." / Query "+$query);
       $result = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC);
       $this->disconnect($dblink);
       return $result;      
@@ -75,7 +75,7 @@
     */
     function update($query) {
       $dblink = $this->connect();
-      $result = MYSQL_QUERY($query) or die("MySQL update error: ".mysql_error());
+      $result = MYSQL_QUERY($query) or die("MySQL update error: ".mysql_error()." / Query "+$query);
       $rows = MYSQL_AFFECTED_ROWS();
       $this->disconnect($dblink);
       return $rows;

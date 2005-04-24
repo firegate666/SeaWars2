@@ -1,61 +1,3 @@
-<?
-class Login extends AbstractNoNavigationClass {
-		
-	function getMainLayout() {
-		return 'login_logout';
-	}
+<?	$template_classes[] = 'login';class Login extends AbstractNoNavigationClass {	function getMainLayout() {		return 'login_logout';	}	function playerExists($username) {		global $mysql;		$array = $mysql->executeSql("SELECT id, username FROM spieler WHERE username='".$username."';");		return (!empty ($array));	}	function emailExists($email) {		global $mysql;		$array = $mysql->executeSql("SELECT id, username FROM spieler WHERE email='".$email."';");		return (!empty ($array));	}	function register2(& $vars) {		if (isset ($vars['username']))			Session :: setCookie('register_username', $vars['username']);		if (isset ($vars['password']))			Session :: setCookie('register_password', $vars['password']);		if (isset ($vars['password2']))			Session :: setCookie('register_password2', $vars['password2']);		if (isset ($vars['email']))			Session :: setCookie('register_email', $vars['email']);		if ($vars['password'] != $vars['password2'])			$error .= 'Passwörter nicht gleich<br>';		if ($this->playerExists($vars['username']))			$error .= 'Benutzername bereits vergeben<br>';		if ($this->emailExists($vars['email']))			$error .= 'Email bereits vergeben<br>';		if (isset ($error))			$target = "index.php?class=login&method=register&error=$error";		else {			$spieler = new Spieler();			$spieler->data["username"] = $vars['username'];			$spieler->data["password"] = $vars['password'];			$spieler->data["email"] = $vars['email'];			$spieler->store();			$spieler_id = $spieler->id;			$inseln = Insel :: getStartIslands();			$anzahl = count($inseln);			$insel = new Insel($inseln[rand(0, $anzahl)][0]);			$insel->data['spieler_id'] = $spieler_id;			$insel->store();			$target = "index.php?class=login";		}		return redirect($target);	}	function register(& $vars) {		$array['username'] = Session :: getCookie("register_username");		$array['password'] = Session :: getCookie("register_password");		$array['password2'] = Session :: getCookie("register_password2");		$array['email'] = Session :: getCookie("register_email");		$array['error'] = $vars['error'];		return $this->getLayout($array, "register");	}	function acl($method) {		$method = strtolower($method);		if ($method == 'register') {			return true;		} else if ($method == 'register2') {			return true;		} else if ($method == 'logout') {			return true;		} else if ($method == 'login') {			return true;		} else if ($method == 'show') {			return true;		} else {			return false;		}	}	function isLoggedIn() {		return isset ($_COOKIE["username"]);	}	function denied() {		return error("Zugang verweigert", get_class($this), "denied");		//		$o = '';		//		$o .= '<h1>Denied.</h1>';		//		$o .= '<a href="index.php?class=Login">Zurück</a>';		//		return $o;	}	function logout(& $vars) {		setcookie("username", "", 0);		//$result['content']="URL";		//$result['target']="index.php";		return redirect("index.php");	}	function login(& $vars) {		if ($this->isLoggedIn())			$this->logout($vars);		$DB = new MySQL();		// Passwort überprüfen		$username = $vars['username'];		$password = $vars['password'];		$array = $DB->select("SELECT id FROM spieler WHERE username='$username' AND password='$password'");		$result['content'] = "URL";		$target = '';		if (count($array) == 1) {			setcookie("username", $username, NULL);			setcookie("spieler_id", $array[0][0], NULL);			$result['target'] = "index.php?class=inselliste&mode=OWN";			$target = "index.php?class=Inselliste";		} else {			$result['target'] = "index.php?class=Login&method=denied";			$target = "index.php?class=Login&method=denied";		}		return redirect($target);	}	function show(& $vars) {		$array = array ("title" => "Login", "lbl_username" => "Benutzername", "lbl_password" => "Passwort", "lbl_login" => "Anmelden");		return $this->getLayout($array, "login_window");	}}?>
 
-	function acl($method) {
-		$method=strtolower($method);
-		if($method=='logout') return true;
-		else if($method=='login') return true;
-		else if($method=='show') return true;
-		else return false;
-	}
-	
-	function isLoggedIn() {
-		return isset($_COOKIE["username"]);
-	}
-	
-	function denied(){
-		return error("Zugang verweigert",get_class($this),"denied");
-//		$o = '';
-//		$o .= '<h1>Denied.</h1>';
-//		$o .= '<a href="index.php?class=Login">Zurück</a>';
-//		return $o;
-	}
-
-	function logout(&$vars) {
-		setcookie("username","",0);
-		//$result['content']="URL";
-		//$result['target']="index.php";
-		return redirect("index.php");
-	}
-
-	function login(&$vars){
-		if($this->isLoggedIn()) $this->logout($vars);
-		$DB = new MySQL();
-		// Passwort überprüfen
-		$username = $vars['username'];
-		$password = $vars['password'];
-		$array = $DB->select("SELECT id FROM spieler WHERE username='$username' AND password='$password'");
-		$result['content']="URL";
-		$target = '';
-		if(count($array)==1) {
-			setcookie("username"  , $username, NULL);
-			setcookie("spieler_id", $array[0][0], NULL);
-			$result['target']="index.php?class=inselliste&mode=OWN";
-			$target = "index.php?class=Inselliste";
-		} else {
-			$result['target']="index.php?class=Login&method=denied";
-			$target = "index.php?class=Login&method=denied";
-		}
-		return redirect($target);
-	}
-	
-	function show(&$vars){
-		$array = array("title" => "Login", "lbl_username" => "Benutzername", "lbl_password" => "Passwort", "lbl_login" => "Anmelden");
-		return $this->getLayout($array, "login_window");
-	}
-}
-?>
+

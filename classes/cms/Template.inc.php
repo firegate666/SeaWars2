@@ -39,10 +39,16 @@ class Template {
 	}
 	
 	function getClasses() {
-		$DB = new MySQL();
-		//$result = $DB->select("SELECT DISTINCT class FROM template;");
-		$result = $DB->select("SHOW tables;");
-		return $result;
+//		$DB = new MySQL();
+//		//$result = $DB->select("SELECT DISTINCT class FROM template;");
+//		$result = $DB->select("SHOW tables;");
+//		$result[][0] = "login";
+//		return $result;
+		global $template_classes;
+		if(!isset($template_classes) || empty($template_classes))
+			$template_classes = array();
+		sort($template_classes);
+		return $template_classes;
 	}
 	function getLayouts($class) {
 		$DB = new MySQL();

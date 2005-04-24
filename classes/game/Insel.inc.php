@@ -1,4 +1,4 @@
-<?class Rohstoffproduktion {
+<?	$template_classes[] = 'insel';class Rohstoffproduktion {
 	function Rohstoffproduktion($insel_id) {
 		global $mysql;
 		$array = $mysql->select("SELECT rp.wachstum_prozent, rp.produktion_stunde, r.sem_id, r.name
@@ -13,7 +13,7 @@
 class Insel extends AbstractTimestampClass {
 	var $rohstoffproduktion;
 	var $lager;
-
+	function getStartIslands() {		global $mysql;		$query = "SELECT id FROM insel WHERE spieler_id = 0;";		$result = $mysql->select($query);		return $result;	}
 	function update() {
 		global $mysql;
 		$query = "SELECT l.rohstoff_id, l.anzahl, rp.produktion_stunde, rp.insel_id, NOW() as now, l.lager_id
@@ -35,7 +35,7 @@ class Insel extends AbstractTimestampClass {
 		$this->store();
 	}
 
-	function Insel($id = '') {
+	function Insel($id = '') {		if(empty($id)) return;
 		AbstractTimestampClass :: AbstractTimestampClass($id);
 		$this->update();
 		$this->rohstoffproduktion = new Rohstoffproduktion($this->id);

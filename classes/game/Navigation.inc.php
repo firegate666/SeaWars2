@@ -1,4 +1,6 @@
 <?
+	$template_classes[] = 'navigation';
+
 class Navigation extends AbstractClass {
 	function show() {
 		//$links[] = array("lbl" => "Startseite", "lnk" => "");

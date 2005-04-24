@@ -1,4 +1,6 @@
 <?
+	$template_classes[] = 'inselliste';
+
 class Inselliste extends AbstractClass {
 	function load() {
 	}
@@ -23,6 +25,20 @@ class Inselliste extends AbstractClass {
 	}
 	
 	function show_all(&$vars) {
+	        global $mysql;
+       		$result = $mysql->select("SELECT i.id, i.name, i.groesse, a.name
+                                          FROM insel i, archipel a
+                                          WHERE a.id = i.archipel_id;");
+       		$rows = '';
+       		foreach($result as $row) {
+                    $array['id']      = $row[0];
+                    $array['name']    = $row[1];
+                    $array['groesse'] = $row[2];
+                    $array['archipel']= $row[3];
+                    $rows .= $this->getLayout($array, "row");
+       		}
+		$array = array('inseln' => $rows);
+		return $this->getLayout($array, "page");
 	}
 
 	function show_region(&$vars) {

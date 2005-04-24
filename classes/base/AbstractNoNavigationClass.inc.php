@@ -53,8 +53,8 @@ class AbstractNoNavigationClass {
       $tablename = get_class($this);
       if($this->id=='') {
 	      $query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
-	      echo($query);
-	      $autoid = $sql->insert($query);
+	      //echo($query);
+	      $this->id = $sql->insert($query);
       } else {
 		  $query  = "UPDATE $tablename SET";
 		  $query .= " ".$keys[0]."=".$values[0];
@@ -63,6 +63,7 @@ class AbstractNoNavigationClass {
 	      $query .= " WHERE id=".$this->id.";";
 	      $sql->update($query);
       }
+      return $this->id;
       //echo("<p>SQL Statement: $query</p>");
     }
     
@@ -71,6 +72,7 @@ class AbstractNoNavigationClass {
     }
 	
 	function AbstractNoNavigationClass($id='') {
+		if(empty($id)) return;
 		$this->id=$id;
 		$this->load();
 	}

@@ -1,4 +1,6 @@
 <?
+	$template_classes[] = 'seawars';
+
 class SeaWars extends AbstractClass {
 	var $navigation = '';
 	var $mainbody   = '';

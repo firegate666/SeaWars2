@@ -1,0 +1,4 @@
+<?
+class Bugtracker extends AbstractClass {
+}
+?>

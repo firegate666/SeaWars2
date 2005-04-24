@@ -14,4 +14,8 @@ if($_CONFIG["cms"]) {
 if($_CONFIG["game"]) {
 	require_once dirname(__FILE__).'/game/All.inc.php';
 }
+
+if($_CONFIG["bugtracker"]) {
+	require_once dirname(__FILE__).'/bug/All.inc.php';
+}
 ?>

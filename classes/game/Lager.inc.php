@@ -4,6 +4,7 @@
 
 
       function Lager($id='') {
+      	if(empty($id)) return;
           AbstractClass::AbstractClass($id);
           $this->loadres();
       }

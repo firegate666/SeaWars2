@@ -1,0 +1,4 @@
+<?
+class Bug extends AbstractClass {
+}
+?>

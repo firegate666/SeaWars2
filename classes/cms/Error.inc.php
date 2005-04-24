@@ -1,4 +1,6 @@
 <?
+	$template_classes[] = 'error';
+
 class Error extends AbstractNoNavigationClass {
 
 	var $class  = '';

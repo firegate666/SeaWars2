@@ -8,4 +8,5 @@
 	$_CONFIG["cms"] = true;
 	$_CONFIG["game"] = true;
 	$_CONFIG["base"] = true;
+	$_CONFIG["bugtracker"] = true;
 ?>

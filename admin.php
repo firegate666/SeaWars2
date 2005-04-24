@@ -55,7 +55,7 @@
 						
 						$options = '<option></option>';
 						foreach($array as $items) {
-							$options .= '<option>'.$items[0].'</option>';
+							$options .= '<option>'.$items.'</option>';
 						}
 						?>
 						<tr><td>

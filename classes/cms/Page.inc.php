@@ -1,4 +1,6 @@
 <?
+	$template_classes[] = 'page';
+	
 class Page extends AbstractNoNavigationClass {
 	
 	var $name = '';

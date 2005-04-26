@@ -27,6 +27,7 @@
 		  <input type="submit" value="login">
 		  <input type="hidden" name="admin">
 		</form>
+		<a href="index.php">Zurück zur Startseite</a>
 
 	<?  die();
 	}

@@ -6,7 +6,9 @@
 	
 	$_CONFIG["database"] = true;
 	$_CONFIG["cms"] = true;
-	$_CONFIG["game"] = true;
+	$_CONFIG["game"] = false;
 	$_CONFIG["base"] = true;
-	$_CONFIG["bugtracker"] = true;
+	$_CONFIG["bugtracker"] = false;
+	
+	$_CONFIG["uploadpath"] = 'upload/';
 ?>

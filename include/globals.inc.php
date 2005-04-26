@@ -1,8 +1,19 @@
 <?
-	function redirect($target){
-		$result = array('content'=>'URL', 'target' => $target);
-		return $result;
-	}		
+  function randomstring($name_laenge) {
+    $zeichen = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLNMOPQRSTUVWXYZ0123456789";
+    $name_neu = "";
+
+    mt_srand ((double) microtime() * 1000000);
+    for ($i = 0; $i < $name_laenge; $i++) {
+        $name_neu .= $zeichen{mt_rand (0,strlen($zeichen))};
+    }
+    return $name_neu;
+  }
+
+  function redirect($target){
+	$result = array('content'=>'URL', 'target' => $target);
+	return $result;
+  }		
 
   function error($error, $class, $method) {
     $error = new Error($error,$class,$method);

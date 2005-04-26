@@ -8,4 +8,3 @@ class Spieler extends AbstractClass {
 
 }
 ?>
-

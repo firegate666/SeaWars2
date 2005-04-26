@@ -14,7 +14,7 @@ class Template {
 	
 	function parseTags($template){
 		$result = array();
-		$suchmuster = '/\$\{(.*):(.*)\}/i';
+		$suchmuster = '/\$\{(\w*):(\w*)\}/i';
 		$temp = array();
 		preg_match_all($suchmuster, $template, $temp, PREG_SET_ORDER);
 		foreach($temp as $item) {
@@ -39,11 +39,6 @@ class Template {
 	}
 	
 	function getClasses() {
-//		$DB = new MySQL();
-//		//$result = $DB->select("SELECT DISTINCT class FROM template;");
-//		$result = $DB->select("SHOW tables;");
-//		$result[][0] = "login";
-//		return $result;
 		global $template_classes;
 		if(!isset($template_classes) || empty($template_classes))
 			$template_classes = array();

@@ -1,12 +1,11 @@
-<?
-class Link {
-             var $value;
-             function show(&$vars) {
-                return 'index.php?class='.$this->value;
-             }
+<?class Link {
+	var $value;	var $link = 'index.php?class=';	
+	function show(& $vars) {
+		return $this->link.$this->value;
+	}
 
-             function Link($value) {
-                                    	$this->value = $value;
-             }
+	function Link($value) {
+		$this->value = $value;
+	}
 }
 ?>

@@ -1,3 +1,36 @@
+<?
+	function login($user, $pass) {
+		if(($user=='admin') && ($pass=='admin')) {
+			setcookie('adminlogin', 'true', NULL);
+			return true;
+		} else return false;
+	}
+
+	if(isset($logout)) {
+		setcookie('adminlogin','',0);
+		header("Location: index.php?admin");
+	}
+
+	if(isset($login_name) && isset($login_pass)) {
+		if(!login($login_name, $login_pass)) $error = "Wrong username or password";
+		else header("Location: index.php?admin");
+	}
+
+	if(!isset($_COOKIE['adminlogin'])) { ?>
+		<h3>Adminlogin</h3>
+		<font color="#FF0000"><?=$error?></font>
+		<form>
+		  <table>
+		    <tr><td>Benutzername</td><td><input type="text" name="login_name"></td></tr>
+		    <tr><td>Passort</td><td><input type="text" name="login_pass"></td></tr>
+		  </table>
+		  <input type="submit" value="login">
+		  <input type="hidden" name="admin">
+		</form>
+
+	<?  die();
+	}
+?>
 <html>
 <body>
 <table width=100%>
@@ -9,15 +42,18 @@
     <td align=center valign=top>
       <a href="index.php?admin">Startseite</a><br>
       <a href="index.php?admin&template">Templates</a><br>
-      <a href="index.php?admin&image">Images</a>
+      <a href="index.php?admin&image">Images</a><br>
+      <br><a href="index.php?admin&logout">Logout</a>
     </td>
     <td align=left valign=top>
     <?
-      if(isset($template)) {
-        include('admin/admin_template.inc.php');
-      } else if(isset($image)) {
-        include('admin/admin_image.inc.php');
-      } else { ?>
+if (isset ($template)) {
+	include ('admin/admin_template.inc.php');
+} else
+	if (isset ($image)) {
+		include ('admin/admin_image.inc.php');
+	} else {
+?>
         <h3>CMS Administration</h3>
         <p>Bitte im Menü links eine Aktion wählen.
           <ul>
@@ -25,10 +61,13 @@
             <li>Images: Upload und löschen von Bildern
           </ul>
         </p>
-      <? }
-    ?>
+      <? 
+
+	}
+?>
     </td>
   </tr>
 </table>
 </body>
 </html>
+

@@ -38,11 +38,11 @@ $link = "index.php?admin&template&tpl_class=";
 $array = Template :: getClasses();
 $options = '<option></option>';
 foreach ($array as $items) {
-	$options .= '<option>'.$items.'</option>';
+	if($items == $tpl_class) $options .= '<option selected>'.$items.'</option>';	else $options .= '<option>'.$items.'</option>';
 }
 ?>
   <tr>
-    <td>
+    <td align="left" valign="top">
       <form name="selectclass">
         <input type="hidden" name="admin">
 	<input type="hidden" name="template">
@@ -55,12 +55,11 @@ if (isset ($tpl_class)) {
 	echo ("<td align=left valign=top><table>");
 	$link = "index.php?admin&template&tpl_class=$tpl_class&tpl_layout=";
 	$array = Template :: getLayouts($tpl_class);
-	foreach ($array as $items) {
-?><td>- <?=$items[0]?>
+	$marker_start ='';	$marker_end ='';	foreach ($array as $items) {		if($items[0] == $tpl_layout) {			$marker_start ='<b>';			$marker_end ='</b>';		} else {			$marker_start ='';			$marker_end ='';		}?><td align="left" valign="top"><?=$marker_start?>- <?=$items[0]?>
 	<a href="<?=$link?><?=$items[0]?>">(edit)</a>
 	<a href="<?=$link?><?=$items[0]?>&tpl_delete">(delete)</a>
 	<a href="index.php?class=<?=$tpl_class?>&method=show&id=<?=$items[0]?>" target="_blank">(show)</a>
-	</td></tr><?
+	<?=$marker_end?></td></tr><?
 
 	}
 	echo ("</table></td>");
@@ -73,10 +72,7 @@ if (isset ($tpl_layout)) {
   <script>
     function insertTag(tagname) {
        name = prompt('Referenzname','hier Name eingeben');
-       if(tagname == 'image') document.edittpl.tpl_content.value += '<img src="${'+tagname+':'+name+'}">';
-       if(tagname == 'plink') document.edittpl.tpl_content.value += '<a href="${'+tagname+':'+name+'}">linktext</a>';
-       if(tagname == 'page') document.edittpl.tpl_content.value += '${'+tagname+':'+name+'}';
-    }
+       if(tagname == 'image') myValue = '<img src="${'+tagname+':'+name+'}">';       if(tagname == 'plink') myValue = '<a href="${'+tagname+':'+name+'}">linktext</a>';       if(tagname == 'page') myValue = '${'+tagname+':'+name+'}';		if (document.selection) {			document.edittpl.tpl_content.focus();			sel = document.selection.createRange();			sel.text = myValue;		} //MOZILLA/NETSCAPE support		else if (document.edittpl.tpl_content.selectionStart || document.edittpl.tpl_content.selectionStart == '0') {			var startPos = document.edittpl.tpl_content.selectionStart;			var endPos = document.edittpl.tpl_content.selectionEnd;			document.edittpl.tpl_content.value = document.edittpl.tpl_content.value.substring(0, startPos)			+ myValue			+ document.edittpl.tpl_content.value.substring(endPos, document.edittpl.tpl_content.value.length);		} else {			document.edittpl.tpl_content.value += myValue;		}    }
   </script>
   <form action="index.php" method="post" name="edittpl">
     <input type="submit" value="Änderungen speichern">

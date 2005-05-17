@@ -1,5 +1,18 @@
 <?
 class HTML {
+	function tag($name, $content='', $attr = array(), $closing=true) {
+		$adds = '';
+		if(is_array($attr)) {
+			foreach($attr as $item)
+				$attr .= $item['name'].'="'.$item['value'].'" ';
+		} else {
+			$adds = $attr;
+		}
+		
+		$tag = "<$name $adds>$content";
+		if($closing) $tag .= "</$name>";
+		return $tag;
+	}	
 	function tr($content) {
 		return "<tr>$content</tr>\n";
 	}
@@ -23,6 +36,6 @@ class HTML {
 			return '<table>'.$rows.'</table>';
 			
 		}
-	}
+	}	
 }
 ?>

@@ -1,6 +1,6 @@
 <?
 	function login($user, $pass) {
-		if(($user=='admin') && ($pass=='admin')) {
+		if(($user=='sw') && ($pass=='sw666#GHf')) {
 			setcookie('adminlogin', 'true', NULL);
 			return true;
 		} else return false;

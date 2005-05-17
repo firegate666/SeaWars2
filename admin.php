@@ -22,7 +22,7 @@
 		<form>
 		  <table>
 		    <tr><td>Benutzername</td><td><input type="text" name="login_name"></td></tr>
-		    <tr><td>Passort</td><td><input type="text" name="login_pass"></td></tr>
+		    <tr><td>Passwort</td><td><input type="password" name="login_pass"></td></tr>
 		  </table>
 		  <input type="submit" value="login">
 		  <input type="hidden" name="admin">

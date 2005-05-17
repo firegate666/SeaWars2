@@ -1,4 +1,4 @@
-<?
+<?if(!isset($_COOKIE['adminlogin'])) die("DENIED");
 if (isset ($tpl_content)) {
 	$DB = new MySQL();
 	$tpl_query = "UPDATE template SET content='$tpl_content' WHERE class='$tpl_class' AND layout = '$tpl_layout';";

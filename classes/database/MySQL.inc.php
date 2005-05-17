@@ -47,12 +47,13 @@
       Executes SQL select statement
       return : result set as numeric array
     */
-    function select($query) {
+    function select($query, $assoc = false) {
       $dblink = $this->connect();
       $result = MYSQL_QUERY($query) or die("MySQL select error: ".mysql_error()." / Query "+$query);
       $return = array();
       $counter = 0;
-      while($line=MYSQL_FETCH_ARRAY($result, MYSQL_NUM)) $return[$counter++]=$line;
+      if(!$assoc) while($line=MYSQL_FETCH_ARRAY($result, MYSQL_NUM)) $return[$counter++]=$line;
+      else while($line=MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC)) $return[$counter++]=$line;
       $this->disconnect($dblink);
       return $return;
     }

@@ -1,0 +1,163 @@
+Wie fangen wir an? Eine Insel, Holz? Dann ist das Set von Anfängergebäuden schon fast fertig:
+
+Förster (Erzeugt 1 Baum pro Stunde), und benötigt Holz für die Hütte .
+Holzfäller (Ohne Brandrodungsoption, 3 Baum -> 3 Holz pro Stunde) und benötigt Holz für die Hütte . 
+Fischer (braucht Strand oder Steg, und Holz für die Hütte), 
+Zimmermann (Baut die kleinen Boote und Ballistas und was uns sonst noch so einfällt).
+Jäger (Jagt Wildschweine im Wald, benötigt daher eine ausreichende Menge Wald)
+
+Forschung Teil 1 („Anfänger“): 
+================
+Gebäude
+Sägewerk (Baum -> 2 Holz), und benötigt Holz für die Hütte.
+Steg (Erhöht die Fischereieinkünfte, ermöglicht RuderRumpf 2 „Reme“), und benötigt Holz für die Hütte.
+Lehmhütte (1 Lehm -> 1 Ziegel), und benötigt Holz für die Hütte.
+Köhlerei (Baum -> Kohle, ermöglicht Brandpfeile), braucht Ziegel und Holz für die Hütte.
+Töpferei (Erhöht Nahrungsvorräte durch verbesserte Lagerung), braucht Ziegel und Holz für die Hütte.
+Schutzpalisade, braucht Holz für den Aufbau.
+Aussichtsturm I, braucht Holz für den Aufbau.
+
+Techniken
+Brandrodung (Für Holzfäller)
+Netzfang (verbessert Fischer)
+
+Waffen
+Ballista, , benötigt Holz zum Bauen
+Brandpfeile für Ballista (Erhöht Schaden gegen Boote)
+Verbesserte Spanngurte für Ballista (Mehr Reichweite)
+
+
+Rümpfe
+Anmerkung: RuderRumpf 1 soll so billig sein, dass man Massen davon produzieren kann, ohne dass es wirklich teuer wird. Weil man den geschützten Anlegeplatz noch nicht kennt, ist diese „Billigkeit“ nötig für den Schutz vor einem Sturm. Computerpiraten zeigen kein Interesse an RuderRumpf 1 Schiffen. Man könnte den Ruderrumpf 1 auch "Piroge" oder "Einbaum" nennen 
+
+RuderRumpf 2 (Ermöglicht mehr als einen Ruderer)
+RuderRumpf 2 verbreitern (Ermöglicht zwei Ruderer nebeneinander oder mehr Last)
+RuderRumpf 2 verlängern (Siehe „verbreitern“, aber ohne Geschwindigkeitsnachteil)
+
+
+Forschung Teil 2 (Fortgeschritten, benötigt eine Insel mit Stein, diese sollten in rauen Mengen vorkommen)
+================
+
+Gebäude
+Geschützter Anlegeplatz (Steg II) (Auch bei Sturm bleiben die Boote heil), braucht Stein.
+Steinmetz, erzeugt 3 Stein pro Stunde (braucht Holz & Ziegel) 
+Großes Sägewerk 2 Baum -> 5 Holz (braucht Holz && (Ziegel || Stein))
+Große Ziegelbrennerei  2 Lehm -> 2 Ziegel (braucht Holz && (Ziegel || Stein)))
+Schiffszimmerer (Ermöglicht den Bau und Erforschung von RuderRumpf 3 & 4), kostet Holz & Ziegel
+Baumwollzucht (Ermöglicht Forschung „Segel“), braucht Holz für die Hütte
+Garnison (braucht Stein, bietet Platz für Bewaffnung und Soldaten)
+Aussichtsturm II (braucht Stein für den Aufbau)
+
+Techniken:
+Währung erforschen (Bevölkerung erzeugt ab sofort Gold, Gebäude verbrauchen es. Voraussetzung für Soldatenausbildung, große Ballista, RuderRumpf4, Schiffszimmerer, Garnison)
+Erz schmelzen (Für alle Arten von Metall die Voraussetzung)
+Soldatenausbildung (Damit wird Entern einfacher – und geentert werden schwerer)
+Landratten und Luvschieter zu Ruderern: Notwendige Übung für Triremen und Penteren, ohne geübte Besatzung fahren diese Schiffe nicht.
+Lateinersegel: Diese Segel ermöglichen im Gegensatz zu Rahsegeln erstmals das effektive Segeln gegen den Wind und sind darum die Voraussetzung für die Karavelle.
+Inselverwaltung
+Bauwarteschlange
+
+Waffen
+Rammdorn für Ruderrumpf 3 „Bireme“ (Zum Schiffe versenken und Entern) (+Schaden)
+Seile mit Enterhaken (+% beim Entern)
+Große Ballista, fester Riemen, Brandgeschoss
+
+Rümpfe und Schiffstechniken
+RuderRumpf 3 (Bireme): Zwei Ruderreihen, siehe Bireme im anderen Techtree
+
+Anmerkung: Breitere Rümpfe bieten nicht mehr Platz für Bewaffnung und Ruderer, aber sehr wohl für Proviant/Munition/Handelswaren/Soldaten, kosten aber Geschwindigkeit)
+
+
+Segelrumpf 1: Karavelle
+Die Karavelle ist der erste Rumpf, der rein von Segeln betrieben, wirtschaftlichen Hochseetransport möglich macht.
+Normal sind 2 Segel. Maximal eine einzige Rudererreihe kann hinzugefügt werden. 
+
+
+Forschung Teil 3 (braucht Insel mit Eisen, am besten auch mit Kohle)
+================
+
+Gebäude
+Kohlegrube (erzeugt Kohle effektiver als die Köhlerei) (Nur auf Inseln mit Flöz Klasse I)
+Eisengrube (erzeugt Eisenerz) (Nur auf Inseln mit Flöz Klasse I)
+Eisenschmelze (erzeugt Roheisen aus Kohle und Eisenerz)
+Schwefelgrube
+Bauernhof (Erzeugt deutlich mehr Nahrung als ein Jäger, braucht aber auch mehr Platz)
+Tiefer Hafen (Nur auf Inseln mit entsprechenden natürlichen Voraussetzungen)
+Kanonengießerei (Erzeugt Kanonen aus Roheisen und Kohle, braucht Schwefel)
+Waffenhersteller (Ermöglicht die Ausrüstung von Soldaten mit Musketen und besseren Entermessern)
+Hochseehafen (Kann Schiffe bis zur größten Hansekogge und kleinere Kraweelen bequem versorgen)
+Fischereihafen (Erzeugt Nahrung, kann überall gebaut werden)
+Handelskontor
+Schiffszimmerer II (Ermöglicht den Bau von Holzschiffteilen)
+Werft I (Holzschiffsteile zum Schiffen)
+Kapelle (erhöht die Moral)
+Bastille (Senkt die Moral, erhöht die Produktivität)
+Arzt (Senkt das Seuchenrisiko)
+Atoll/Archipelverwaltung (Zentralisiert die Warenströme auf einem Archipel, falls genug Frachtschiffe vorhanden sind)
+
+Techniken:
+Luvschieter zu Leichtmatrosen (+Gefechtsgeschwindigkeit für Segler)
+Leichtmatrosen zu Matrosen (+Gefechtsgeschwindigkeit, +Wendigkeit)
+Soldatenausbildung: Marineinfanteristen (+Kampfwert an Land)
+Soldatenausbildung: Entersoldaten (+ Kampwert auf See)
+Sextant: Schiffe werden schneller
+Dritter Mast (erst nach der Erforschung der Hansekogge).
+Kraweelbauweise (Ermöglicht die Kraweel... überraschung!)
+
+Waffen
+Gusseiserne Kanone
+Aufwertung: 9Pfünder, 12Pfünder (Jede Kanone wiegt etwa das 100fache ihrer Kennzahl in Kilogramm... nur wegen dem Frachtraum)
+Jede Gewichtsklasse kann noch mal weiter erforscht werden: 
+Langer Lauf (Mehr Reichweite, mehr Gewich, kann nur die normalen Geschosse verwendent)
+Kurzer Lauf (Weniger Reichweite, deutlich weniger Gewicht, kann auch Kartätschen [Schrotmunition zum Entern] verschießen)
+Neue Muni (Glühkugel, Kartätsche)
+
+Bessere Entermesser
+Musketen
+
+
+Schiffe
+Hansekogge (Händlerschiffe in Klinkerbauweise, mit bis zu 8 Kanonen auf jeder Seite, bis zu drei Masten, falls erforscht)
+Hansekogge: Breiter, länger (Breiter: langsamer und mehr Stauraum, länger: Schneller & mehr Kanonen)
+Achterkastell
+Vorderkastell (Beide Kastelle erhöhen den Schwerpunkt, weswegen man erst einmal forschen muss, bevor man sie aufbauen kann. Sie bieten: Zusätzlichen Stauraum oder Vorteile beim Entern und Geentert werden [höhere Kampfposition] )
+Die Hansekogge fängt mit 40 Tonnen Tragfähigkeit an, und kann bis zu 200 Tonnen ausgebaut werden.
+
+Kraweel (Hansekogge mit glattem Rumpf, und größer) Die Voraussetzungen sind: Erforschtes Vorder- und Achterkastell, dritter Mast
+Die Kraweel kann Breiter und länger gemacht werden, bis sie maximal 400 Tonnen tragen kann.
+
+
+Forschung Teil 4 (Braucht Inseln mit Eisenflöz II und Kohleflöz II, es geht zwar auch ohne, ist aber teurer)
+================
+
+Gebäude
+Kohlegrube II (Nur auf Kohleflöz II)
+Eisengrube II (Nur auf Eisenflöz II)
+Große Eisenschmelze
+Stahlschmied (Noch bessere Entermesser)
+Waffenhersteller II (Musketen und Blunderbüchsen, benötigt Stein und Holz)
+Kirche (Mehr Moral, benötigt Stein)
+Kathedrale (Mehr Moral, benötigt neben Stein auch Marmor)
+Tiefer Hafen, benötigt entsprechende Inselvoraussetzungen. Bis zur größten Karacke kann hier alles anlegen.
+Bank (Mehr Geldeinnahmen)
+
+
+Techniken
+Erst mal für die Karacke: 
+Marssegel (Zweites Segel von unten für alle Rahsegler)
+Bugspriet (mit Sprietsegel)
+Achterkastell, zweites Deck
+Zweites Kanonendeck
+Dreifelderwirtschaft (Verbessert Bauernhöfe)
+
+
+Waffen
+Noch bessere Entermesser 
+Blunderbüchsen (Heute würde man dazu „abgesägte Schrotflinte“ sagen)
+18-Pfünder, für die neue Kanone kann man die bekannten Erweiterungen erforschen
+Handbomben (Moderner Name: Handgranaten. Verbesserte Enterkampfwerte)
+
+Schiffe
+Karacke: Zweideckschiff mit drei Masten (Fock, Groß & Besanmast), Bugspriet, Vorderkastell eindeckig, Achterkastell zweideckig, am Großmast zwei Rahen mit Großsegel und Marssegel, alle diese Techniken müssen erst erforscht werden) Maximal 500 Tonnen Tragfähigkeit in der letzten Ausbaustufe. Der Besanmast hat ein Lateinersegel, die anderen Masten haben Rahsegel. Die Karacke ist im Prinzip die große Schwester der Kraweel. Ein ziemlich schwerfälliges Schiff, das ziemlich stark im Kampf ist.
+
+Fortsetzung folgt

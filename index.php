@@ -6,7 +6,7 @@
  	/* try to make sense of the query string */
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
-	$id	= $_REQUEST["id"];
+	$id	    = $_REQUEST["id"];
 	$vars	= $_REQUEST;
 	
 	if(isset($admin)) {

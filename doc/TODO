@@ -1,0 +1,5 @@
+* admin, classes, config, include, install
+* per .htaccess schützen, kein direkter Zugriff
+
+* evtl upload für den direkten Zugriff sperren
+* und über Klasse kapseln

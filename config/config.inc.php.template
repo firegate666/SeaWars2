@@ -1,7 +1,13 @@
 <?
-  // copy to config.inc.php and replace with valid values
-  $dbserver   = "<servername>"; // Datenbankserver
-  $dbuser     = "<username>";   // Datenbankbenutzer
-  $dbpassword = "<password>";   // Benutzerpasswort
-  $dbdatabase = "<database>";   // Datenbank
+	// copy to config.inc.php and replace with valid values
+	$dbserver   = "<servername>";	// Datenbankserver
+	$dbuser     = "<username>";	// Datenbankbenutzer
+	$dbpassword = "<password>";	// Benutzerpasswort
+	$dbdatabase = "<database>";	// Datenbank
+
+	$_CONFIG["cms"] = false;	// enable CMS
+	$_CONFIG["game"] = false;	// enable Game
+	$_CONFIG["bugtracker"] = false;	// enable bugtracker
+	
+	$_CONFIG["uploadpath"] = 'upload/';
 ?>

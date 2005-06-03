@@ -5,6 +5,13 @@ class AbstractNoNavigationClass {
     var $id;
 	var $language;
 
+	function getlist($classname='') {
+		global $mysql;
+		if(empty($classname)) $classname = get_class($this);
+		$result = $mysql->select("SELECT id FROM ".$classname, true);
+		return $result;
+	}
+	
 	function getMainLayout() {
 		return 'main';
 	}
@@ -40,6 +47,15 @@ class AbstractNoNavigationClass {
 
 	function show() {
 	}
+    
+    function delete() {
+    	global $mysql;
+    	if(empty($this->id)) return;
+    	$tablename = get_class($this);
+    	$id = $this->id;
+    	$query = "DELETE FROM $tablename WHERE id=$id";
+    	$mysql->update($query);
+    }
     
     function store() {
       // Seperate keys from values

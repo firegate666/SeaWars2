@@ -7,7 +7,15 @@
 
 	$_CONFIG["cms"] = false;	// enable CMS
 	$_CONFIG["game"] = false;	// enable Game
-	$_CONFIG["bugtracker"] = false;	// enable bugtracker
 	
 	$_CONFIG["uploadpath"] = 'upload/';
+	
+	/*
+		4: log all
+		3: all but page
+		2: only logins
+		1: only admin
+		0: logger of
+	*/
+	$_CONFIG["loglevel"] = 2;
 ?>

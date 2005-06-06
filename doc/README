@@ -1,0 +1,24 @@
+##################
+# Anlaufstellen: #
+##################
+
+Testversion: http://www.sea-wars.de/game2
+
+Forum: http://seawars.firegate.de
+
+Bugtracker: http://bugs.sea-wars.de
+
+Onlinedoku: http://wiki.sea-wars.de
+
+#############
+# Admindoku #
+#############
+
+Aufruf der Adminoberfl?che ?ber admin.php oder index.php?admin
+
+
+############
+# CMS Doku #
+############
+
+Das CMS wird ?ber die Adminoberfl?che gesteuert. Genaue Doku folgt.

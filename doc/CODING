@@ -30,6 +30,21 @@ Zu finden in: $this->data["feldname"]
 - jede Klasse mit Datenbankrepr?sentation sollte eine Auto-ID bekommen
 (Ausnahmen best?tigen bisher die Regel, werden jedoch nachgebessert :-)
 
+#################
+# Dokumentation #
+#################
+
+Jede Methode wird in der Form
+
+/**
+*	Methodenbeschreibung
+*	@parametername	parameterkommentar
+*	@parametername	parameterkommentar
+*	@return			r?ckgabewert
+*/
+
+kommentiert.
+
 #######
 # ACL #
 #######

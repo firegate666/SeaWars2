@@ -45,8 +45,7 @@ class Insel extends AbstractTimestampClass {
 	function acl($method) {
 		if ($method == 'show')
 			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session :: getCookie('spieler_id'));
-		else
-			return false;
+		return parent::acl($method);
 	}
 
 	function show(& $vars) {

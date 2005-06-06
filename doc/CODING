@@ -1,0 +1,57 @@
+Es gibt eine abstrakte Klasse, von der alle anderen Klassen erben sollten.
+
+#################
+# AbstractClass # 
+#################
+
+AbstractClass stell mit load() und store() die Abbildung der Objekte in der
+Datenbank sicher. Zus?tzlich sind in AbstractClass weitere Basisfunktionalit?ten
+gekapselt.
+
+Bibliotheksklassen erben nicht von AbstractClass.
+
+###########################
+# Datenbankrepr?sentation #
+###########################
+
+Zu jeder Klasse gibt es eine passende Tabelle in der Datenbank.
+Die load() und store() Methoden verwalten den Zugriff darauf.
+Die Felder einer Tabelle werden als Instanzvariablen gespeichert.
+Zu finden in: $this->data["feldname"]
+
+################
+# Konventionen #
+################
+
+- Klassennamen werden gro? geschrieben, Tabellennamen klein
+- Instanzmethoden werden klein geschrieben
+- Instanzvariablen werden klein geschrieben
+- Methoden, die ausschlie?lich statisch genutzt werden, werden gro? geschrieben
+- jede Klasse mit Datenbankrepr?sentation sollte eine Auto-ID bekommen
+(Ausnahmen best?tigen bisher die Regel, werden jedoch nachgebessert :-)
+
+#######
+# ACL #
+#######
+
+Der Zugriff auf Klassen und Methoden erfolgt ausschlie?lich von ?ber die index.php
+Seite, niemals wird sie von au?en direkt aufgerufen werden.
+
+Verwendung: index.php?class=klassenname&method=methodenname&id=objektidx&....
+
+Alle Parameter sind optional. Die Defaultwerte sind index.php zu entnehmen.
+Neue Objekte haben selbstverst?ndlich keine idx.
+
+Jede Klasse verf?gt ?ber eine eigene oder vererbte Methode acl(). Dort wird gesteuert,
+wer welche Methoden von au?en aufrufen darf. Die Handhabe ist restriktiv. D.h. alles
+ist verboten, bis es erlaubt ist. index.php ruft bei der Instanzierung acl($methode) auf
+und ?berpr?ft die Rechte. Bsp:
+
+	function acl($method) {
+		if ($method == 'show')
+			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session :: getCookie('spieler_id'));
+		return parent::acl($method);
+	}
+
+Nur eingeloggte Benutzer haben Zugriff auf die Methode show() und auch nur, wenn der
+eingeloggte Spieler die selbe ID hat, wie die, die in der Instanzvariable gespeichert ist.

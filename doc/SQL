@@ -1,0 +1,4 @@
+Die SQL Statements werden unter install/ aufbewahrt und durchnummeriert.
+Die erste Datei enthält die Grundstruktur, alle folgenden
+Dateien bauen darauf auf. Änderungen müssen also mit ALTER 
+Statements festgehalten werden.

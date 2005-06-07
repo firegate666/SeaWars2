@@ -1,4 +1,7 @@
 <?
+/**
+ * Templatehandling
+ */
 class Template {
 	var $layout;
 	var $tags=array();
@@ -7,11 +10,17 @@ class Template {
 		return false;
 	}
 	
+	/**
+	 * Remove all not substituted tags from $template
+	 */
 	function removeLostTags(&$template) {
 		$suchmuster = '/\$\{.*\}/i';
 		$template = preg_replace($suchmuster,'',$template);
 	}
 	
+	/**
+	 * parse $template for known tags and return them
+	 */
 	function parseTags($template){
 		$result = array();
 		$suchmuster = '/\$\{(\w*):(\w*)\}/i';
@@ -23,12 +32,22 @@ class Template {
 		$this->tags = $result;
 	}
 	
+	/**
+	 * Delete template
+	 * @class	category
+	 * @layout	name
+	 */
 	function deleteTemplate($class, $layout) {
 		global $mysql;
 		$query = "DELETE FROM template WHERE class='$class' AND layout='$layout';";
 		$mysql->update($query);
 	}
 
+	/**
+	 * Create template
+	 * @class	category
+	 * @layout	name
+	 */
 	function createTemplate($class, $layout) {
 		global $mysql;
 		$query = "INSERT INTO template(class, layout) VALUES('$class', '$layout');";
@@ -38,19 +57,34 @@ class Template {
 	function Template(){
 	}
 	
-	function getClasses() {
+	/**
+	 * get all template classes
+	 */
+	 function getClasses() {
 		global $template_classes;
 		if(!isset($template_classes) || empty($template_classes))
 			$template_classes = array();
 		sort($template_classes);
 		return $template_classes;
 	}
+	
+	/**
+	 * get all layouts for $class
+	 */
 	function getLayouts($class) {
 		$DB = new MySQL();
 		$result = $DB->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
 	}
 	
+	/**
+	 * Returns parsed template
+	 * @class	category
+	 * @layout	template name
+	 * @array	array of elements to replace tags in template
+	 * @noparse	if true, no replacement is made
+	 * 
+	 */
 	function getLayout($class, $layout,$array,$noparse=false){
 		$DB = new MySQL();
 		$result = $DB->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");

@@ -1,7 +1,12 @@
 <?
 	$template_classes[] = 'navigation';
 
+/**
+ * Navigation bar... someday there this class won't be anymore
+ * as it is useless
+ */
 class Navigation extends AbstractClass {
+	
 	function show() {
 		//$links[] = array("lbl" => "Startseite", "lnk" => "");
 		$links[] = array("lbl" => "Inselliste", "lnk" => "index.php?class=inselliste&method=show&mode=own");

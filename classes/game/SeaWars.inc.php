@@ -1,6 +1,10 @@
 <?
 	$template_classes[] = 'seawars';
 
+/**
+ * Main Class of the game, only layout purpose
+ * has to removed as soon as navigation
+ */
 class SeaWars extends AbstractClass {
 	var $navigation = '';
 	var $mainbody   = '';

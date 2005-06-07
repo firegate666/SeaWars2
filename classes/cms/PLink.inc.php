@@ -1,1 +1,1 @@
-<?class PLink extends Link{	var $link = 'index.php?class=page&id=';}?>
+<?/** * Internal Pagelink */class PLink extends Link{	var $link = 'index.php?class=page&id=';}?>

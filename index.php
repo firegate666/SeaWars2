@@ -9,27 +9,33 @@
 	$id	    = $_REQUEST["id"];
 	$vars	= $_REQUEST;
 	
+	/**
+	 * Admincall?
+	 */
 	if(isset($admin)) {
 		include('admin.php');
 		die();
 	}
 	
+	/**
+	 * Default handling
+	 */
 	if(empty($class))  $class="Page";
 	if(empty($method)) $method="show";
 	
-	if(class_exists($class)){
+	if(class_exists($class)){ // is there a class with that name?
     	$newclass = new $class($id);
-    	if(method_exists($newclass, $method)) {
-      		if(!$newclass->acl($method)) error("DENIED", $class, $method);
+    	if(method_exists($newclass, $method)) { // is there a method with that name for that class
+      		if(!$newclass->acl($method)) error("DENIED", $class, $method); // are you allowed to call?
       		$result = $newclass->$method($vars);
-      		if(strtolower($class)=="page") {
+      		if(strtolower($class)=="page") { // are you a page
       			print $result;
-      		} else if(is_string($result)) {
+      		} else if(is_string($result)) { // results a string?
 	      		$game = new SeaWars($newclass->getMainLayout());
       			$game->setNavigation($newclass->getNavigation());
       			$game->setMainBody($result);
       			print $game->show();
-      		} else if(is_array($result)) {
+      		} else if(is_array($result)) { // results an array?
       			switch($result['content']) {
       				case strtoupper("URL") : header("Location: ".$result['target']); break;
       			}

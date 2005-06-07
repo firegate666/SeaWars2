@@ -1,7 +1,10 @@
 <?
+  /**
+   * every entity that stores anything has a lager
+   * islands, ships
+   */
   class Lager extends AbstractClass {
       var $lagerenthaelt;
-
 
       function Lager($id='') {
       	if(empty($id)) return;
@@ -9,6 +12,9 @@
           $this->loadres();
       }
 
+      /**
+       * load ressources into lager
+       */
       function loadres(){
                global $mysql;
                $array = $mysql->select("SELECT r.sem_id, l.anzahl

@@ -1,10 +1,17 @@
 <?
+/**
+ * The main features everyone should know
+ */
 class AbstractNoNavigationClass {
 	
     var $data;
     var $id;
 	var $language;
 
+	/**
+	 * returns all rows for class $classname
+	 * @classname	if not set, $classname = name of actual class
+	 */
 	function getlist($classname='') {
 		global $mysql;
 		if(empty($classname)) $classname = get_class($this);
@@ -16,10 +23,16 @@ class AbstractNoNavigationClass {
 		return 'main';
 	}
 
+	/**
+	 * Setter
+	 */
 	function set($key, $value) {
 		$this->data[$key] = $value;
 	}
 	
+	/**
+	 * not sure if anyone uses this anymore
+	 */
 	function get_template($layout){
 		return $this->getLayout(get_class($this), $name);
 	}
@@ -27,14 +40,25 @@ class AbstractNoNavigationClass {
 	function load_language($language,$class){
 	}
 	
+	/**
+	 * is session registered?
+	 */
 	function isRegisteredSession() {
 		return session_is_registered(session);
 	}
 	
+	/**
+	 * does this object exists?
+	 */
 	function exists() {
 	   return empty($this->id);
 	}
 
+	/**
+	 * loader routine... not ready yet
+	 * still error if class has no id field, that is why every
+	 * class has to have one
+	 */
 	function load() {
         //if(!$this->exists()) return;
     	$id 		= $this->id;
@@ -48,6 +72,9 @@ class AbstractNoNavigationClass {
 	function show() {
 	}
     
+    /**
+     * delete me
+     */
     function delete() {
     	global $mysql;
     	if(empty($this->id)) return;
@@ -57,6 +84,9 @@ class AbstractNoNavigationClass {
     	$mysql->update($query);
     }
     
+    /**
+     * save me to database
+     */
     function store() {
       // Seperate keys from values
       $keys   = array_keys($this->data);
@@ -83,6 +113,9 @@ class AbstractNoNavigationClass {
       //echo("<p>SQL Statement: $query</p>");
     }
     
+    /**
+     * print myself to console
+     */
     function printout() {
       print_a($this);
     }
@@ -110,6 +143,9 @@ class AbstractNoNavigationClass {
 		return "&nbsp;";
 	}
 
+	/**
+	 * helps building forms
+	 */
 	function getForm($content='', $class='', $method='',$name='MyForm') {
 		if(empty($class)) $class = $_REQUEST['class'];
 		if(empty($method)) $method = $_REQUEST['method'];

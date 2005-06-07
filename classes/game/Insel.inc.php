@@ -1,4 +1,4 @@
-<?	$template_classes[] = 'insel';class Rohstoffproduktion {
+<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion {
 	function Rohstoffproduktion($insel_id) {
 		global $mysql;
 		$array = $mysql->select("SELECT rp.wachstum_prozent, rp.produktion_stunde, r.sem_id, r.name
@@ -10,11 +10,11 @@
 	}
 }
 
-class Insel extends AbstractTimestampClass {
+/** * This class represents an Island */class Insel extends AbstractTimestampClass {
 	var $rohstoffproduktion;
 	var $lager;
-	function getStartIslands() {		global $mysql;		$query = "SELECT id FROM insel WHERE spieler_id = 0;";		$result = $mysql->select($query);		return $result;	}
-	function update() {
+	/**	 * returns all islands with no owner	 * @return	array of islands	 */	function getStartIslands() {		global $mysql;		$query = "SELECT id FROM insel WHERE spieler_id = 0;";		$result = $mysql->select($query);		return $result;	}
+	/**	 * update ressource production on island	 */	function update() {
 		global $mysql;
 		$query = "SELECT l.rohstoff_id, l.anzahl, rp.produktion_stunde, rp.insel_id, NOW() as now, l.lager_id
 	                  FROM rohstoff r, lagerenthaelt l, rohstoffproduktion rp
@@ -35,7 +35,7 @@ class Insel extends AbstractTimestampClass {
 		$this->store();
 	}
 
-	function Insel($id = '') {		if(empty($id)) return;
+	/**	 * constructor, instantiates island wit updated ressources	 */	function Insel($id = '') {		if(empty($id)) return;
 		AbstractTimestampClass :: AbstractTimestampClass($id);
 		$this->update();
 		$this->rohstoffproduktion = new Rohstoffproduktion($this->id);
@@ -44,7 +44,7 @@ class Insel extends AbstractTimestampClass {
 
 	function acl($method) {
 		if ($method == 'show')
-			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session :: getCookie('spieler_id'));
+			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session :: getCookie('spieler_id')); // better would be owner check
 		return parent::acl($method);
 	}
 
@@ -55,8 +55,6 @@ class Insel extends AbstractTimestampClass {
 			$array[$res['id'].'_wachstum'] = intval(($res['ps']));
 		}
 		return $this->getLayout($array, "page");
-	}
-	function setname($newname) {
 	}
 }
 ?>

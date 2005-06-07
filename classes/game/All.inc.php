@@ -17,4 +17,5 @@
 	require_once $d.'SeaWars.inc.php';
 	require_once $d.'Spiel.inc.php';
 	require_once $d.'Spieler.inc.php';
+	require_once $d.'Techtree.inc.php';
 ?>

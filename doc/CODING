@@ -40,7 +40,7 @@ Jede Methode wird in der Form
 *	Methodenbeschreibung
 *	@parametername	parameterkommentar
 *	@parametername	parameterkommentar
-*	@return			r?ckgabewert
+*	@return		rückgabewert
 */
 
 kommentiert.

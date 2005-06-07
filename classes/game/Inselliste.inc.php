@@ -1,7 +1,14 @@
 <?
 	$template_classes[] = 'inselliste';
 
+/**
+ * list of islands, islandlistview
+ */
 class Inselliste extends AbstractClass {
+	
+	/**
+	 * there are no views in database, only single islands
+	 */
 	function load() {
 	}
 	

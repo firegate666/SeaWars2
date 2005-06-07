@@ -1,4 +1,7 @@
 <?
+/**
+ * HTML Wrappers, much improved has to done
+ */
 class HTML {
 	function tag($name, $content='', $attr = array(), $closing=true) {
 		$adds = '';

@@ -1,6 +1,9 @@
 <?
 	$template_classes[] = 'page';
 	
+/**
+ * This is a page
+ */
 class Page extends AbstractNoNavigationClass {
 	
 	var $name = '';
@@ -15,6 +18,9 @@ class Page extends AbstractNoNavigationClass {
 		$this->name = $name;
 	}	
 	
+	/**
+	 * if admin is logged in, show adminbar
+	 */
 	function adminbar($layout){
 		$result = '';
 		$result .= '<a href="';

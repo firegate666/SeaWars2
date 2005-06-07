@@ -1,0 +1,13 @@
+\subsection{Name des Anwendungsfalles}
+\begin{description}
+\item [Beschreibung] Beschreibung des Anwendungsfalles
+\item [Beispiel] Beispiel wenn möglich
+\item [Bemerkungen] Bemerkungen wenn nötig
+\item [Implementationsdetails] Details zur Implementierung
+\item [Aufgaben]
+  \begin{itemize}
+  \item Aufgabe 1
+  \item Aufgabe 2
+  \item etc etc usw
+  \end{itemize}
+\end{description}

@@ -1,0 +1,13 @@
+\subsection{Aktivierungslink benutzen}
+\begin{description}
+\item [Beschreibung] Der Spieler erhält eine Email mit einem Aktivierungslink, welcher ihn zu einer Bestätigungsseite im Internet führt. Dort muss er sich durch Eingabe seines Passwortes authentifizieren. Ist dies erfolgreich ist er für das Spiel freigeschaltet. Er bekommt einen Startplatz zugewiesen und kann sich in das Spiel einloggen.
+\item [Beispiel]
+\item [Bemerkungen]
+\item [Implementationsdetails] Mit dem Aktivierungslink wird die registrierte Spieler-ID an die Website übermittelt. Das vom Spieler eingegebene Passwort wird mit der Datenbank abgeglichen. Ist dies erfolgreich, wid der Status des Spielers auf pending=0 gesetzt und er ist freigeschaltet. Es wird ein Startplatz für ihn generiert.
+\item [Aufgaben]
+  \begin{itemize}
+  \item ID und Passwort abgleichen
+  \item Datenbankabfrage um Status zu setzen
+  \item Startplatz generieren
+  \end{itemize}
+\end{description}

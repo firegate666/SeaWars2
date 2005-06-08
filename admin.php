@@ -44,16 +44,18 @@
       <a href="index.php?admin">Startseite</a><br>
       <a href="index.php?admin&template">Templates</a><br>
       <a href="index.php?admin&image">Images</a><br>
+      <a href="index.php?admin&techtree">Tech-Tree</a><br>
       <br><a href="index.php?admin&logout">Logout</a>
     </td>
     <td align=left valign=top>
     <?
 if (isset ($template)) {
 	include ('admin/admin_template.inc.php');
-} else
-	if (isset ($image)) {
-		include ('admin/admin_image.inc.php');
-	} else {
+} else if (isset ($image)) {
+	include ('admin/admin_image.inc.php');
+} else if (isset ($techtree)) {
+	include ('admin/admin_techtree.inc.php');
+} else {
 ?>
         <h3>CMS Administration</h3>
         <p>Bitte im Menü links eine Aktion wählen.

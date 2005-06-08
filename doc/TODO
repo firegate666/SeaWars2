@@ -1,10 +1,16 @@
-* admin, classes, config, include, install
-* per .htaccess sch?tzen, kein direkter Zugriff
-
-* evtl upload f?r den direkten Zugriff sperren
-* und ?ber Klasse kapseln
+########
+# TODO #
+########
+* evtl upload für den direkten Zugriff sperren
+* und über Klasse kapseln
 
 * alle Klassenobjekte m?ssen eine ID bekommen (z.B. Rohstoffproduktion)
 
 * Benutzergruppen definieren, z.B. Admin
-* Passwort aus admin.php entfernen, Zugriff ?ber Benutzergruppen regeln.
+* Passwort aus admin.php entfernen, Zugriff über Benutzergruppen regeln.
+
+########
+# DONE #
+########
+* admin, classes, config, include, install
+* per .htaccess schützen, kein direkter Zugriff

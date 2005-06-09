@@ -18,4 +18,6 @@
 		0: logger of
 	*/
 	$_CONFIG["loglevel"] = 2;
+	$_CONFIG["cache"]["enabled"] = true;
+	$_CONFIG["cache"]["dir"]     = 'cache/';
 ?>

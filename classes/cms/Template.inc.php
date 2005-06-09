@@ -78,17 +78,34 @@ class Template {
 	}
 	
 	/**
+	 * return template from cache or false
+	 * @class	category
+	 * @layout	template name
+	 * @return	false if not found or
+	 * 			template as string
+	 */
+	function getLayoutCached($class, $layout) {
+		return false;
+	}
+	
+	/**
 	 * Returns parsed template
 	 * @class	category
 	 * @layout	template name
 	 * @array	array of elements to replace tags in template
 	 * @noparse	if true, no replacement is made
-	 * 
+	 * @return	template as string
 	 */
 	function getLayout($class, $layout,$array,$noparse=false){
-		$DB = new MySQL();
-		$result = $DB->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
-		$string = $result[0][0];
+		global $_CONFIG;
+		
+		// hier überprüfen, ob cache vorhanden
+		$string = getLayoutCached($class, $layout);
+		if($string === false) {
+			$DB = new MySQL();
+			$result = $DB->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
+			$string = $result[0][0];
+		}
 		if($noparse) return $string;
 		$keys = array_keys($array);
 		foreach($keys as $key) {

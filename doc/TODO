@@ -9,6 +9,8 @@
 * Benutzergruppen definieren, z.B. Admin
 * Passwort aus admin.php entfernen, Zugriff über Benutzergruppen regeln.
 
+* Spieler Passwort verschlüsseln
+
 ########
 # DONE #
 ########

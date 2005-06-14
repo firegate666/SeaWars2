@@ -7,7 +7,26 @@ class AbstractNoNavigationClass {
     var $data;
     var $id;
 	var $language;
-
+	
+	/**
+	 * All database fields are made public at this place
+	 * Each field is one array row
+	 * Example
+	 * $fields[] = array('name' => id,
+	 * 					'type' => boolean,
+	 * 					'notnull' = false,
+	 * 					'default' = '') 
+	 * type can be: integer, string, boolean, timestamp
+	 * it has to be implmented in each class, else it throws
+	 * an error
+	 */
+	function getFields() {
+		return true;
+		// not yet used
+		// if activated
+		// return false;
+	}
+	
 	/**
 	 * returns all rows for class $classname
 	 * @classname	if not set, $classname = name of actual class
@@ -121,6 +140,7 @@ class AbstractNoNavigationClass {
     }
 	
 	function AbstractNoNavigationClass($id='') {
+		if(!$this->getFields()) error("No fields set",get_class($this),'Constructor');
 		if(empty($id)) return;
 		$this->id=$id;
 		$this->load();

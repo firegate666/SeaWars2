@@ -98,14 +98,13 @@ class Template {
 	 */
 	function getLayout($class, $layout,$array,$noparse=false){
 		global $_CONFIG;
-		
 		// hier überprüfen, ob cache vorhanden
-		$string = getLayoutCached($class, $layout);
-		if($string === false) {
+		//$string = Template::getLayoutCached($class, $layout);
+		//if($string === false) {
 			$DB = new MySQL();
 			$result = $DB->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
 			$string = $result[0][0];
-		}
+		//}
 		if($noparse) return $string;
 		$keys = array_keys($array);
 		foreach($keys as $key) {

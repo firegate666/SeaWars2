@@ -6,10 +6,10 @@ if (isset ($tpl_content)) {
 	unset ($tpl_layout);
 }
 if (isset ($tpl_addlayout)) {
-	Template :: createTemplate($tpl_class, $tpl_layoutname);
+	Template::createTemplate($tpl_class, $tpl_layoutname);
 }
 if (isset ($tpl_delete)) {
-	Template :: deleteTemplate($tpl_class, $tpl_layout);
+	Template::deleteTemplate($tpl_class, $tpl_layout);
 	unset ($tpl_delete);
 	unset ($tpl_layout);
 }
@@ -35,7 +35,7 @@ if (isset ($tpl_delete)) {
 
 $array = array ();
 $link = "index.php?admin&template&tpl_class=";
-$array = Template :: getClasses();
+$array = Template::getClasses();
 $options = '<option></option>';
 foreach ($array as $items) {
 	if($items == $tpl_class) $options .= '<option selected>'.$items.'</option>';	else $options .= '<option>'.$items.'</option>';
@@ -54,7 +54,7 @@ foreach ($array as $items) {
 if (isset ($tpl_class)) {
 	echo ("<td align=left valign=top><table>");
 	$link = "index.php?admin&template&tpl_class=$tpl_class&tpl_layout=";
-	$array = Template :: getLayouts($tpl_class);
+	$array = Template::getLayouts($tpl_class);
 	$marker_start ='';	$marker_end ='';	foreach ($array as $items) {		if($items[0] == $tpl_layout) {			$marker_start ='<b>';			$marker_end ='</b>';		} else {			$marker_start ='';			$marker_end ='';		}?><td align="left" valign="top"><?=$marker_start?>- <?=$items[0]?>
 	<a href="<?=$link?><?=$items[0]?>">(edit)</a>
 	<a href="<?=$link?><?=$items[0]?>&tpl_delete">(delete)</a>

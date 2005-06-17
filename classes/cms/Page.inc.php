@@ -24,7 +24,7 @@ class Page extends AbstractNoNavigationClass {
 	function adminbar($layout){
 		$result = '';
 		$result .= '<a href="';
-		$result .= 'http://localhost/seawars2/index.php?admin&template&tpl_class=page&tpl_layout='.$layout;
+		$result .= 'index.php?admin&template&tpl_class=page&tpl_layout='.$layout;
 		$result .= '" TARGET="_BLANK">Edit Template</a> - <a href="index.php?admin&logout">Adminlogout</a><hr>';
 		return $result;
 	}

@@ -31,10 +31,27 @@ class Page extends AbstractNoNavigationClass {
 	
 	function show(&$vars) {
 		if($this->name=='') return error("Pagename not given",get_class($this),"show");
-		$output = $this->getLayout(array(),$this->name);
+		$output = $this->getLayout(array(),$this->name, $vars);
 		if(isset($_COOKIE['adminlogin']))
 			$output = $this->adminbar($this->name).$output;
 		return $output;
+	}
+}
+
+class Varspage {
+
+	var $attr = '';
+
+	function Varspage($id='') {
+		$this->attr = $id;
+	}
+
+	function show(&$vars){
+		if(isset($vars[$this->attr]) && !empty($vars[$this->attr])) {
+			$p = new Page($vars[$this->attr]);
+			return $p->show($vars);
+		} else
+			return '';
 	}
 }
 ?>

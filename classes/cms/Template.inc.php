@@ -96,7 +96,7 @@ class Template {
 	 * @noparse	if true, no replacement is made
 	 * @return	template as string
 	 */
-	function getLayout($class, $layout,$array,$noparse=false){
+	function getLayout($class, $layout,$array=array(),$noparse=false, &$vars=array()){
 		global $_CONFIG;
 		// hier überprüfen, ob cache vorhanden
 		//$string = Template::getLayoutCached($class, $layout);

@@ -154,9 +154,9 @@ class AbstractNoNavigationClass {
 		return false;
 	}
 	
-	function getLayout($array, $layout) {
+	function getLayout($array, $layout, &$vars) {
 		$t = new Template();
-		return $t->getLayout(get_class($this),$layout,$array);
+		return $t->getLayout(get_class($this),$layout,$array,false,$vars);
 	}
 	
 	function getNavigation() {

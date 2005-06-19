@@ -20,4 +20,6 @@
 	$_CONFIG["loglevel"] = 2;
 	$_CONFIG["cache"]["enabled"] = true;
 	$_CONFIG["cache"]["dir"]     = 'cache/';
+	
+	$_CONFIG["quickedit"] = false;
 ?>

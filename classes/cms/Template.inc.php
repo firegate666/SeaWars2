@@ -96,7 +96,7 @@ class Template {
 	 * @noparse	if true, no replacement is made
 	 * @return	template as string
 	 */
-	function getLayout($class, $layout,$array=array(),$noparse=false, &$vars=array()){
+	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array()){
 		global $_CONFIG;
 		// hier überprüfen, ob cache vorhanden
 		//$string = Template::getLayoutCached($class, $layout);
@@ -114,7 +114,7 @@ class Template {
                 $array = array();
                 foreach($this->tags as $key=>$item) {
                       $p = new $item['type']($item['value']);
-                      $array[$key] = $p->show(&$vars);
+                      $array[$key] = $p->show($vars);
                 }
 		$keys = array_keys($array);
 		foreach($keys as $key) {

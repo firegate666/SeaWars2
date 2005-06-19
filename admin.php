@@ -44,7 +44,9 @@
       <a href="index.php?admin">Startseite</a><br>
       <a href="index.php?admin&template">Templates</a><br>
       <a href="index.php?admin&image">Images</a><br>
-      <a href="index.php?admin&techtree">Tech-Tree</a><br>
+      <? if($_CONFIG["game"]) { ?>
+      	<a href="index.php?admin&techtree">Tech-Tree</a><br>
+      <? } ?>
       <br><a href="index.php?admin&logout">Logout</a>
     </td>
     <td align=left valign=top>

@@ -14,7 +14,8 @@ class Page extends AbstractNoNavigationClass {
 	}
 	
 	function Page($name='') {
-		if(empty($name)) $name='index';
+		if(empty($name)) 
+			error("No page name given", "Page", "Constructor");
 		$this->name = $name;
 	}	
 	

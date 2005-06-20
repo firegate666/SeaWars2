@@ -2,4 +2,9 @@
 # Installationsanleitung #
 ##########################
 
+1. ZIP entpacken und auf den Server laden
+//2. install/install.php ausführen
+2. sql Dumps aus install der Reihe nach in die Datenbank bringen
+3. config/config.inc.php.template nach config/config.inc.php umbennenen und anpassen
+
 Folgt sp?ter...

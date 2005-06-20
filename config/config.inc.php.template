@@ -8,6 +8,8 @@
 	$_CONFIG["cms"] = false;	// enable CMS
 	$_CONFIG["game"] = false;	// enable Game
 	
+	// this is where are uploaded files are stored
+	// chmod 777
 	$_CONFIG["uploadpath"] = 'upload/';
 	
 	/*
@@ -21,5 +23,16 @@
 	$_CONFIG["cache"]["enabled"] = true;
 	$_CONFIG["cache"]["dir"]     = 'cache/';
 	
+	// if true, there are template edit links for each template used
+	// while logged in as admin and browsing the pages
 	$_CONFIG["quickedit"] = false;
+	
+	// if true, there are defaults for class, method and/or id if not set
+	$_CONFiG["usedefaults"] = true;
+
+	// each of these can be set, but mus not.
+	// Only used if $_CONFiG["usedefaults"] = true
+	$_CONFiG["default_class"] = "page";
+	$_CONFiG["default_method"] = "show";
+	$_CONFiG["default_id"] = "index";
 ?>

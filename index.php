@@ -20,8 +20,14 @@
 	/**
 	 * Default handling
 	 */
-	if(empty($class))  $class="Page";
-	if(empty($method)) $method="show";
+	if(isset($_CONFIG['usedefaults']) && $_CONFIG['usedefaults']) {
+		if(empty($class) && isset($_CONFiG["default_class"]))
+			$class  = $_CONFiG["default_class"];
+		if(empty($method) && isset($_CONFiG["default_method"]))
+			$method = $_CONFiG["default_method"];
+		if(empty($id) && $_CONFiG["default_id"])
+			$id     = $_CONFiG["default_id"];
+	}
 	
 	if(class_exists($class)){ // is there a class with that name?
     	$newclass = new $class($id);

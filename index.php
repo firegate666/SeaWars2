@@ -1,9 +1,11 @@
 <?
+	/**
+	* one file to rule them all
+	*/
 	require_once dirname(__FILE__).'/config/All.inc.php';
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
- 	/* try to make sense of the query string */
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
 	$id	    = $_REQUEST["id"];
@@ -29,18 +31,24 @@
 			$id     = $_CONFiG["default_id"];
 	}
 	
+	/**
+	* Class and method invoking
+	*/
 	if(class_exists($class)){ // is there a class with that name?
     	$newclass = new $class($id);
     	if(method_exists($newclass, $method)) { // is there a method with that name for that class
       		if(!$newclass->acl($method)) error("DENIED", $class, $method); // are you allowed to call?
       		$result = $newclass->$method($vars);
-      		if(strtolower($class)=="page") { // are you a page
+      		if(strtolower($class) == "page") { // are you a page
       			print $result;
       		} else if(is_string($result)) { // results a string?
-	      		$game = new SeaWars($newclass->getMainLayout());
-      			$game->setNavigation($newclass->getNavigation());
-      			$game->setMainBody($result);
-      			print $game->show();
+	      		if(isset($_CONFiG["default_id"]) && $_CONFiG["game"]) {
+		      		$game = new SeaWars($newclass->getMainLayout());
+	      			$game->setNavigation($newclass->getNavigation());
+	      			$game->setMainBody($result);
+	      			print $game->show();
+	      		} else
+	      			print $result;
       		} else if(is_array($result)) { // results an array?
       			switch($result['content']) {
       				case strtoupper("URL") : header("Location: ".$result['target']); break;

@@ -11,6 +11,9 @@
 
 * Spieler Passwort verschlüsseln
 
+* Abstract Naming of all game class
+SeaWars -> Game etc...
+
 ########
 # DONE #
 ########

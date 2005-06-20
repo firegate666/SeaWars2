@@ -28,11 +28,11 @@
 	$_CONFIG["quickedit"] = false;
 	
 	// if true, there are defaults for class, method and/or id if not set
-	$_CONFiG["usedefaults"] = true;
+	$_CONFIG["usedefaults"] = true;
 
 	// each of these can be set, but mus not.
 	// Only used if $_CONFiG["usedefaults"] = true
-	$_CONFiG["default_class"] = "page";
-	$_CONFiG["default_method"] = "show";
-	$_CONFiG["default_id"] = "index";
+	$_CONFIG["default_class"] = "page";
+	$_CONFIG["default_method"] = "show";
+	$_CONFIG["default_id"] = "index";
 ?>

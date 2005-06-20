@@ -18,17 +18,16 @@
 		include('admin.php');
 		die();
 	}
-	
 	/**
 	 * Default handling
 	 */
 	if(isset($_CONFIG['usedefaults']) && $_CONFIG['usedefaults']) {
-		if(empty($class) && isset($_CONFiG["default_class"]))
-			$class  = $_CONFiG["default_class"];
-		if(empty($method) && isset($_CONFiG["default_method"]))
-			$method = $_CONFiG["default_method"];
-		if(empty($id) && $_CONFiG["default_id"])
-			$id     = $_CONFiG["default_id"];
+		if(empty($class) && isset($_CONFIG["default_class"]))
+			$class  = $_CONFIG["default_class"];
+		if(empty($method) && isset($_CONFIG["default_method"]))
+			$method = $_CONFIG["default_method"];
+		if(empty($id) && $_CONFIG["default_id"])
+			$id     = $_CONFIG["default_id"];
 	}
 	
 	/**

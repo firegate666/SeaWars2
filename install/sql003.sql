@@ -1,0 +1,1 @@
+ALTER TABLE `archipel` ADD `groessenklasse` TINYINT(4) DEFAULT '1' NOT NULL;

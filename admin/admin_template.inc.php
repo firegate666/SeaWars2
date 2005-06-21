@@ -1,6 +1,7 @@
 <?if(!isset($_COOKIE['adminlogin'])) die("DENIED");
 if (isset ($tpl_content)) {
 	$DB = new MySQL();
+	$tpl_content = html_entity_decode($tpl_content);
 	$tpl_query = "UPDATE template SET content='$tpl_content' WHERE class='$tpl_class' AND layout = '$tpl_layout';";
 	$DB->update($tpl_query);
 	unset ($tpl_layout);
@@ -86,7 +87,7 @@ if (isset ($tpl_layout)) {
       </tr>
       <tr>
         <td>
-          <textarea name=tpl_content cols=80 rows=25><?=Template::getLayout($tpl_class, $tpl_layout,array(),true);?></textarea>
+          <textarea name=tpl_content cols=80 rows=25><?=htmlentities(Template::getLayout($tpl_class, $tpl_layout,array(),true));?></textarea>
         </td>
         <td align="left" valign="top">Mögliche Tags: (nicht vergessen, dass Tags immer ein $ vorangestellt werden muss)
           <ul>

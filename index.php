@@ -9,7 +9,7 @@
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
 	$id	    = $_REQUEST["id"];
-	$vars	= $_REQUEST;
+	$vars	= array_merge(array(), $_REQUEST);
 	
 	/**
 	 * Admincall?

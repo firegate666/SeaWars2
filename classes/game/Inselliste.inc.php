@@ -12,10 +12,20 @@ class Inselliste extends AbstractClass {
 	function load() {
 	}
 	
-	function acl(){
+	/**
+	 * check if method is allowed
+	 * @param	String	$method	method to test
+	 * @return	boolean	true/false
+	 */
+	function acl($method){
           return Login::isLoggedIn();
         }
 
+	/**
+	 * Show islandlist using template insel/page and insel/row
+	 * @param	String[]	$vars	request parameter, ['mode'] is used, to
+	 * limit which islands are shown (own, region, archipel, all)
+	 */
 	function show(&$vars) {
 		$mode = "OWN";
 		if(isset($vars["mode"])) {

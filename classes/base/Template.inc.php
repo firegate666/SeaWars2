@@ -12,6 +12,7 @@ class Template {
 	
 	/**
 	 * Remove all not substituted tags from $template
+	 * @param	String	$template	template contents
 	 */
 	function removeLostTags(&$template) {
 		$suchmuster = '/\$\{.*\}/i';
@@ -19,7 +20,8 @@ class Template {
 	}
 	
 	/**
-	 * parse $template for known tags and return them
+	 * parse $template for known tags and store them
+	 * @param	String	$template	template contents
 	 */
 	function parseTags($template){
 		$result = array();
@@ -34,8 +36,8 @@ class Template {
 	
 	/**
 	 * Delete template
-	 * @class	category
-	 * @layout	name
+	 * @param	String	$class	category
+	 * @param	String	$layout	name
 	 */
 	function deleteTemplate($class, $layout) {
 		global $mysql;
@@ -45,8 +47,8 @@ class Template {
 
 	/**
 	 * Create template
-	 * @class	category
-	 * @layout	name
+	 * @param	String	$class	category
+	 * @param	String	$layout	name
 	 */
 	function createTemplate($class, $layout) {
 		global $mysql;
@@ -59,6 +61,7 @@ class Template {
 	
 	/**
 	 * get all template classes
+	 * @return	String[]	all categories sorted
 	 */
 	 function getClasses() {
 		global $template_classes;
@@ -70,6 +73,8 @@ class Template {
 	
 	/**
 	 * get all layouts for $class
+	 * @param	String	$class	category
+	 * @return	String[]	all layouts
 	 */
 	function getLayouts($class) {
 		$DB = new MySQL();
@@ -79,8 +84,8 @@ class Template {
 	
 	/**
 	 * return template from cache or false
-	 * @class	category
-	 * @layout	template name
+	 * @param	String	$class	category
+	 * @param	String	$layout	template name
 	 * @return	false if not found or
 	 * 			template as string
 	 */
@@ -90,11 +95,12 @@ class Template {
 	
 	/**
 	 * Returns parsed template
-	 * @class	category
-	 * @layout	template name
-	 * @array	array of elements to replace tags in template
-	 * @noparse	if true, no replacement is made
-	 * @return	template as string
+	 * @param	String	$class	category
+	 * @param	String	$layout	template name
+	 * @param	String[]	$array	array of elements to replace tags in
+	 * template
+	 * @param	boolean	$noparse	if true, no replacement is made
+	 * @return	String	template as string
 	 */
 	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array()){
 		global $_CONFIG;

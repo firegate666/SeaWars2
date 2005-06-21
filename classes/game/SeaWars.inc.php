@@ -21,7 +21,11 @@ class SeaWars extends AbstractClass {
 		$this->mainbody = $string;
 	}
 	
-	function show(){
+	/**
+	 * Show game frame
+	 * @param	String[]	$vars	request parameter
+	 */
+	function show(&$vars){
 		$array = array("navigation" => $this->navigation, "content" => $this->mainbody);
 		if(Login::isLoggedIn())
                   $array['username'] = Session::getCookie("username");

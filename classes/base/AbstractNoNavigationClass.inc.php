@@ -29,7 +29,8 @@ class AbstractNoNavigationClass {
 	
 	/**
 	 * returns all rows for class $classname
-	 * @classname	if not set, $classname = name of actual class
+	 * @param	String	$classname	if not set, $classname = name of actual
+	 * class
 	 */
 	function getlist($classname='') {
 		global $mysql;
@@ -50,12 +51,9 @@ class AbstractNoNavigationClass {
 	}
 	
 	/**
-	 * not sure if anyone uses this anymore
+	 * not used yet
+	 * not sure if used anywhen
 	 */
-	function get_template($layout){
-		return $this->getLayout(get_class($this), $name);
-	}
-	
 	function load_language($language,$class){
 	}
 	
@@ -77,6 +75,7 @@ class AbstractNoNavigationClass {
 	 * loader routine... not ready yet
 	 * still error if class has no id field, that is why every
 	 * class has to have one
+	 * all data is fetched from table and stored into $this->data
 	 */
 	function load() {
         //if(!$this->exists()) return;
@@ -105,6 +104,8 @@ class AbstractNoNavigationClass {
     
     /**
      * save me to database
+     * fetch all from $this->data and build SQL Statement
+     * Update if existed, insert if new
      */
     function store() {
       // Seperate keys from values
@@ -147,13 +148,20 @@ class AbstractNoNavigationClass {
 	}
 	
 	/**
-		checks whether it is allowed to call method from outside
-		or who is allowed to call.
+	* checks whether it is allowed to call method from outside 	or	 who is
+	* allowed to call.
+	* @param	String	$method	function to test
 	*/
 	function acl($method) {
 		return false;
 	}
 	
+	/**
+	 * get template
+	 * @param	String[]	$array	Array with tags for replacement
+	 * @param	String		$layout	Name of template
+	 * @param	String[]	parameters from request
+	 */
 	function getLayout($array, $layout, &$vars) {
 		$t = new Template();
 		return $t->getLayout(get_class($this),$layout,$array,false,$vars);

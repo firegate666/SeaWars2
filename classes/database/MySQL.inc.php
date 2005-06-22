@@ -40,7 +40,7 @@ class MySQL extends SQL {
 	*/
 	function insert($query) {
 		$dblink = $this->connect();
-		$result = MYSQL_QUERY($query) or die("MySQL insert error: ".mysql_error()." / Query " + $query);
+		$result = MYSQL_QUERY(mysql_real_escape_string($query)) or die("MySQL insert error: ".mysql_error()." / Query " + $query);
 		$id = MYSQL_INSERT_ID();
 		$this->disconnect($dblink);
 		return $id;
@@ -54,7 +54,7 @@ class MySQL extends SQL {
 	*/
 	function select($query, $assoc = false) {
 		$dblink = $this->connect();
-		$result = MYSQL_QUERY($query) or die("MySQL select error: ".mysql_error()." / Query " + $query);
+		$result = MYSQL_QUERY(mysql_real_escape_string($query)) or die("MySQL select error: ".mysql_error()." / Query " + $query);
 		$return = array ();
 		$counter = 0;
 		if (!$assoc)
@@ -74,7 +74,7 @@ class MySQL extends SQL {
 	*/
 	function executeSql($query) {
 		$dblink = $this->connect();
-		$result = MYSQL_QUERY($query) or die("MySQL executeSql error: ".mysql_error()." / Query " + $query);
+		$result = MYSQL_QUERY(mysql_real_escape_string($query)) or die("MySQL executeSql error: ".mysql_error()." / Query " + $query);
 		$result = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC);
 		$this->disconnect($dblink);
 		return $result;
@@ -87,7 +87,7 @@ class MySQL extends SQL {
 	*/
 	function update($query) {
 		$dblink = $this->connect();
-		$result = MYSQL_QUERY($query) or die("MySQL update error: ".mysql_error()." / Query " + $query);
+		$result = MYSQL_QUERY(mysql_real_escape_string($query)) or die("MySQL update error: ".mysql_error()." / Query " + $query);
 		$rows = MYSQL_AFFECTED_ROWS();
 		$this->disconnect($dblink);
 		return $rows;

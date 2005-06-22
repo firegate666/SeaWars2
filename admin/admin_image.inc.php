@@ -1,4 +1,43 @@
-<?if(!isset($_COOKIE['adminlogin'])) die("DENIED");if (isset ($img_delete)) {	echo ("noch nicht implementiert");}if (isset ($img_upload) && isset ($img_file) && isset ($img_name)) {	global $_CONFIG;	if (is_uploaded_file($HTTP_POST_FILES['img_file']['tmp_name'])) {		if ($HTTP_POST_FILES['img_file']['type'] == "image/gif")			$extension = ".gif";		else			$extension = ".jpg";		$newname = randomstring(25).$extension;		if (($HTTP_POST_FILES['img_file']['type'] == "image/gif") || ($HTTP_POST_FILES['img_file']['type'] == "image/pjpeg") || ($HTTP_POST_FILES['img_file']['type'] == "image/jpeg")) {			if (file_exists($path.$newname)) {				$msg .= "Fehler, weil der Dateiname bereits vorhanden ist.";			}			$res = copy($HTTP_POST_FILES['img_file']['tmp_name'], $_CONFIG["uploadpath"].$newname);			if (!$res) {				$msg .= "Upload fehlgeschlagen!";			} else {				// Datenbankreferenz erstellen				$img = new Image();				$img->data['name'] = $img_name;				$img->data['url'] = $_CONFIG["uploadpath"].$newname;				$img->store();			}			$msg .= "Dateigröße: ".$HTTP_POST_FILES['img_file']['size']." bytes<br>\n";			$msg .= "Dateityp: ".$HTTP_POST_FILES['img_file']['type']."<br>\n";		} else {			$msg .= "Wrong file type<br>\n";			exit;		}	}}?>
+<?
+if(!isset($_COOKIE['adminlogin'])) die("DENIED");
+
+if (isset ($vars['img_delete'])) {
+	if(isset($vars['id'])) {
+	        $i = new Image($vars['id']);
+	        $i->delete();
+	}
+}
+if (isset ($vars['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset($vars['img_name'])) {
+	global $_CONFIG;
+	if (is_uploaded_file($HTTP_POST_FILES['img_file']['tmp_name'])) {
+                $upload_allowed = true;
+		if ($HTTP_POST_FILES['img_file']['type'] == "image/gif") {
+			$extension = ".gif";
+		} else {
+			$extension = ".jpg";
+		}
+		$newname = randomstring(25).$extension;
+
+		if (($HTTP_POST_FILES['img_file']['type'] == "image/gif") || ($HTTP_POST_FILES['img_file']['type'] == "image/pjpeg") || ($HTTP_POST_FILES['img_file']['type'] == "image/jpeg")) {
+			$msg .= "Upload wird gestartet.<br>";
+                        $res = copy($HTTP_POST_FILES['img_file']['tmp_name'], $_CONFIG["uploadpath"].$newname);
+			if (!$res) {
+				$msg .= "Upload fehlgeschlagen!";
+			} else {
+				// Datenbankreferenz erstellen
+				$img = new Image();
+				$img->data['name'] = $vars['img_name'];
+				$img->data['url'] = $_CONFIG["uploadpath"].$newname;
+				$img->store();
+			}
+			$msg .= "Dateigröße: ".$HTTP_POST_FILES['img_file']['size']." bytes<br>\n";
+			$msg .= "Dateityp: ".$HTTP_POST_FILES['img_file']['type']."<br>\n";
+		} else {
+			$msg .= "Wrong file type<br>\n";
+		}
+	}
+}
+?>
 <table width=100% border=1>
   <tr>
     <th colspan=2>Bilderverwaltung</th>
@@ -29,9 +68,18 @@
          document.preview.src = url;
        }
      </script>
-     <td align="left" valign="top"><ul><?$array = Image :: getImageList();foreach ($array as $item) {?><li><a href="javascript:show('<?=$item[2]?>')"><?=$item[1]?></a>
-         - <a href="index.php?admin&image&img_delete&id=<?=$item[0]?>">(delete)</a>
-         </li><? }?>
+     <td align="left" valign="top"><ul><?
+
+
+
+$array = Image :: getImageList();
+foreach ($array as $item) {
+?><li><a href="javascript:show('<?=$item[2]?>')"><?=$item[1]?></a>
+         - <a href="index.php?admin&image&img_show&img_delete&id=<?=$item[0]?>">(delete)</a>
+         </li><? 
+
+}
+?>
      </ul></td>
      <td><img name="preview" src="">
      </td>
@@ -39,4 +87,4 @@
   </tr>
 </table>
 
-
+

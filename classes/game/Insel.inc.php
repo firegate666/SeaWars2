@@ -54,7 +54,7 @@
 			$array[$res['id']] = $this->lager->lagerenthaelt[$res['id']];
 			$array[$res['id'].'_wachstum'] = intval(($res['ps']));
 		}
-		return $this->getLayout($array, "page");
+		return $this->getLayout($array, "page", $vars);
 	}
 }
 ?>

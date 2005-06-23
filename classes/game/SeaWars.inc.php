@@ -31,7 +31,7 @@ class SeaWars extends AbstractClass {
                   $array['username'] = Session::getCookie("username");
                 else
                   $array['username'] = "";
-		return $this->getLayout($array, $this->layoutname);
+		return $this->getLayout($array, $this->layoutname, $vars);
 	}	
 }
 ?>

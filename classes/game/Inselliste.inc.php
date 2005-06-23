@@ -52,10 +52,10 @@ class Inselliste extends AbstractClass {
                     $array['name']    = $row[1];
                     $array['groesse'] = $row[2];
                     $array['archipel']= $row[3];
-                    $rows .= $this->getLayout($array, "row");
+                    $rows .= $this->getLayout($array, "row", $vars);
        		}
 		$array = array('inseln' => $rows);
-		return $this->getLayout($array, "page");
+		return $this->getLayout($array, "page", $vars);
 	}
 
 	function show_region(&$vars) {
@@ -77,10 +77,10 @@ class Inselliste extends AbstractClass {
                     $array['name']    = $row[1];
                     $array['groesse'] = $row[2];
                     $array['archipel']= $row[3];
-                    $rows .= $this->getLayout($array, "row");
+                    $rows .= $this->getLayout($array, "row", $vars);
        		}
 		$array = array('inseln' => $rows);
-		return $this->getLayout($array, "page");
+		return $this->getLayout($array, "page", $vars);
 	}
 }
 ?>

@@ -41,6 +41,8 @@ class Template {
 	 */
 	function deleteTemplate($class, $layout) {
 		global $mysql;
+		$class = mysql_real_escape_string($class);
+		$layout = mysql_real_escape_string($layout);
 		$query = "DELETE FROM template WHERE class='$class' AND layout='$layout';";
 		$mysql->update($query);
 	}
@@ -52,6 +54,8 @@ class Template {
 	 */
 	function createTemplate($class, $layout) {
 		global $mysql;
+		$class = mysql_real_escape_string($class);
+		$layout = mysql_real_escape_string($layout);
 		$query = "INSERT INTO template(class, layout) VALUES('$class', '$layout');";
 		$mysql->insert($query);
 	}
@@ -77,6 +81,7 @@ class Template {
 	 * @return	String[]	all layouts
 	 */
 	function getLayouts($class) {
+		$class = mysql_real_escape_string($class);
 		$DB = new MySQL();
 		$result = $DB->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
@@ -104,6 +109,8 @@ class Template {
 	 */
 	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array()){
 		global $_CONFIG;
+		$class = mysql_real_escape_string($class);
+		$layout = mysql_real_escape_string($layout);
 		// hier überprüfen, ob cache vorhanden
 		//$string = Template::getLayoutCached($class, $layout);
 		//if($string === false) {

@@ -22,7 +22,7 @@ class Error extends AbstractNoNavigationClass {
 		$this->method = $method;
 	}
 
-	function show() {
+	function show(&$vars) {
 		global $_CONFIG;
 		if(isset($_CONFIG['cms']) && $_CONFIG['cms']) {
 			$array = array(
@@ -30,7 +30,7 @@ class Error extends AbstractNoNavigationClass {
 						"class" => $this->class,
 						"method" => $this->method
 					);
-			return $this->getLayout($array, "page");
+			return $this->getLayout($array, "page", $vars);
 		} else {
 			$result = "Error ".$this->class."/".$this->method.": ".$this->msg;
 			return $result;

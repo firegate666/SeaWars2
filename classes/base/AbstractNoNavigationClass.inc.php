@@ -142,7 +142,7 @@ class AbstractNoNavigationClass {
 	
 	function AbstractNoNavigationClass($id='') {
 		if(!$this->getFields()) error("No fields set",get_class($this),'Constructor');
-		if(empty($id)) return;
+		if(empty($id) || !is_numeric($id)) return;
 		$this->id=$id;
 		$this->load();
 	}
@@ -167,7 +167,7 @@ class AbstractNoNavigationClass {
 		return $t->getLayout(get_class($this),$layout,$array,false,$vars);
 	}
 	
-	function getNavigation() {
+	function getNavigation(&$vars) {
 		return "&nbsp;";
 	}
 

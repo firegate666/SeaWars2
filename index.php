@@ -41,11 +41,11 @@
       		if(strtolower($class) == "page") { // are you a page
       			print $result;
       		} else if(is_string($result)) { // results a string?
-	      		if(isset($_CONFiG["default_id"]) && $_CONFiG["game"]) {
+	      		if(isset($_CONFIG["game"])) {
 		      		$game = new SeaWars($newclass->getMainLayout());
-	      			$game->setNavigation($newclass->getNavigation());
+	      			$game->setNavigation($newclass->getNavigation($vars));
 	      			$game->setMainBody($result);
-	      			print $game->show();
+	      			print $game->show($vars);
 	      		} else
 	      			print $result;
       		} else if(is_array($result)) { // results an array?

@@ -32,6 +32,6 @@ class SeaWars extends AbstractClass {
                 else
                   $array['username'] = "";
 		return $this->getLayout($array, $this->layoutname, $vars);
-	}	
+	}
 }
 ?>

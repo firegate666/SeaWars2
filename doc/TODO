@@ -1,6 +1,8 @@
 ########
 # TODO #
 ########
+* Sicherheitsabfrage bei delete im CMS
+
 * evtl upload für den direkten Zugriff sperren
 * und über Klasse kapseln
 
@@ -15,6 +17,8 @@
 SeaWars -> Game etc...
 
 * Seperate AbstractClasses from module cms (getLayout etc....)
+
+* Beim Löschen und speichern müssen depency checks durchgeführt werden, da mysql keine referentielle Integrität kennt
 
 ########
 # DONE #

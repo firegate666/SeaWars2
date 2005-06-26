@@ -6,6 +6,20 @@
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
+	if(isset($_CONFIG['noframes']) && $_CONFIG['noframes']) {
+		?>
+		<script language="JavaScript"> 
+  			<!--
+   				if(top.frames.length > 0) {
+					document.write('Die Seite wurde innerhalb eines Frames dargestellt. Es erfolgt ein Reload.');
+					top.location.href=self.location;
+    			}
+  			//--> 
+		</script> 
+		<?
+	}  
+  
+  
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
 	$id	    = $_REQUEST["id"];
@@ -15,7 +29,7 @@
 	 * Admincall?
 	 */
 	if(isset($admin)) {
-		include('admin.php');
+		include('admin/admin.php');
 		die();
 	}
 	/**

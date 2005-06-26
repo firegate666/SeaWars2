@@ -5,6 +5,12 @@
 	$dbpassword = "<password>";	// Benutzerpasswort
 	$dbdatabase = "<database>";	// Datenbank
 
+	// stripped from admin.php
+	// has to be replaced by Users and Groups sometimes
+	$_CONFIG['adminuser'] = 'admin';
+	$_CONFIG['adminpassword'] = 'admin';
+
+	// enable modules
 	$_CONFIG["cms"] = false;	// enable CMS
 	$_CONFIG["game"] = false;	// enable Game
 	
@@ -35,4 +41,8 @@
 	$_CONFIG["default_class"] = "page";
 	$_CONFIG["default_method"] = "show";
 	$_CONFIG["default_id"] = "index";
+	
+	// if site is shown in frame, reload as _top
+	// only works with JavaScript
+	$_CONFIG["noframes"] = false;
 ?>

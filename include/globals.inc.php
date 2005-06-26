@@ -16,9 +16,9 @@
 	return $result;
 }
 
-/** * Create error */function error($error, $class, $method) {
+/** * Create error */function error($error, $class, $method, $vars=array()) {
 	$error = new Error($error, $class, $method);
-	die($error->show());
+	die($error->show($vars));
 }
 
 /** * improved print_r */function print_a($array) {

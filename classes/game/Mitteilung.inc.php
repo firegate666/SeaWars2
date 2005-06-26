@@ -67,7 +67,7 @@
 		if(!isset($vars["betreff"]) or empty($vars["betreff"])) return "kein Betreff angegeben!";
 		if(!isset($vars["inhalt"]) or empty($vars["inhalt"])) return "Die Nachricht ist leer!";
 		global $mysql;
-		// $query = "SELECT id FROM spieler WHERE username = '".$vars["empfaenger"]."';";
+		$query = "SELECT id FROM spieler WHERE username = '".$vars["empfaenger"]."';";
 		$result = $mysql->select($query);
 		return "Nachricht gesendet"; //no Error
 	}

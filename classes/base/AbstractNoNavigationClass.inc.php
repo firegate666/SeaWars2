@@ -4,9 +4,9 @@
  */
 class AbstractNoNavigationClass {
 	
-    var $data;
-    var $id;
-	var $language;
+    protected $data;
+    protected $id;
+	protected $language;
 	
 	/**
 	 * All database fields are made public at this place
@@ -108,6 +108,7 @@ class AbstractNoNavigationClass {
      * Update if existed, insert if new
      */
     function store() {
+      if(empty($this->data)) return;
       // Seperate keys from values
       $keys   = array_keys($this->data);
       $values = array_values($this->data);

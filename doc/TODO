@@ -20,7 +20,8 @@ SeaWars -> Game etc...
 
 * Beim Löschen und speichern müssen depency checks durchgeführt werden, da mysql keine referentielle Integrität kennt
 
-########
+* Überprüfung der eingegebenen Variablen mit addslashes() und ähnliches für SQL
+
 # DONE #
 ########
 * admin, classes, config, include, install

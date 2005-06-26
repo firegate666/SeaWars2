@@ -1,16 +1,18 @@
 <?
+  $template_classes[] = 'mitteilung';
+  
   class Mitteilung extends AbstractNoNavigationClass {
   	
   	/**
 	 * all fields used in class
 	 */
-	function getFields() {
+	public function getFields() {
 		$fields[] = array('name' => 'sender', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'empfaenger', 'type' => 'integer', 'notnull' => true);
 		$fields[] = array('name' => 'datum', 'type' => 'timestamp', 'notnull' => true);
-		$fields[] = array('name' => 'uhrzeit', 'type' => 'timestamp', 'notnull' => true);
 		$fields[] = array('name' => 'betreff', 'type' => 'String', 'size' => 100, 'notnull' => false);
 		$fields[] = array('name' => 'inhalt', 'type' => 'String', 'size' => 500, 'notnull' => false);
+		$fields[] = array('name' => 'art', 'type' => 'integer', 'notnull' => true);
 		$fields[] = array('name' => 'gelesen', 'type' => 'integer', 'notnull' => true);
 		$fields[] = array('name' => 'geloescht_sender', 'type' => 'integer', 'notnull' => true);
 		$fields[] = array('name' => 'geloescht_empfaenger', 'type' => 'integer', 'notnull' => true);
@@ -22,7 +24,7 @@
 	 * @param	String	$method	method to test
 	 * @return	boolean	true/false
 	 */
-	function acl($method){
+	public function acl($method){
           return Login::isLoggedIn();
         }
     
@@ -30,7 +32,7 @@
 	 * Show Messenger using template messenger/page 
 	 * @param	String[]	$vars	request parameter
 	 */
-    function show($vars) {
+    public function show($vars) {
     	return "test";
 	}
 	
@@ -38,9 +40,8 @@
 	 * Converts Message to string 
 	 * Only for Debugging
 	 */
-    function __toString() {
+    public function __toString() {
     	if (!($this->exists())){	
-    		
 	    	$keys   = array_keys($this->data);
 	      	$values = array_values($this->data);
 	      	$result="";
@@ -55,14 +56,44 @@
 	
 	/**
 	 * parst die Formulareingabe zum erzeugen einer neuen Nachricht
+	 * liefert unbekannten Fehler!
 	 * 
 	 * @param	String[]	$vars	request parameter
 	 * @return  String		Beschreibung des aufgetretenen Fehlers oder den Text: "Nachricht gesendet"
 	 *                      im Falle des Erfolges
 	 */
-	function parse_html_imput($vars) {
+	public function parse_html_imput($vars) {
+		if(!isset($vars["empfaenger"]) or empty($vars["empfaenger"])) return "kein Empfaenger angegeben!";
+		if(!isset($vars["betreff"]) or empty($vars["betreff"])) return "kein Betreff angegeben!";
+		if(!isset($vars["inhalt"]) or empty($vars["inhalt"])) return "Die Nachricht ist leer!";
+		global $mysql;
+		$query = "SELECT id FROM spieler WHERE username = ".$vars["empfaenger"].";";
+		//$result = $mysql->select($query);
 		
 		return "Nachricht gesendet"; //no Error
+	}
+	
+	/**
+	 * Stellt sich als mit dem Template dar
+	 * noch nicht fertig!
+	 */
+	
+	public function show_as_table(){
+		$n=array();
+		$n["betreff"]=$this->data["betreff"];
+		$n["inhalt"]=$this->data["inhalt"];
+		$n["datum"]=$this->data["datum"];
+		switch ($this->data["art"]) {
+			case 0:
+				$n["art"]="System";
+				break;
+			case 1:
+				$n["art"]="User";
+				break;	
+			default:
+				$n["art"]="Sonstiges";
+		}
+		return $this->getLayout($n, "table_messages_row", $vars);	
 	}
 	
 	

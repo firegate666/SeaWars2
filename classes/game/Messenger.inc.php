@@ -8,7 +8,7 @@
 	 * @param	String	$method	method to test
 	 * @return	boolean	true/false
 	 */
-	function acl($method){
+	public function acl($method){
           return Login::isLoggedIn();
         }
     
@@ -16,12 +16,17 @@
 	 * Show Messenger Main Window using template messenger/page 
 	 * @param	String[]	$vars	request parameter
 	 */
-    function show($vars) {
+    public function show($vars) {
     	return $this->inbox($vars);
 	}
 	
-	function get_messages($vars){
-		$result=new Mitteilung(1);
+	/**
+	 * Selektiert aus der DB alle Nachrichten, die an mich gerichtet sind
+	 * zur Zeit als Test!
+	 */
+	protected function get_messages_to_me(){
+		$result[]=new Mitteilung(1);
+		$result[]=new Mitteilung(2);
 		return $result;
 	}
 	
@@ -29,13 +34,17 @@
 	 * Show Messenger Inbox Window using template messenger/page 
 	 * @param	String[]	$vars	request parameter
 	 */
-	function inbox($vars){
+	public function inbox($vars){
 		$array=array();
 		$result=$this->getLayout($array, "main_window_header", $vars);
 		
+		$nachrichten=$this->get_messages_to_me($vars);
+		$array["rows"]="";
+		foreach ($nachrichten as $nachricht){
+			//$result.=$nachricht->__toString();
+			$array["rows"].=$nachricht->show_as_table();
+		}
 		$result.=$this->getLayout($array, "table_messages", $vars);	
-		$nachricht=$this->get_messages($vars);
-		$result.=$nachricht->__toString();
 		return $result;
 	}
 	
@@ -43,7 +52,7 @@
 	 * Show Messenger Outbox Window using template messenger/page 
 	 * @param	String[]	$vars	request parameter
 	 */
-	function outbox($vars){
+	public function outbox($vars){
 		$array=array();
 		$result=$this->getLayout($array, "main_window_header", $vars);
 		
@@ -54,7 +63,7 @@
 	 * Show Messenger New Message Window using template messenger/page 
 	 * @param	String[]	$vars	request parameter
 	 */
-    function new_message($vars){
+    public function new_message($vars){
 		$array=array();
 		$result=$this->getLayout($array, "main_window_header", $vars);
 		
@@ -69,16 +78,19 @@
 	 * 
 	 * @param	String[]	$vars	request parameter
 	 */
-	function message_send($vars){
+	public function message_send($vars){
 		$array=array();
 		$result=$this->getLayout($array, "main_window_header", $vars);
 		
 		$nachricht=new Mitteilung();	//Neue Mitteilung erzeugen
-		$errormessage=$nachricht->parse_html_imput($vars); //Forumlareingaben überprüfen und zuweisen
+		$errormessage=$nachricht->parse_html_imput($vars); //Formulareingaben überprüfen und zuweisen
+		$result.=$errormessage;
 		if ($errormessage=="Nachricht gesendet") {
 			$nachricht->store();	//Nachricht in SQL-DB abspeichern
+		} 
+		else {
+			$result.="<br>Die Nachricht wurde nicht gesendet!";		
 		}
-		$result.=$errormessage;
 		return $result;
 	}
   }

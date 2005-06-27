@@ -72,17 +72,17 @@ if (isset ($tpl_layout)) {
 ?>
   <script>
     function insertTag(tagname) {
-       name = prompt('Referenzname','hier Name eingeben');
-       if(tagname == 'image') myValue = '<img src="${'+tagname+':'+name+'}">';       if(tagname == 'plink') myValue = '<a href="${'+tagname+':'+name+'}">linktext</a>';       if(tagname == 'page')  myValue = '${'+tagname+':'+name+'}';		if (document.selection) {			document.edittpl.tpl_content.focus();			sel = document.selection.createRange();			sel.text = myValue;		} //MOZILLA/NETSCAPE support		else if (document.edittpl.tpl_content.selectionStart || document.edittpl.tpl_content.selectionStart == '0') {			var startPos = document.edittpl.tpl_content.selectionStart;			var endPos = document.edittpl.tpl_content.selectionEnd;			document.edittpl.tpl_content.value = document.edittpl.tpl_content.value.substring(0, startPos)			+ myValue			+ document.edittpl.tpl_content.value.substring(endPos, document.edittpl.tpl_content.value.length);		} else {			document.edittpl.tpl_content.value += myValue;		}    }
+       name = prompt('Referenzname','hier Inhalte/Name eingeben');
+       if(tagname == 'image') myValue = '<img src="${'+tagname+':'+name+'}">';       else if(tagname == 'plink') myValue = '<a href="${'+tagname+':'+name+'}">linktext</a>';       else if(tagname == 'page')  myValue = '${'+tagname+':'+name+'}';       else myValue = '<'+tagname+'>'+name+'</'+tagname+'>';		if (document.selection) {			document.edittpl.tpl_content.focus();			sel = document.selection.createRange();			sel.text = myValue;		} //MOZILLA/NETSCAPE support		else if (document.edittpl.tpl_content.selectionStart || document.edittpl.tpl_content.selectionStart == '0') {			var startPos = document.edittpl.tpl_content.selectionStart;			var endPos = document.edittpl.tpl_content.selectionEnd;			document.edittpl.tpl_content.value = document.edittpl.tpl_content.value.substring(0, startPos)			+ myValue			+ document.edittpl.tpl_content.value.substring(endPos, document.edittpl.tpl_content.value.length);		} else {			document.edittpl.tpl_content.value += myValue;		}    }
   </script>
   <form action="index.php" method="post" name="edittpl">
     <input type="submit" value="Änderungen speichern">
     <table>
       <tr>
         <td>
-          <input type="button" value="IMG" onClick="insertTag('image')">
-          <input type="button" value="Link" onClick="insertTag('plink')">
-          <input type="button" value="Page" onClick="insertTag('page')">
+          <input type="button" value="Fett" onClick="insertTag('b')">          <input type="button" value="Kursiv" onClick="insertTag('i')">          <input type="button" value="Unterstrichen" onClick="insertTag('u')">          <input type="button" value="ImageTag" onClick="insertTag('image')">
+          <input type="button" value="PageLink" onClick="insertTag('plink')">
+          <input type="button" value="PageInclude" onClick="insertTag('page')">
         </td>
       </tr>
       <tr>

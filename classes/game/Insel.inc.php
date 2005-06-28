@@ -1,4 +1,4 @@
-<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion {
+<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion extends AbstractClass {		function load(){}	function store(){}		function getData(){		return $this->data;	}	
 	function Rohstoffproduktion($insel_id) {
 		global $mysql;
 		$array = $mysql->select("SELECT rp.wachstum_prozent, rp.produktion_stunde, r.sem_id, r.name
@@ -50,7 +50,7 @@
 
 	/**	 * Show insel using template insel/page	 */	function show(& $vars) {
 		$array['insel_name'] = $this->data['name'];
-		foreach ($this->rohstoffproduktion->data as $res) {
+		foreach ($this->rohstoffproduktion->getData() as $res) {
 			$array[$res['id']] = $this->lager->lagerenthaelt[$res['id']];
 			$array[$res['id'].'_wachstum'] = intval(($res['ps']));
 		}

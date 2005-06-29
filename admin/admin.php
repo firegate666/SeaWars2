@@ -1,7 +1,6 @@
 <?
 	function login($user, $pass) {
-		global $_CONFIG;
-		if(($user==$_CONFIG['adminuser']) && ($pass==$_CONFIG['adminpassword'])) {
+		if(($user==get_config('adminuser')) && ($pass==get_config('adminpassword'))) {
 			setcookie('adminlogin', 'true', NULL);
 			return true;
 		} else return false;
@@ -44,10 +43,10 @@
     <td align=center valign=top>
       <a href="index.php?admin">Startseite</a><br>
       <a href="index.php?admin&template">Templates</a><br>
-      <? if(isset($_CONFIG["cms"]) && $_CONFIG["cms"]) { ?>
+      <? if(get_config("cms", false)) { ?>
 	      <a href="index.php?admin&image">Images</a><br>
       <? } ?>
-      <? if(isset($_CONFIG["game"]) && $_CONFIG["game"]) { ?>
+      <? if(get_config("game", false)) { ?>
       	<a href="index.php?admin&techtree">Tech-Tree</a><br>
       <? } ?>
       <br><a href="index.php?admin&logout">Logout</a>

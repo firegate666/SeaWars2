@@ -3,7 +3,7 @@ if(!isset($_COOKIE['adminlogin'])) die("DENIED");
 
 if(isset($cat) && isset($create)) {
 	$tc = new TTCategory();
-	$tc->data['name'] = $vars['cat_name'];
+	$tc->set('name', $vars['cat_name']);
 	$tc->store();
 	header("Location: index.php?admin&techtree&cat");
 }
@@ -28,8 +28,8 @@ if(isset($cat)) { ?>
 		   foreach($result as $item) {
 		   	  $tc = new TTCategory($item['id']);
 		   	  ?><tr>
-		   	      <td><?=$tc->data['name']?></td>
-		   	      <td><a href="?admin&techtree&cat&del&id=<?=$tc->id?>">löschen</a></td>
+		   	      <td><?=$tc->get('name')?></td>
+		   	      <td><a href="?admin&techtree&cat&del&id=<?=$tc->get('id')?>">löschen</a></td>
 		   	    </tr>
 		   	  <?
 		   }

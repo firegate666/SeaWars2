@@ -108,7 +108,6 @@ class Template {
 	 * @return	String	template as string
 	 */
 	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array()){
-		global $_CONFIG;
 		$class = mysql_real_escape_string($class);
 		$layout = mysql_real_escape_string($layout);
 		// hier überprüfen, ob cache vorhanden

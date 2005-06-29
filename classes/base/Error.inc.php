@@ -23,8 +23,7 @@ class Error extends AbstractNoNavigationClass {
 	}
 
 	function show(&$vars) {
-		global $_CONFIG;
-		if(isset($_CONFIG['cms']) && $_CONFIG['cms']) {
+		if(get_config('cms', false)) {
 			$array = array(
 						"message" => $this->msg,
 						"class" => $this->class,

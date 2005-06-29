@@ -8,7 +8,6 @@ if (isset ($vars['img_delete'])) {
 	}
 }
 if (isset ($vars['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset($vars['img_name'])) {
-	global $_CONFIG;
 	if (is_uploaded_file($HTTP_POST_FILES['img_file']['tmp_name'])) {
                 $upload_allowed = true;
 		if ($HTTP_POST_FILES['img_file']['type'] == "image/gif") {
@@ -20,14 +19,14 @@ if (isset ($vars['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset(
 
 		if (($HTTP_POST_FILES['img_file']['type'] == "image/gif") || ($HTTP_POST_FILES['img_file']['type'] == "image/pjpeg") || ($HTTP_POST_FILES['img_file']['type'] == "image/jpeg")) {
 			$msg .= "Upload wird gestartet.<br>";
-                        $res = copy($HTTP_POST_FILES['img_file']['tmp_name'], $_CONFIG["uploadpath"].$newname);
+                        $res = copy($HTTP_POST_FILES['img_file']['tmp_name'], get_config("uploadpath").$newname);
 			if (!$res) {
 				$msg .= "Upload fehlgeschlagen!";
 			} else {
 				// Datenbankreferenz erstellen
 				$img = new Image();
-				$img->data['name'] = $vars['img_name'];
-				$img->data['url'] = $_CONFIG["uploadpath"].$newname;
+				$img->set('name', $vars['img_name']);
+				$img->set('url', get_config("uploadpath").$newname);
 				$img->store();
 			}
 			$msg .= "Dateigröße: ".$HTTP_POST_FILES['img_file']['size']." bytes<br>\n";

@@ -1,4 +1,4 @@
-<?/** * return random string * @name_laenge		length of string */function randomstring($name_laenge) {
+<?/** * return value from global configs *  * @param	String	$name	name of config * @param	String	$default	if not found return this * @return	String	config value */function get_config($name, $default = '') {	global $_CONFIG;	if(isset($_CONFIG[$name]))		return $_CONFIG[$name];	else		return $default;}/** * return random string * @name_laenge		length of string */function randomstring($name_laenge) {
 	$zeichen = "abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLNMOPQRSTUVWXYZ0123456789";
 	$name_neu = "";
 

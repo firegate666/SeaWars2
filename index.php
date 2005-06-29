@@ -6,7 +6,7 @@
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
-	if(isset($_CONFIG['noframes']) && $_CONFIG['noframes']) {
+	if(get_config('noframes', false)) {
 		?>
 		<script language="JavaScript"> 
   			<!--
@@ -35,13 +35,13 @@
 	/**
 	 * Default handling
 	 */
-	if(isset($_CONFIG['usedefaults']) && $_CONFIG['usedefaults']) {
-		if(empty($class) && isset($_CONFIG["default_class"]))
-			$class  = $_CONFIG["default_class"];
-		if(empty($method) && isset($_CONFIG["default_method"]))
-			$method = $_CONFIG["default_method"];
-		if(empty($id) && $_CONFIG["default_id"])
-			$id     = $_CONFIG["default_id"];
+	if(get_config('usedefaults', true)) {
+		if(empty($class))
+			$class  = get_config("default_class");
+		if(empty($method))
+			$method = get_config("default_method");
+		if(empty($id))
+			$id     = get_config("default_id");
 	}
 	
 	/**
@@ -55,7 +55,7 @@
       		if(strtolower($class) == "page") { // are you a page
       			print $result;
       		} else if(is_string($result)) { // results a string?
-	      		if(isset($_CONFIG["game"])) {
+	      		if(get_config("game", false)) {
 		      		$game = new SeaWars($newclass->getMainLayout());
 	      			$game->setNavigation($newclass->getNavigation($vars));
 	      			$game->setMainBody($result);

@@ -46,10 +46,19 @@ class AbstractNoNavigationClass {
 	/**
 	 * Setter
 	 */
-	function set($key, $value) {
+	public function set($key, $value) {
 		$this->data[$key] = $value;
 	}
 	
+	/**
+	 * Getter
+	 */
+	public function get($key) {
+		if($key == 'id')
+			return $this->id;
+		return $this->data[$key];
+	}
+
 	/**
 	 * not used yet
 	 * not sure if used anywhen

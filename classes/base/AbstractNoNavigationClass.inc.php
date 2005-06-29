@@ -96,9 +96,6 @@ class AbstractNoNavigationClass {
     	unset($this->data[id]);
     }
 
-	function show() {
-	}
-    
     /**
      * delete me
      */
@@ -204,6 +201,15 @@ class AbstractNoNavigationClass {
 		}
 		$o .= '</form><!--getform end-->';
 		return $o;
+	}
+
+	/**
+	 * generic show using template page
+	 * 
+	 * @param	String[]	$vars	request parameters
+	 */
+	function show(& $vars) {
+		return $this->getLayout(array(), "page", $vars);
 	}
 }
 ?>

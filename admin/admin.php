@@ -1,5 +1,6 @@
 <?
 	function login($user, $pass) {
+		global $_CONFIG;
 		if(($user==$_CONFIG['adminuser']) && ($pass==$_CONFIG['adminpassword'])) {
 			setcookie('adminlogin', 'true', NULL);
 			return true;

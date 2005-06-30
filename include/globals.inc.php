@@ -15,7 +15,7 @@
 	$result = array ('content' => 'URL', 'target' => $target);
 	return $result;
 }
-
+/** * xml output */function xml($output) {	$result = array ('content' => 'XML', 'output' => $output);	return $result;}
 /** * Create error */function error($error, $class, $method, $vars=array()) {
 	$error = new Error($error, $class, $method);
 	die($error->show($vars));

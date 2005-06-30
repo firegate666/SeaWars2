@@ -1,5 +1,5 @@
-<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion extends AbstractClass {		function load(){}	function store(){}		function getData(){		return $this->data;	}	
-	function Rohstoffproduktion($insel_id) {
+<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion extends AbstractClass {		private function load(){}	private function store(){}		public function getData(){		return $this->data;	}	
+	public function Rohstoffproduktion($insel_id) {
 		global $mysql;
 		$array = $mysql->select("SELECT rp.wachstum_prozent, rp.produktion_stunde, r.sem_id, r.name
 	                               FROM rohstoffproduktion rp, rohstoff r
@@ -13,8 +13,8 @@
 /** * This class represents an Island */class Insel extends AbstractTimestampClass {
 	var $rohstoffproduktion;
 	var $lager;
-	/**	 * all fields used in class	 */	function getFields() {		$fields[] = array('name' => 'name', 'type' => 'String', 'size' => 100, 'notnull' => true);		$fields[] = array('name' => 'groesse', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'x_pos', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'y_pos', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'spieler_id', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'archipel_id', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'timestamp', 'type' => 'timestamp', 'notnull' => false);		$fields[] = array('name' => 'lager_id', 'type' => 'integer', 'notnull' => true);		return $fields;	}	/**	 * returns all islands with no owner	 * @return	String[][]	array of islands	 */	function getStartIslands() {		global $mysql;		$query = "SELECT id FROM insel WHERE spieler_id = 0;";		$result = $mysql->select($query);		return $result;	}
-	/**	 * update ressource production on island	 */	function update() {
+	/**	 * all fields used in class	 */	private function getFields() {		$fields[] = array('name' => 'name', 'type' => 'String', 'size' => 100, 'notnull' => true);		$fields[] = array('name' => 'groesse', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'x_pos', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'y_pos', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'spieler_id', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'archipel_id', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'timestamp', 'type' => 'timestamp', 'notnull' => false);		$fields[] = array('name' => 'lager_id', 'type' => 'integer', 'notnull' => true);		return $fields;	}	/**	 * returns all islands with no owner	 * @return	String[][]	array of islands	 */	function getStartIslands() {		global $mysql;		$query = "SELECT id FROM insel WHERE spieler_id = 0;";		$result = $mysql->select($query);		return $result;	}
+	/**	 * update ressource production on island	 */	public function update() {
 		global $mysql;
 		$query = "SELECT l.rohstoff_id, l.anzahl, rp.produktion_stunde, rp.insel_id, NOW() as now, l.lager_id
 	                  FROM rohstoff r, lagerenthaelt l, rohstoffproduktion rp
@@ -35,14 +35,14 @@
 		$this->store();
 	}
 
-	/**	 * constructor, instantiates island wit updated ressources	 * @param	int	$id	id of instance	 */	function Insel($id = '') {		if(empty($id)) return;
+	/**	 * constructor, instantiates island wit updated ressources	 * @param	int	$id	id of instance	 */	function Insel($id = '') {		if(empty($id) or ($id==0)) return;
 		AbstractTimestampClass :: AbstractTimestampClass($id);
 		$this->update();
 		$this->rohstoffproduktion = new Rohstoffproduktion($this->id);
 		$this->lager = new Lager($this->data['lager_id']);
 	}
 
-	/**	 * check if method is allowed	 * @param	String	$method	method to test	 * @return	boolean	true/false	 */	function acl($method) {
+	/**	 * check if method is allowed	 * @param	String	$method	method to test	 * @return	boolean	true/false	 */	public function acl($method) {
 		if ($method == 'show')
 			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session :: getCookie('spieler_id')); // better would be owner check
 		return parent::acl($method);

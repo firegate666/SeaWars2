@@ -1,4 +1,5 @@
 <?php
+	Setting::set('charset', 'ISO-8859-1', false);
 
 /**
 * generate proper XML output
@@ -8,9 +9,9 @@ class XML {
 
     function &body(&$content, $root=null, $doctype=null, $version=null) {
         $xmldef = "<?xml version=\"1.0\" encoding=\"".
-            Setting::get('charset','').'"?>'."\n";
+            Setting::get('charset','ISO-8859-1').'"?>'."\n";
         if(is_null($root) || ($root === true))
-            $root = 'projex';
+            $root = 'seawars';
         $version_attr = '';
         if (is_null($version))
             $version = "1.0";

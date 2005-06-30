@@ -58,7 +58,7 @@ if (isset ($tpl_class)) {
 	$array = Template::getLayouts($tpl_class);
 	$marker_start ='';	$marker_end ='';	foreach ($array as $items) {		if($items[0] == $tpl_layout) {			$marker_start ='<b>';			$marker_end ='</b>';		} else {			$marker_start ='';			$marker_end ='';		}?><td align="left" valign="top"><?=$marker_start?>- <?=$items[0]?>
 	<a href="<?=$link?><?=$items[0]?>">(edit)</a>
-	<a href="<?=$link?><?=$items[0]?>&tpl_delete">(delete)</a>
+	<a href="javascript:dialog_confirm('Wirklich löschen?', '<?=$link?><?=$items[0]?>&tpl_delete');">(delete)</a>
 	<a href="index.php?class=<?=$tpl_class?>&method=show&id=<?=$items[0]?>" target="_blank">(show)</a>
 	<?=$marker_end?></td></tr><?
 

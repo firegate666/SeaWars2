@@ -33,6 +33,12 @@
 	}
 ?>
 <html>
+<script language="javascript">
+function dialog_confirm(question, dest) 
+{
+  if (confirm(question)) location = dest;
+}
+</script>
 <body>
 <table width=100%>
   <tr>

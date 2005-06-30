@@ -6,20 +6,6 @@
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
-	if(get_config('noframes', false)) {
-		?>
-		<script language="JavaScript"> 
-  			<!--
-   				if(top.frames.length > 0) {
-					document.write('Die Seite wurde innerhalb eines Frames dargestellt. Es erfolgt ein Reload.');
-					top.location.href=self.location;
-    			}
-  			//--> 
-		</script> 
-		<?
-	}  
-  
-  
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
 	$id	    = $_REQUEST["id"];
@@ -63,8 +49,13 @@
 	      		} else
 	      			print $result;
       		} else if(is_array($result)) { // results an array?
-      			switch($result['content']) {
-      				case strtoupper("URL") : header("Location: ".$result['target']); break;
+      			switch(strtoupper($result['content'])) {
+      				case "URL" : header("Location: ".$result['target']); break;
+      				case "XML" : {
+      					header("Content-Type: application/xml; charset=".Setting::get('charset',''));
+      					print $result['output']; break;
+      				}
+      				default : error("Wrong content found", 'index.php', 'return handling');
       			}
       		}
     	}

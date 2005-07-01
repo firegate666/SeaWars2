@@ -43,12 +43,10 @@ class Image extends AbstractClass {
 	function Image($nameorid = '') {
 		if (empty ($nameorid))
 			return;
-                if(is_numeric($nameorid)) {
-                      	AbstractClass::AbstractClass($nameorid);
-                       	return;
-
-                } else
-		  $this->loadbyname($nameorid);
+		if(is_numeric($nameorid)) {
+			AbstractClass::AbstractClass($nameorid);
+		} else
+			$this->loadbyname($nameorid);
 	}
 }
 ?>

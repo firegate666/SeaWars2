@@ -10,6 +10,15 @@ class SeaWars extends AbstractClass {
 	var $mainbody   = '';
 	var $layoutname = '';
 
+	/**
+	 * return id of logged in player
+	 * 
+	 * @return	int	spieler id
+	 */
+	function player() {
+		return Session::getCookie('spieler_id');
+	}
+	
 	function SeaWars($layout='main'){
 		$this->layoutname = $layout;
 	}

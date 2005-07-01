@@ -1,4 +1,4 @@
-<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion extends AbstractClass {		private function load(){}	private function store(){}		public function getData(){		return $this->data;	}	
+<?	$template_classes[] = 'insel';/** * ressourceproduction for each ressource depending on island */class Rohstoffproduktion extends AbstractClass {		function load(){}	function store(){}		public function getData(){		return $this->data;	}	
 	public function Rohstoffproduktion($insel_id) {
 		global $mysql;
 		$array = $mysql->select("SELECT rp.wachstum_prozent, rp.produktion_stunde, r.sem_id, r.name

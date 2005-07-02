@@ -1,9 +1,25 @@
 <?php
+/**
+ * Traveling Salesman Problem (Solution)
+ * Give IDs, give costs, you get: Best results
+ * 
+ * Reuse without permission, no mutation
+ * 
+ * @author Marco Behnke
+ * @copyright Copyright &copy; 2005, Marco Behnke
+ * 
+*/
 class TSP {
 
 	var $ids; // array of keys
 	var $costs; // array of costs
+	
+	var $INFINITY = 100000000; // this is big
 
+	/**
+	 * @param	int[]	$ids	assoc array of ids
+	 * Example: array('6543'=>6543, '12432'=>12432);
+	 */
 	function TSP($ids){
 		foreach($ids as $id) {
 			$this->ids[$id] = $id;
@@ -11,7 +27,11 @@ class TSP {
 	}
 	
 	/**
-	 * normal calculation
+	 * normal calculation (faster, retaining start node)
+	 * 
+	 * @param	int[][]	&$costs	array of costs, after exceution totalcosts
+	 * Example: $array [6543] [12432] =10; $array[12432][6543]=12; Both ways
+	 * needed, could be different costs
 	 * 
 	 * @return	int[]	return best route retaining start node
 	 */
@@ -48,7 +68,11 @@ class TSP {
 	}
 
 	/**
-	 * complex problem solution, try every node as start node
+	 * complex problem solution, try every node as start node (slower, exacter)
+	 * 
+	 * @param	int[][]	&$costs	array of costs, after exceution totalcosts
+	 * Example: $array [6543] [12432] =10; $array[12432][6543]=12; Both ways
+	 * needed, could be different costs
 	 * 
 	 * @return	int[]	best result
 	 */
@@ -62,6 +86,7 @@ class TSP {
 			$bigbag[0][$count++] = $id;
 		}
 
+		// permutation, create big bag with all nodes as startnode
 		$permut = 0;
 		for($permut = 0; $permut < $anzahl_knoten; $permut++) {
  			for($i = 0; $i < $anzahl_knoten-1; $i++) {
@@ -80,8 +105,9 @@ class TSP {
 			$count++;
 		}
 		
+		// now calculation
 		$totalresults = array();
-		$bestcost = 10000000000;		
+		$bestcost = $this->INFINITY;	
 		foreach($bigbag2 as $bag) {
 			$node = pos($bag);
 			$result = array();

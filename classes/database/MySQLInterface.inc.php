@@ -5,6 +5,16 @@
  * 
  * WORK IN PROGRESS !! 
  */
+ /*
+  Example use:
+   	$mysqli = new MySQLInterface();
+  	$fields = array();
+  	$tables = array('insel');
+  	$where[]= array('field'=>'a', 'val'=>1,'next' => 'OR');
+  	$where[]= array('field'=>'c', 'val'=>'b','comp'=>'<');
+  	$orderby[]= array('orderby'=>'id', 'orderdir'=>'DESC');
+  	$mysqli->select($fields, $tables, array(), $orderby));
+  */
 class MySQLInterface {
 	
 	private $mysql;
@@ -21,14 +31,27 @@ class MySQLInterface {
 	 * @param	String[][]	$where	array(array('field', 'comp', 'val',
 	 * 'next')), where default for comparator is = and next is AND
 	 */
-	public function select($fields, $tables, $where, $orderby=array()) {
-		$fields = $this->createFields($fields,"'",'*');
+	public function select($fields, $tables, $where=array(), $orderby=array()) {
+		$fields = $this->createFields($fields,"",'*');
 		$tables = $this->createFields($tables,"",null);
 		$orderby = $this->createOrderby($orderby);
 		$where = $this->createWhere($where);
 
 		$statement = $this->buildStatement($fields, $tables, $where, $orderby);
-		print_a($statement);		
+		return $this->mysql->select($statement);		
+	}
+	
+	private function buildStatement($fields, $tables, $where, $orderby) {
+		$result = '';
+		$result .= 'SELECT '.implode(',', $fields);
+		$result .= ' FROM '.implode(',', $tables);
+		if(!empty($where)) {
+			$result .= ' WHERE '.implode('', $where);
+		}
+		if(!empty($orderby)) {
+			$result .= ' ORDER BY '.implode(',', $orderby);
+		}
+		return $result;
 	}
 	
 	private function createWhere($where){

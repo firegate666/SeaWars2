@@ -9,6 +9,26 @@ class AbstractNoNavigationClass {
 	protected $language;
 	
 	/**
+	 * workaround for get_class to user with lowercase
+	 * tablenames
+	 * 
+	 * @return	String	lowercase class name
+	 */
+	private function class_name() {
+		return strtolower(get_class($this));
+	}
+	
+	/**
+	 * return xml document of all items
+	 */
+	function xmllist() {
+		global $mysql;
+		$result[get_class($this)] = $mysql->select("SELECT * FROM ".$this->class_name, true);
+		$output = XML::get($result);
+		return xml($output);
+	}
+	
+	/**
 	 * All database fields are made public at this place
 	 * Each field is one array row
 	 * Example
@@ -20,7 +40,7 @@ class AbstractNoNavigationClass {
 	 * it has to be implmented in each class, else it throws
 	 * an error
 	 */
-	function getFields() {
+	private function getFields() {
 		return true;
 		// not yet used
 		// if activated
@@ -46,10 +66,19 @@ class AbstractNoNavigationClass {
 	/**
 	 * Setter
 	 */
-	function set($key, $value) {
+	public function set($key, $value) {
 		$this->data[$key] = $value;
 	}
 	
+	/**
+	 * Getter
+	 */
+	public function get($key) {
+		if($key == 'id')
+			return $this->id;
+		return $this->data[$key];
+	}
+
 	/**
 	 * not used yet
 	 * not sure if used anywhen
@@ -87,9 +116,6 @@ class AbstractNoNavigationClass {
     	unset($this->data[id]);
     }
 
-	function show() {
-	}
-    
     /**
      * delete me
      */
@@ -141,7 +167,7 @@ class AbstractNoNavigationClass {
       print_a($this);
     }
 	
-	function AbstractNoNavigationClass($id='') {
+	public function AbstractNoNavigationClass($id='') {
 		if(!$this->getFields()) error("No fields set",get_class($this),'Constructor');
 		if(empty($id) || !is_numeric($id)) return;
 		$this->id=$id;
@@ -153,7 +179,9 @@ class AbstractNoNavigationClass {
 	* allowed to call.
 	* @param	String	$method	function to test
 	*/
-	function acl($method) {
+	public function acl($method) {
+		// more rights have to be checked at this place
+		//if($method == 'xmllist') return true;
 		return false;
 	}
 	
@@ -170,6 +198,15 @@ class AbstractNoNavigationClass {
 	
 	function getNavigation(&$vars) {
 		return "&nbsp;";
+	}
+
+	/**
+	 * generic show using template page
+	 * 
+	 * @param	String[]	$vars	request parameters
+	 */
+	function show(& $vars) {
+		return $this->getLayout(array(), "page", $vars);
 	}
 
 	/**

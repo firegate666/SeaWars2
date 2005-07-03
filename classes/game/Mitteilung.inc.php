@@ -53,7 +53,6 @@
     	else
     		return "Nachricht nicht existent";
 	}
-	
 	/**
 	 * parst die Formulareingabe zum erzeugen einer neuen Nachricht
 	 * liefert unbekannten Fehler!

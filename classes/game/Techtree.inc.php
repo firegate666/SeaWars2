@@ -133,7 +133,7 @@ class TTEntryRohstoff extends AbstractClass {
   	/**
 	 * all fields used in class
 	 */
-	private function getFields() {
+	protected function getFields() {
 		$fields[] = array('name' => 'rohstoffid', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'ttentry_resid', 'type' => 'Integer', 'notnull' => true);
 	}
@@ -146,7 +146,7 @@ class TTEntryDependson extends AbstractClass {
   	/**
 	 * all fields used in class
 	 */
-	private function getFields() {
+	protected function getFields() {
 		$fields[] = array('name' => 'entry_id', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'dependson_id', 'type' => 'Integer', 'notnull' => true);
 	}
@@ -232,7 +232,7 @@ class TTCategory extends AbstractClass {
   	/**
 	 * all fields used in class
 	 */
-	private function getFields() {
+	protected function getFields() {
 		$fields[] = array('name' => 'name', 'type' => 'String', 'notnull' => true);
 		return $fields;
 	}
@@ -245,7 +245,7 @@ class TTEntry extends AbstractClass {
   	/**
 	 * all fields used in class
 	 */
-	private function getFields() {
+	protected function getFields() {
 		$fields[] = array('name' => 'name', 'type' => 'String', 'notnull' => true);
 		$fields[] = array('name' => 'description', 'type' => 'String', 'notnull' => true);
 		$fields[] = array('name' => 'image_id', 'type' => 'Integer', 'notnull' => true);
@@ -276,7 +276,7 @@ class TTType extends AbstractClass {
   	/**
 	 * all fields used in class
 	 */
-	private function getFields() {
+	protected function getFields() {
 		$fields[] = array('name' => 'name', 'type' => 'String', 'notnull' => true);
 		$fields[] = array('name' => 'beschreibung', 'type' => 'String', 'notnull' => true);
 		return $fields;

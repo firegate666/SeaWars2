@@ -49,7 +49,7 @@ class TechTree extends AbstractClass {
 				$tech = new TTEntry($techid);
 				$array = array();
 				$array['name'] = $tech->get('name');
-				$array['aufwand'] = $tech->get('aufwand');
+				$array['dauer'] = $tech->get('aufwand');
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
 					$array['image'] = $i->get('url');

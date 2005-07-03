@@ -2,7 +2,7 @@
 /**
  * The main features everyone should know
  */
-class AbstractNoNavigationClass {
+abstract class AbstractNoNavigationClass {
 	
     protected $data;
     protected $id;
@@ -109,7 +109,7 @@ class AbstractNoNavigationClass {
 	function load() {
         //if(!$this->exists()) return;
     	$id 		= mysql_real_escape_string($this->id);
-    	$tablename 	= get_class($this);
+    	$tablename 	= $this->class_name();
     	$sql = new MySQL();
     	$this->data = $sql->executeSql("SELECT * FROM ".get_class($this)." WHERE id=$id;");
     	$this->id	= $this->data[id];
@@ -122,7 +122,7 @@ class AbstractNoNavigationClass {
     function delete() {
     	global $mysql;
     	if(empty($this->id)) return;
-    	$tablename = get_class($this);
+    	$tablename = $this->class_name();
     	$id = $this->id;
     	$query = "DELETE FROM $tablename WHERE id=$id";
     	$mysql->update($query);

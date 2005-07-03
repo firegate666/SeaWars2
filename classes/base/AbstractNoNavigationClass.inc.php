@@ -14,7 +14,7 @@ abstract class AbstractNoNavigationClass {
 	 * 
 	 * @return	String	lowercase class name
 	 */
-	private function class_name() {
+	protected function class_name() {
 		return strtolower(get_class($this));
 	}
 	
@@ -23,7 +23,7 @@ abstract class AbstractNoNavigationClass {
 	 */
 	function xmllist() {
 		global $mysql;
-		$result[get_class($this)] = $mysql->select("SELECT * FROM ".$this->class_name, true);
+		$result[$this->class_name()] = $mysql->select("SELECT * FROM ".$this->class_name, true);
 		$output = XML::get($result);
 		return xml($output);
 	}
@@ -40,7 +40,7 @@ abstract class AbstractNoNavigationClass {
 	 * it has to be implmented in each class, else it throws
 	 * an error
 	 */
-	private function getFields() {
+	protected function getFields() {
 		return true;
 		// not yet used
 		// if activated
@@ -54,7 +54,7 @@ abstract class AbstractNoNavigationClass {
 	 */
 	function getlist($classname='') {
 		global $mysql;
-		if(empty($classname)) $classname = get_class($this);
+		if(empty($classname)) $classname = $this->class_name();
 		$result = $mysql->select("SELECT id FROM ".mysql_real_escape_string($classname), true);
 		return $result;
 	}
@@ -111,7 +111,7 @@ abstract class AbstractNoNavigationClass {
     	$id 		= mysql_real_escape_string($this->id);
     	$tablename 	= $this->class_name();
     	$sql = new MySQL();
-    	$this->data = $sql->executeSql("SELECT * FROM ".get_class($this)." WHERE id=$id;");
+    	$this->data = $sql->executeSql("SELECT * FROM ".$tablename." WHERE id=$id;");
     	$this->id	= $this->data[id];
     	unset($this->data[id]);
     }
@@ -143,7 +143,7 @@ abstract class AbstractNoNavigationClass {
       }
       // CREATE SQL Statement
       $sql = new MySQL();
-      $tablename = get_class($this);
+      $tablename = $this->class_name();
       if($this->id=='') {
 	      $query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
 	      //echo($query);
@@ -168,7 +168,7 @@ abstract class AbstractNoNavigationClass {
     }
 	
 	public function AbstractNoNavigationClass($id='') {
-		if(!$this->getFields()) error("No fields set",get_class($this),'Constructor');
+		if(!$this->getFields()) error("No fields set",$this->class_name(),'Constructor');
 		if(empty($id) || !is_numeric($id)) return;
 		$this->id=$id;
 		$this->load();
@@ -193,7 +193,7 @@ abstract class AbstractNoNavigationClass {
 	 */
 	function getLayout($array, $layout, &$vars) {
 		$t = new Template();
-		return $t->getLayout(get_class($this),$layout,$array,false,$vars);
+		return $t->getLayout($this->class_name(),$layout,$array,false,$vars);
 	}
 	
 	function getNavigation(&$vars) {

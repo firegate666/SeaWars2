@@ -1,6 +1,6 @@
 <?
 
-class AbstractClass extends AbstractNoNavigationClass {
+abstract class AbstractClass extends AbstractNoNavigationClass {
 
 	function getNavigation(&$vars) {
 		$nav = new Navigation();

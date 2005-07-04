@@ -11,11 +11,17 @@
 	$id	    = $_REQUEST["id"];
 	$vars	= array_merge(array(), $_REQUEST);
 	
+	// clean up request parameters
+	for($i = 0; $i < count($vars); $i++) {
+		$vars[$i] = mysql_real_escape_string($vars[$i]);
+	}
+	
 	/**
 	 * Admincall?
 	 */
 	if(isset($admin)) {
 		include('admin/admin.php');
+	  	$mysql->disconnect(); // remember to close connection
 		die();
 	}
 	/**
@@ -64,7 +70,8 @@
 	} else {
     	error("Class not found",$class,$method);
   	}
-  	
+  	if(get_config('debug', false))
+  		print "<hr><b>Queries executed:</b> ".($mysql->querycount);
   	// clean up the mess
   	$mysql->disconnect();
 ?>

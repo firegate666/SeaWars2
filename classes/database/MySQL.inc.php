@@ -16,7 +16,6 @@ class MySQL extends SQL {
 
 	public function MySQL() {
 		$this->querycount = 0;
-		$this->connect();
 	}
 
 	/**
@@ -43,12 +42,13 @@ class MySQL extends SQL {
 		global $dbdatabase;
 		$this->querycount++;
 		
-		if(mysql_ping($this->dblink)) // connection still exists?
+		if(($this->dblink != null) && mysql_ping($this->dblink)) // connection still exists?
 			return;
-		
-		$flags = MYSQL_CLIENT_COMPRESS + MYSQL_CLIENT_INTERACTIVE;
-		$this->dblink = MYSQL_CONNECT($dbserver, $dbuser, $dbpassword, false, $flags) or die("<H3>MySQL error: Databaseserver not responding.</H3>");
-		MYSQL_SELECT_DB($dbdatabase) or die("<H3>MySQL error: Database not available.</H3>");
+		else {
+	  		$flags = MYSQL_CLIENT_COMPRESS + MYSQL_CLIENT_INTERACTIVE;
+	  		$this->dblink = MYSQL_CONNECT($dbserver, $dbuser, $dbpassword, false, $flags) or die("<H3>MySQL error: Databaseserver not responding.</H3>");
+	  		MYSQL_SELECT_DB($dbdatabase) or die("<H3>MySQL error: Database not available.</H3>");
+		}
 	}
 
 	/**

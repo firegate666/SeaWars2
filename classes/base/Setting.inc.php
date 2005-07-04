@@ -12,6 +12,7 @@ class Setting {
 		global $mysql;
 		$name = mysql_real_escape_string($name);
 		$value = mysql_real_escape_string($value);
+		$description = mysql_real_escape_string($description);
 		$result = Setting::get($name, '');
 		if(!empty($result))
 			if(!$override) return false;
@@ -20,7 +21,7 @@ class Setting {
 				return true;
 			}
 		else {
-			$mysql->insert("INSERT INTO setting(name, value) VALUES ('$name', '$value');");
+			$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
 			return true;
 		}
 	}

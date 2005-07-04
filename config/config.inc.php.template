@@ -42,6 +42,9 @@
 	$_CONFIG["default_method"] = "show";
 	$_CONFIG["default_id"] = "index";
 	
+	// if true, debug messages will be printed
+	$_CONFIG["debug"] = false;
+
 	// if site is shown in frame, reload as _top
 	// only works with JavaScript
 	$_CONFIG["noframes"] = false;

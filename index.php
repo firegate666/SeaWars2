@@ -12,9 +12,10 @@
 	$vars	= array_merge(array(), $_REQUEST);
 	
 	// clean up request parameters
-	for($i = 0; $i < count($vars); $i++) {
-		$vars[$i] = mysql_real_escape_string($vars[$i]);
-	}
+// does not work, kills apache
+//	for($i = 0; $i < count($vars); $i++) {
+//		$vars[$i] = mysql_real_escape_string($vars[$i]);
+//	}
 	
 	/**
 	 * Admincall?
@@ -71,7 +72,7 @@
     	error("Class not found",$class,$method);
   	}
   	if(get_config('debug', false))
-  		print "<hr><b>Queries executed:</b> ".($mysql->querycount);
+  		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount());
   	// clean up the mess
   	$mysql->disconnect();
 ?>

@@ -30,6 +30,10 @@ class MySQL extends SQL {
 		global $dbuser;
 		global $dbpassword;
 		global $dbdatabase;
+		
+		if(mysql_ping($this->dblink)) // connection still exists?
+			return;
+		
 		$flags = MYSQL_CLIENT_COMPRESS + MYSQL_CLIENT_INTERACTIVE;
 		$this->dblink = MYSQL_CONNECT($dbserver, $dbuser, $dbpassword, false, $flags) or die("<H3>MySQL error: Databaseserver not responding.</H3>");
 		MYSQL_SELECT_DB($dbdatabase) or die("<H3>MySQL error: Database not available.</H3>");
@@ -49,6 +53,7 @@ class MySQL extends SQL {
 	  @return	last insert id
 	*/
 	function insert($query) {
+		$this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("insert", $query);
 		$id = MYSQL_INSERT_ID();
 		return $id;
@@ -66,6 +71,7 @@ class MySQL extends SQL {
 	  @return	result set as array
 	*/
 	function select($query, $assoc = false) {
+		$this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("select", $query);
 		$return = array ();
 		$counter = 0;
@@ -84,6 +90,7 @@ class MySQL extends SQL {
 	  @return	result set with single row
 	*/
 	function executeSql($query) {
+		$this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("executeSql", $query);
 		$result = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC);
 		return $result;
@@ -95,6 +102,7 @@ class MySQL extends SQL {
 	  @return	number of affected rows
 	*/
 	function update($query) {
+		$this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("update", $query);
 		$rows = MYSQL_AFFECTED_ROWS();
 		return $rows;

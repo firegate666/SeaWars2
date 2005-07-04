@@ -7,8 +7,8 @@
 
 	// stripped from admin.php
 	// has to be replaced by Users and Groups sometimes
-	$_CONFIG['adminuser'] = 'admin';
-	$_CONFIG['adminpassword'] = 'admin';
+	$_CONFIG['adminuser'] = '';
+	$_CONFIG['adminpassword'] = '';
 
 	// enable modules
 	$_CONFIG["cms"] = false;	// enable CMS

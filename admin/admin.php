@@ -1,6 +1,13 @@
 <?
 	function login($user, $pass) {
-		if(($user==get_config('adminuser')) && ($pass==get_config('adminpassword'))) {
+		
+		$adminuser = get_config('adminuser');
+		$adminpassword = get_config('adminpassword');
+		
+		if(empty($adminuser) || empty($adminpassword))
+			error("No adminuser and/or password set. Update config file", 'admin', 'login');
+		
+		if(($user==$adminuser) && ($pass==$adminpassword)) {
 			setcookie('adminlogin', 'true', NULL);
 			return true;
 		} else return false;
@@ -8,7 +15,7 @@
 
 	if(isset($logout)) {
 		setcookie('adminlogin','',0);
-		header("Location: index.php?admin");
+		header("Location: index.php");
 	}
 
 	if(isset($login_name) && isset($login_pass)) {

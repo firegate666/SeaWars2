@@ -6,6 +6,16 @@
  */
 class MySQL extends SQL {
 
+	
+	/**
+	* DB Ressource connection
+	*/
+	protected $dblink;
+
+	public function MySQL() {
+		$this->connect();
+	}
+
 	/**
 	  Connects to MySQL Database using global parameters
 	  $dbserver
@@ -20,17 +30,17 @@ class MySQL extends SQL {
 		global $dbuser;
 		global $dbpassword;
 		global $dbdatabase;
-		$dblink = MYSQL_CONNECT($dbserver, $dbuser, $dbpassword) or die("<H3>MySQL error: Databaseserver not responding.</H3>");
+		$flags = MYSQL_CLIENT_COMPRESS + MYSQL_CLIENT_INTERACTIVE;
+		$this->dblink = MYSQL_CONNECT($dbserver, $dbuser, $dbpassword, false, $flags) or die("<H3>MySQL error: Databaseserver not responding.</H3>");
 		MYSQL_SELECT_DB($dbdatabase) or die("<H3>MySQL error: Database not available.</H3>");
-		return $dblink;
 	}
 
 	/**
 	  Disconnects database
 	  @dblink	databaselink
 	*/
-	function disconnect($dblink) {
-		MYSQL_CLOSE($dblink);
+	function disconnect() {
+		MYSQL_CLOSE($this->dblink);
 	}
 
 	/**
@@ -39,10 +49,8 @@ class MySQL extends SQL {
 	  @return	last insert id
 	*/
 	function insert($query) {
-		$dblink = $this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("insert", $query);
 		$id = MYSQL_INSERT_ID();
-		$this->disconnect($dblink);
 		return $id;
 	}
 
@@ -58,7 +66,6 @@ class MySQL extends SQL {
 	  @return	result set as array
 	*/
 	function select($query, $assoc = false) {
-		$dblink = $this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("select", $query);
 		$return = array ();
 		$counter = 0;
@@ -68,7 +75,6 @@ class MySQL extends SQL {
 		else
 			while ($line = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC))
 				$return[$counter ++] = $line;
-		$this->disconnect($dblink);
 		return $return;
 	}
 
@@ -78,10 +84,8 @@ class MySQL extends SQL {
 	  @return	result set with single row
 	*/
 	function executeSql($query) {
-		$dblink = $this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("executeSql", $query);
 		$result = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC);
-		$this->disconnect($dblink);
 		return $result;
 	}
 
@@ -91,10 +95,8 @@ class MySQL extends SQL {
 	  @return	number of affected rows
 	*/
 	function update($query) {
-		$dblink = $this->connect();
 		$result = MYSQL_QUERY($query) or $this->print_error("update", $query);
 		$rows = MYSQL_AFFECTED_ROWS();
-		$this->disconnect($dblink);
 		return $rows;
 	}
 }

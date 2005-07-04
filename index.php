@@ -63,5 +63,8 @@
       		error("Method not not found",$class,$method);
 	} else {
     	error("Class not found",$class,$method);
-  	}  
+  	}
+  	
+  	// clean up the mess
+  	$mysql->disconnect();
 ?>

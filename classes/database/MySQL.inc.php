@@ -6,6 +6,8 @@
  */
 class MySQL extends SQL {
 
+
+	private $querycount;
 	
 	/**
 	* DB Ressource connection
@@ -13,7 +15,16 @@ class MySQL extends SQL {
 	protected $dblink;
 
 	public function MySQL() {
+		$this->querycount = 0;
 		$this->connect();
+	}
+
+	/**
+	* returns number of queries executed
+	* @return	int	number of queries
+	*/
+	public function getQuerycount() {
+		return $this->querycount;
 	}
 
 	/**
@@ -30,6 +41,7 @@ class MySQL extends SQL {
 		global $dbuser;
 		global $dbpassword;
 		global $dbdatabase;
+		$this->querycount++;
 		
 		if(mysql_ping($this->dblink)) // connection still exists?
 			return;

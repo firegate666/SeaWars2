@@ -17,8 +17,7 @@
 }
 /** * xml output */function xml($output) {	$result = array ('content' => 'XML', 'output' => $output);	return $result;}
 /** * Create error */function error($error, $class, $method, $vars=array()) {
-	$error = new Error($error, $class, $method);
-	die($error->show($vars));
+	global $mysql;	$error = new Error($error, $class, $method);	print $error->show($vars);	$mysql->disconnect();	die();
 }
 
 /** * improved print_r */function print_a($array) {

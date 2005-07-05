@@ -13,6 +13,7 @@
 	
 	// clean up request parameters
 // does not work, kills apache
+// maybe because of double escapes
 //	for($i = 0; $i < count($vars); $i++) {
 //		$vars[$i] = mysql_real_escape_string($vars[$i]);
 //	}

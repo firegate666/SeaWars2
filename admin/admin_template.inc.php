@@ -1,9 +1,8 @@
-<?if(!isset($_COOKIE['adminlogin'])) die("DENIED");
+<?$adminlogin = Session::getCookie('adminlogin');if(empty($adminlogin)) die("DENIED");
 if (isset ($tpl_content)) {
-	$DB = new MySQL();
-	$tpl_content = html_entity_decode($tpl_content);	$tpl_class = mysql_real_escape_string($tpl_class);	$tpl_layout = mysql_real_escape_string($tpl_layout);
+	global $mysql;	$tpl_content = html_entity_decode($tpl_content);	$tpl_class = mysql_real_escape_string($tpl_class);	$tpl_layout = mysql_real_escape_string($tpl_layout);
 	$tpl_query = "UPDATE template SET content='$tpl_content' WHERE class='$tpl_class' AND layout = '$tpl_layout';";
-	$DB->update($tpl_query);
+	$mysql->update($tpl_query);
 	unset ($tpl_layout);
 }
 if (isset ($tpl_addlayout)) {

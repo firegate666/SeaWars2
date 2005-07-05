@@ -44,7 +44,7 @@
 
 	/**	 * check if method is allowed	 * @param	String	$method	method to test	 * @return	boolean	true/false	 */	public function acl($method) {
 		if ($method == 'show')
-			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session :: getCookie('spieler_id')); // better would be owner check
+			return (Login :: isLoggedIn()) && ($this->data['spieler_id'] == Session::getCookie('spieler_id')); // better would be owner check
 		return parent::acl($method);
 	}
 

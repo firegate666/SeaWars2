@@ -3,16 +3,20 @@
     var $sid;
 
     function getCookie($name) {
-      return $_COOKIE[$name];
+      return $_SESSION[$name];
+      //return $_COOKIE[$name];
     }
     function setCookie($name, $value) {
-      setcookie($name, $value, NULL);
+		$_SESSION[$name] = $value;
+      //setcookie($name, $value, NULL);
     }
     function removeCookie($name){
-      	setcookie($name,"",0);
+    	$_SESSION[$name] = '';
+      	//setcookie($name,"",0);
     }
     function cleanUpCookies(){
-                             	$_COOKIES = array();
+    	$_SESSION = array();
+        //$_COOKIES = array();
     }
 
 

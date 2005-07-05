@@ -8,13 +8,13 @@
 			error("No adminuser and/or password set. Update config file", 'admin', 'login');
 		
 		if(($user==$adminuser) && ($pass==$adminpassword)) {
-			setcookie('adminlogin', 'true', NULL);
+			Session::setCookie('adminlogin', 'true', NULL);
 			return true;
 		} else return false;
 	}
 
 	if(isset($logout)) {
-		setcookie('adminlogin','',0);
+		Session::setCookie('adminlogin','',0);
 		header("Location: index.php");
 	}
 
@@ -23,7 +23,8 @@
 		else header("Location: index.php?admin");
 	}
 
-	if(!isset($_COOKIE['adminlogin'])) { ?>
+	$adminlogin = Session::getCookie('adminlogin');
+	if(empty($adminlogin)) { ?>
 		<h3>Adminlogin</h3>
 		<font color="#FF0000"><?=$error?></font>
 		<form>

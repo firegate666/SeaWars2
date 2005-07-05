@@ -6,7 +6,7 @@
  */
 class MySQL extends SQL {
 
-
+	private $queries;
 	private $querycount;
 	
 	/**
@@ -24,6 +24,13 @@ class MySQL extends SQL {
 	*/
 	public function getQuerycount() {
 		return $this->querycount;
+	}
+	
+	/**
+	 * Return all queries of this instance
+	 */
+	public function getQueries(){
+		return $this->queries;			
 	}
 
 	/**
@@ -56,7 +63,8 @@ class MySQL extends SQL {
 	  @dblink	databaselink
 	*/
 	function disconnect() {
-		MYSQL_CLOSE($this->dblink);
+		if($this->dblink != null)
+			MYSQL_CLOSE($this->dblink);
 	}
 
 	/**
@@ -66,6 +74,7 @@ class MySQL extends SQL {
 	*/
 	function insert($query) {
 		$this->connect();
+		$this->queries[] = $query;			
 		$result = MYSQL_QUERY($query) or $this->print_error("insert", $query);
 		$id = MYSQL_INSERT_ID();
 		return $id;
@@ -84,6 +93,7 @@ class MySQL extends SQL {
 	*/
 	function select($query, $assoc = false) {
 		$this->connect();
+		$this->queries[] = $query;			
 		$result = MYSQL_QUERY($query) or $this->print_error("select", $query);
 		$return = array ();
 		$counter = 0;
@@ -103,6 +113,7 @@ class MySQL extends SQL {
 	*/
 	function executeSql($query) {
 		$this->connect();
+		$this->queries[] = $query;			
 		$result = MYSQL_QUERY($query) or $this->print_error("executeSql", $query);
 		$result = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC);
 		return $result;
@@ -115,9 +126,11 @@ class MySQL extends SQL {
 	*/
 	function update($query) {
 		$this->connect();
+		$this->queries[] = $query;			
 		$result = MYSQL_QUERY($query) or $this->print_error("update", $query);
 		$rows = MYSQL_AFFECTED_ROWS();
 		return $rows;
 	}
+	
 }
 ?>

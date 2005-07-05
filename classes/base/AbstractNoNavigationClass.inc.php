@@ -107,11 +107,11 @@ abstract class AbstractNoNavigationClass {
 	 * all data is fetched from table and stored into $this->data
 	 */
 	function load() {
+		global $mysql;
         //if(!$this->exists()) return;
     	$id 		= mysql_real_escape_string($this->id);
     	$tablename 	= $this->class_name();
-    	$sql = new MySQL();
-    	$this->data = $sql->executeSql("SELECT * FROM ".$tablename." WHERE id=$id;");
+    	$this->data = $mysql->executeSql("SELECT * FROM ".$tablename." WHERE id=$id;");
     	$this->id	= $this->data[id];
     	unset($this->data[id]);
     }
@@ -134,6 +134,7 @@ abstract class AbstractNoNavigationClass {
      * Update if existed, insert if new
      */
     function store() {
+    	global $mysql;
       if(empty($this->data)) return;
       // Seperate keys from values
       $keys   = array_keys($this->data);
@@ -142,22 +143,20 @@ abstract class AbstractNoNavigationClass {
       	$values[$i] = "'".mysql_real_escape_string($values[$i])."'";
       }
       // CREATE SQL Statement
-      $sql = new MySQL();
       $tablename = $this->class_name();
       if($this->id=='') {
 	      $query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
 	      //echo($query);
-	      $this->id = $sql->insert($query);
+	      $this->id = $mysql->insert($query);
       } else {
 		  $query  = "UPDATE $tablename SET";
 		  $query .= " ".$keys[0]."=".$values[0];
 	      for($i=1;$i<count($values);$i++)
 	      	$query .= ", ".$keys[$i]."=".$values[$i];
 	      $query .= " WHERE id=".$this->id.";";
-	      $sql->update($query);
+	      $mysql->update($query);
       }
       return $this->id;
-      //echo("<p>SQL Statement: $query</p>");
     }
     
     /**

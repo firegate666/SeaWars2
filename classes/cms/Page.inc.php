@@ -33,7 +33,8 @@ class Page extends AbstractNoNavigationClass {
 	function show(&$vars) {
 		if($this->name=='') return error("Pagename not given",$this->class_name(),"show");
 		$output = $this->getLayout(array(),$this->name, $vars);
-		if(isset($_COOKIE['adminlogin']) && get_config('quickedit'))
+		$adminlogin = Session::getCookie('adminlogin');
+		if(!empty($adminlogin) && get_config('quickedit'))
 			$output = $this->adminbar($this->name).$output;
 		return $output;
 	}

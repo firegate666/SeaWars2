@@ -1,1 +1,3 @@
 config.inc.php
+config.inc.php.local
+config.inc.php.remote

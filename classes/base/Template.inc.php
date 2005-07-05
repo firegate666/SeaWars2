@@ -81,9 +81,9 @@ class Template {
 	 * @return	String[]	all layouts
 	 */
 	function getLayouts($class) {
+		global $mysql;
 		$class = mysql_real_escape_string($class);
-		$DB = new MySQL();
-		$result = $DB->select("SELECT layout, id FROM template WHERE class='$class';");
+		$result = $mysql->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
 	}
 	
@@ -108,15 +108,17 @@ class Template {
 	 * @return	String	template as string
 	 */
 	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array()){
+		global $mysql;
 		$class = mysql_real_escape_string($class);
 		$layout = mysql_real_escape_string($layout);
-		// hier überprüfen, ob cache vorhanden
-		//$string = Template::getLayoutCached($class, $layout);
-		//if($string === false) {
-			$DB = new MySQL();
-			$result = $DB->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
+		$strin = '';
+		if(isset($_SESSION['template'][$class][$layout]))
+			$string = $_SESSION['template'][$class][$layout];
+		else {
+			$result = $mysql->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
 			$string = $result[0][0];
-		//}
+			$_SESSION['template'][$class][$layout] = $string;
+		}
 		if($noparse) return $string;
 		$keys = array_keys($array);
 		foreach($keys as $key) {

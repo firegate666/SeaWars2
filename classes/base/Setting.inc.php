@@ -35,11 +35,14 @@ class Setting {
 	*/
 	function get($name, $default='') {
 		global $mysql;
+		if(isset($_SESSION['setting'][$name]))
+			return $_SESSION['setting'][$name];
 		$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_real_escape_string($name)."';");
 		if(isset($result['value']))
-			return $result['value'];
+			$result = $result['value'];
 		else
-			return $default;
+			$result = $default;
+		$_SESSION['setting'][$name] = $result;
 		return $result;
 	}
 }

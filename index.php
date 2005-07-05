@@ -1,4 +1,6 @@
 <?
+	session_start();
+
 	/**
 	* one file to rule them all
 	*/
@@ -72,8 +74,10 @@
 	} else {
     	error("Class not found",$class,$method);
   	}
-  	if(get_config('debug', false))
-  		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount());
+  	if(get_config('debug', false)) {
+  		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount())."<br>";
+  		//print_a($mysql->getQueries());
+  	}
   	// clean up the mess
   	$mysql->disconnect();
 ?>

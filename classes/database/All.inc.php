@@ -5,6 +5,6 @@
 	require_once $d.'MySQL.inc.php';
 	require_once $d.'MySQLInterface.inc.php';
 
-        $mysql = new MySQL();
+    $mysql = new MySQL();
 
 ?>

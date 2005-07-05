@@ -1,5 +1,6 @@
 <?
-if(!isset($_COOKIE['adminlogin'])) die("DENIED");
+$adminlogin = Session::getCookie('adminlogin');
+if(empty($adminlogin)) die("DENIED");
 
 if(isset($cat) && isset($create)) {
 	$tc = new TTCategory();

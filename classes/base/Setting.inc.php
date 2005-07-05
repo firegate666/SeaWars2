@@ -33,7 +33,7 @@ class Setting {
 	* @param	String	$default	default if not set
 	* @return	String	value of setting
 	*/
-	function get($name, $default) {
+	function get($name, $default='') {
 		global $mysql;
 		$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_real_escape_string($name)."';");
 		if(isset($result['value']))

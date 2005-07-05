@@ -5,6 +5,10 @@
 	$dbpassword = "<password>";	// Benutzerpasswort
 	$dbdatabase = "<database>";	// Datenbank
 
+	// Store passwords encrypted?
+	// Never change on a running system
+	$_CONFIG['encryptpwd'] = true;
+
 	// stripped from admin.php
 	// has to be replaced by Users and Groups sometimes
 	$_CONFIG['adminuser'] = '';
@@ -12,6 +16,7 @@
 
 	// enable modules
 	$_CONFIG["cms"] = false;	// enable CMS
+
 	$_CONFIG["game"] = false;	// enable Game
 	
 	// this is where are uploaded files are stored

@@ -1,8 +1,6 @@
 ########
 # TODO #
 ########
-* Sicherheitsabfrage bei delete im CMS
-
 * evtl upload für den direkten Zugriff sperren
 * und über Klasse kapseln
 
@@ -10,8 +8,6 @@
 
 * Benutzergruppen definieren, z.B. Admin
 * Passwort aus admin.php entfernen, Zugriff über Benutzergruppen regeln.
-
-* Spieler Passwort verschlüsseln
 
 * Abstract Naming of all game class
 SeaWars -> Game etc...
@@ -27,3 +23,5 @@ SeaWars -> Game etc...
 ########
 * admin, classes, config, include, install
 * per .htaccess schützen, kein direkter Zugriff
+* Sicherheitsabfrage bei delete im CMS
+* Spieler Passwort verschlüsseln

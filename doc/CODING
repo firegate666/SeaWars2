@@ -70,3 +70,12 @@ und ?berpr?ft die Rechte. Bsp:
 
 Nur eingeloggte Benutzer haben Zugriff auf die Methode show() und auch nur, wenn der
 eingeloggte Spieler die selbe ID hat, wie die, die in der Instanzvariable gespeichert ist.
+
+###################
+# Verschlüsselung #
+###################
+
+Wenn es vom Gesamtsystem abhängig ist, ob Verschlüsselung verwendet
+wird oder nicht, sollte die Funktion myencrypt(String) benutzt werden.
+Je nachdem ob in der config.inc.php Verschlüsselung aktiviert ist,
+wird hiermit ein Passwort verschlüsselt oder nicht.

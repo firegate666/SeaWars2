@@ -8,6 +8,9 @@
  */
 class TechTree extends AbstractClass {
 	
+	protected $categories;
+	protected $techtree;
+	
 	public function update(){
 	}
 	
@@ -20,19 +23,15 @@ class TechTree extends AbstractClass {
 	 * @param	String[]	$vars	request parameters
 	 */
 	function show(&$vars) {
-		$cat = new TTCategory();
-		$cat_list = $cat->getlist();
 		$catlayout = '';
-		foreach($cat_list as $catid) {
+		foreach($this->categories as $catid) {
 			$cat = new TTCategory($catid['id']);
 			$catlayout .= $this->getLayout(array('categoryname' => $cat->get('name')), "category_deactivated ", $vars);
 		}
 
-		$tech_list = $this->getTechTree();
-		$techlayout = '';
 		// know techs
-		if(isset($tech_list['known']))
-			foreach($tech_list['known'] as $techid) {
+		if(isset($this->techtree['known']))
+			foreach($this->techtree['known'] as $techid) {
 				$tech = new TTEntry($techid);
 				$array['name'] = $tech->get('name');
 				if($tech->get('imageid') != 0) {
@@ -40,12 +39,25 @@ class TechTree extends AbstractClass {
 					$array['image'] = $i->get('url');
 				} else
 					$array['image'] = '';
-				$techlayout .= $this->getLayout($array, "tech_known ", $vars);
+				$techlayout .= $this->getLayout($array, "tech_known", $vars);
 			}
 		
+		// running techs
+		if(isset($this->techtree['running']))
+			foreach($this->techtree['running'] as $techid) {
+				$tech = new TTEntry($techid);
+				$array['name'] = $tech->get('name');
+				if($tech->get('imageid') != 0) {
+					$i = new Image($tech->get('imageid'));
+					$array['image'] = $i->get('url');
+				} else
+					$array['image'] = '';
+				$techlayout .= $this->getLayout($array, "tech_running", $vars);
+			}
+
 		// available techs
-		if(isset($tech_list['avail']))
-			foreach($tech_list['avail'] as $techid) {
+		if(isset($this->techtree['avail']))
+			foreach($this->techtree['avail'] as $techid) {
 				$tech = new TTEntry($techid);
 				$array = array();
 				$array['name'] = $tech->get('name');
@@ -55,7 +67,7 @@ class TechTree extends AbstractClass {
 					$array['image'] = $i->get('url');
 				} else
 					$array['image'] = '';
-				$techlayout .= $this->getLayout($array, "tech_available ", $vars);
+				$techlayout .= $this->getLayout($array, "tech_available", $vars);
 			}
 
 		$array['categories'] = $catlayout;
@@ -74,12 +86,8 @@ class TechTree extends AbstractClass {
 		return parent::acl($method);
 	}
 	
-	/**
-	 * Array of TTEntries a user knows or can learn
-	 */
-	var $ttentries = array();
-	
 	function TechTree($spieler_id) {
+		$this->load();
 		// get all information
 	}
 	
@@ -101,6 +109,10 @@ class TechTree extends AbstractClass {
 		foreach($known_techs as $tech) {
 			$result['known'][] = $tech['techtree_entry_id'];
 		}
+		$running_techs = TTExplored::getRunning();
+		foreach($running_techs as $tech) {
+			$result['running'][] = $tech['techtree_entry_id'];
+		}
 		$avail_techs = TTExplored::getAvailable($result['known']);
 		foreach($avail_techs as $tech) {
 			$result['avail'][] = $tech['entry_id'];
@@ -114,6 +126,13 @@ class TechTree extends AbstractClass {
 	 * MySQL does not support views I'm afraid
 	 */
 	function load() {
+		// get techtree, know/available/running
+		$this->techtree = $this->getTechTree();
+		
+		// get categories
+		$cat = new TTCategory();
+		$this->categories = $cat->getlist();
+		
 	}
 	
 	/**
@@ -180,7 +199,23 @@ class TTExplored {
 		if(empty($spieler_id))
 			$spieler_id = SeaWars::player();
 		$spieler_id = mysql_real_escape_string($spieler_id);
-		return $mysql->select("SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id.";", true);
+		$query = "SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id." AND finished=1;";
+		return $mysql->select($query, true);
+	}
+
+	/**
+	 * returns all tech ids from techs a player ist exploring
+	 * 
+	 * @param	int	$spieler_id	player id, if empty logged in player
+	 * @return	int['techtree_entry_id']	array of ids
+	 */
+	function getRunning($spieler_id = ''){
+		global $mysql;
+		if(empty($spieler_id))
+			$spieler_id = SeaWars::player();
+		$spieler_id = mysql_real_escape_string($spieler_id);
+		$query = "SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id." AND finished=0;";
+		return $mysql->select($query, true);
 	}
 
 	/**

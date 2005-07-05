@@ -30,8 +30,7 @@ CREATE TABLE `ttentry` (
   `money_abs` tinyint(4) NOT NULL default '0',
   `maxpopulation_pc` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `name_2` (`name`)
+  UNIQUE KEY `name` (`name`)
 );
 
 CREATE TABLE `ttentrydependson` (

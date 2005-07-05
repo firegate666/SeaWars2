@@ -1,7 +1,7 @@
 <?
 abstract class AbstractTimestampClass extends AbstractClass {
 	function store() {
-		$this->set('timestamp', strftime("%Y-%m-%d %H:%M:%S", time()));
+		$this->set('timestamp', Date::now());
 		AbstractClass :: store();
 	}
 }

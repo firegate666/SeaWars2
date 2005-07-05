@@ -3,6 +3,8 @@
 
 	require_once $d.'Setting.inc.php';
 	
+	require_once $d.'Date.inc.php';
+
 	require_once $d.'AbstractNoNavigationClass.inc.php';
 	require_once $d.'AbstractClass.inc.php';
 	require_once $d.'AbstractTimestampClass.inc.php';

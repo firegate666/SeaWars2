@@ -58,6 +58,7 @@ class TechTree extends AbstractClass {
 			foreach($this->techtree['known'] as $techid) {
 				$tech = new TTEntry($techid);
 				$array['name'] = $tech->get('name');
+				$array['beschreibung'] = $tech->get('description');
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
 					$array['image'] = $i->get('url');
@@ -71,6 +72,7 @@ class TechTree extends AbstractClass {
 			foreach($this->techtree['running'] as $techid) {
 				$tech = new TTEntry($techid);
 				$array['name'] = $tech->get('name');
+				$array['beschreibung'] = $tech->get('description');
 				$now = strtotime(Date::now());
 				$end = strtotime($tech->getend());
 				$array['dauer'] = ($end-$now).' s';
@@ -92,6 +94,7 @@ class TechTree extends AbstractClass {
 				$array['id'] = $tech->get('id');
 				$array['name'] = $tech->get('name');
 				$array['dauer'] = ($tech->get('aufwand') / $population).' s';
+				$array['beschreibung'] = $tech->get('description');
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
 					$array['image'] = $i->get('url');

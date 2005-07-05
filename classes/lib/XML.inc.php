@@ -1,5 +1,5 @@
 <?php
-	Setting::set('charset', 'ISO-8859-1', false);
+	Setting::set('charset', 'ISO-8859-1', 'Charset',false);
 
 /**
 * generate proper XML output

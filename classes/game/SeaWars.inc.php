@@ -1,5 +1,5 @@
 <?
-	Setting::set('gamespeed', 'Game Speed Faktor', '1', false);
+	Setting::set('gamespeed', '1', 'Game Speed Faktor', false);
 	$template_classes[] = 'seawars';
 
 /**

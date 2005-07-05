@@ -11,13 +11,15 @@ gekapselt.
 Bibliotheksklassen erben nicht von AbstractClass.
 
 ###########################
-# Datenbankrepr?sentation #
+# Datenbankrepräsentation #
 ###########################
 
 Zu jeder Klasse gibt es eine passende Tabelle in der Datenbank.
 Die load() und store() Methoden verwalten den Zugriff darauf.
 Die Felder einer Tabelle werden als Instanzvariablen gespeichert.
-Zu finden in: $this->data["feldname"]
+Zu finden in: $this->data["feldname"].
+Zugriffsmethoden dafür sind $this->get("feldname") und
+$this->set("feldname", value)
 
 ################
 # Konventionen #
@@ -37,10 +39,11 @@ Zu finden in: $this->data["feldname"]
 Jede Methode wird in der Form
 
 /**
-*	Methodenbeschreibung
-*	@parametername	parameterkommentar
-*	@parametername	parameterkommentar
-*	@return		rückgabewert
+* Methodenbeschreibung
+*
+* @param	type	name	parameterkommentar
+* @param	type	name	parameterkommentar
+* @return	type	parameterkommentar
 */
 
 kommentiert.

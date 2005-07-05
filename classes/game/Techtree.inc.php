@@ -5,6 +5,10 @@
  * Main Tech-Tree class
  * Tech know which TTEntries a user knows and
  * what he can learn next
+ * 
+ * Design Info: Every Tech has to depend on something.
+ * There is a root tech with id=0, everyone has to know
+ * but it is never displayed
  */
 class TechTree extends AbstractClass {
 	
@@ -236,7 +240,7 @@ class TTExplored extends AbstractClass {
 		if(empty($spieler_id))
 			$spieler_id = SeaWars::player();
 		$spieler_id = mysql_real_escape_string($spieler_id);
-		$query = "SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id." AND finished=1;";
+		$query = "SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id." AND finished=1 AND techtree_entry_id <> 0;";
 		return $mysql->select($query, true);
 	}
 
@@ -265,7 +269,13 @@ class TTExplored extends AbstractClass {
 	 */
 	function getAvailable($techids, $runningtechs,$spieler_id = '') {
 		global $mysql;
-		$techids = implode(',', $techids);
+		
+		// ignore known techs
+		if(!empty($techids))
+			$techids = 'AND entry_id NOT IN ('.implode(',', $techids).')';
+		// ignore dependencies of running techs
+		if(!empty($runningtechs))
+			$techids .= ' AND dependson_id NOT IN ('.implode(',', $runningtechs).')';
 		if(empty($spieler_id))
 			$spieler_id = SeaWars::player();
 		$spieler_id = mysql_real_escape_string($spieler_id);
@@ -273,7 +283,7 @@ class TTExplored extends AbstractClass {
 					FROM `ttentrydependson` 
 					LEFT JOIN `ttexplored` ON `dependson_id`=`techtree_entry_id`
     				GROUP BY `ttentrydependson`.`entry_id`
-	  				HAVING Abhängigkeiten=erfuellt AND spieler_id=$spieler_id AND entry_id NOT IN($techids);";
+	  				HAVING Abhängigkeiten=erfuellt AND spieler_id=$spieler_id $techids;";
 	  	$temp = $mysql->select($query, true);
 	  	$result = array();
 	  	if(is_array($runningtechs))

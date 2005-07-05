@@ -11,10 +11,34 @@ class TechTree extends AbstractClass {
 	protected $categories;
 	protected $techtree;
 	
+	/**
+	 * Update techtree, calculate all running researches for logged in player
+	 */
 	public function update(){
+		global $mysql;
+		// get all running
+		$query = "SELECT * FROM ttexplored WHERE finished=0 AND spieler_id=".SeaWars::player().";";
+		$result = $mysql->select($query, true);
+		foreach($result as $item) {
+			if(strtotime($item['end']) <= strtotime(Date::now())) {
+				$ttex = new TTExplored($item['id']);
+				$ttex->set('finished', 1);
+				$ttex->store();
+			}
+		}
 	}
 	
 	public function research(&$vars) {
+		if(isset($vars['ttentryid']) && !empty($vars['ttentryid'])) {
+			if(in_array($vars['ttentryid'], $this->techtree['avail'])) {
+				$ttentry = new TTEntry($vars['ttentryid']);
+				$ttentry->learn();
+			} else {
+				error("Tried to learn something, you can't learn. Some will never learn.", 'TechTree', 'research');
+			}
+		}
+		$techtree = new TechTree();
+		return $techtree->show($vars);
 	}
 	
 	/**
@@ -47,6 +71,9 @@ class TechTree extends AbstractClass {
 			foreach($this->techtree['running'] as $techid) {
 				$tech = new TTEntry($techid);
 				$array['name'] = $tech->get('name');
+				$now = strtotime(Date::now());
+				$end = strtotime($tech->getend());
+				$array['dauer'] = ($end-$now).' s';
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
 					$array['image'] = $i->get('url');
@@ -56,12 +83,15 @@ class TechTree extends AbstractClass {
 			}
 
 		// available techs
+		// getPopulation
+		$population = 100;
 		if(isset($this->techtree['avail']))
 			foreach($this->techtree['avail'] as $techid) {
 				$tech = new TTEntry($techid);
 				$array = array();
+				$array['id'] = $tech->get('id');
 				$array['name'] = $tech->get('name');
-				$array['dauer'] = $tech->get('aufwand');
+				$array['dauer'] = ($tech->get('aufwand') / $population).' s';
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
 					$array['image'] = $i->get('url');
@@ -83,10 +113,13 @@ class TechTree extends AbstractClass {
 	public function acl($method) {
 		if ($method == 'show')
 			return Login::isLoggedIn();
+		if ($method == 'research')
+			return Login::isLoggedIn();
 		return parent::acl($method);
 	}
 	
-	function TechTree($spieler_id) {
+	function TechTree() {
+		$this->update();
 		$this->load();
 		// get all information
 	}
@@ -113,7 +146,8 @@ class TechTree extends AbstractClass {
 		foreach($running_techs as $tech) {
 			$result['running'][] = $tech['techtree_entry_id'];
 		}
-		$avail_techs = TTExplored::getAvailable($result['known']);
+		
+		$avail_techs = TTExplored::getAvailable($result['known'], $result['running']);
 		foreach($avail_techs as $tech) {
 			$result['avail'][] = $tech['entry_id'];
 		}
@@ -186,7 +220,7 @@ class TTEntryDependson extends AbstractClass {
 /**
  * This class knows, who knows what and where and when
  */
-class TTExplored {
+class TTExplored extends AbstractClass {
 
 	/**
 	 * returns all tech ids from techs a player knows
@@ -222,10 +256,11 @@ class TTExplored {
 	 * returns all tech ids from techs a player can research
 	 * 
 	 * @param	int[]	$techids	known tech ids
+	 * @param	int[]	$runningtech	running tech ids
 	 * @param	int	$spieler_id	player id, if empty logged in player
 	 * @return	int['techtree_entry_id']	array of ids
 	 */
-	function getAvailable($techids, $spieler_id = '') {
+	function getAvailable($techids, $runningtechs,$spieler_id = '') {
 		global $mysql;
 		$techids = implode(',', $techids);
 		if(empty($spieler_id))
@@ -236,28 +271,18 @@ class TTExplored {
 					LEFT JOIN `ttexplored` ON `dependson_id`=`techtree_entry_id`
     				GROUP BY `ttentrydependson`.`entry_id`
 	  				HAVING Abhängigkeiten=erfuellt AND spieler_id=$spieler_id AND entry_id NOT IN($techids);";
-	  	$result = $mysql->select($query, true);
+	  	$temp = $mysql->select($query, true);
+	  	$result = array();
+	  	if(is_array($runningtechs))
+		  	foreach($temp as $item) {
+		  		if(!in_array($item['entry_id'], $runningtechs))
+		  			$result[] = $item;
+		  	}
+		else
+			$result = $temp;
 		return $result;
 	}
 
-	/**
-	 * return end of research
-	 * 
-	 * @return	Timestamp	end of research
-	 */
-	function calculateEnd() {
-		return strftime("%Y-%m-%d %H:%M:%S", time());
-	}
-
-	/**
-	 * is only invoked when research ist started
-	 */
-	function store() {
-		if(!isset($this->data['start']))
-			$this->set('start', strftime("%Y-%m-%d %H:%M:%S", time()));
-		$this->set($this->calculateEnd);
-		parent::store();
-	}
 }
 
 /**
@@ -277,6 +302,27 @@ class TTCategory extends AbstractClass {
  * the tech himself
  */
 class TTEntry extends AbstractClass {
+	
+	public function learn() {
+		// getPopulation
+		$population = 100;
+		$start = Date::now();
+		$duration = $this->get('aufwand') / $population;
+		$end = strftime(Setting::get('timestampformat', ''), strtotime($start)+$duration);
+		$ttex = new TTExplored();
+		$ttex->set('spieler_id', SeaWars::player());
+		$ttex->set('techtree_entry_id', $this->id); 
+		$ttex->set('end', $end);
+		$ttex->store();
+	}
+	
+	public function getend() {
+		global $mysql;
+		$query = "SELECT end FROM ttexplored, ttentry WHERE ttexplored.techtree_entry_id =".$this->id." AND spieler_id=".SeaWars::player().";";
+		$result = $mysql->executeSql($query);
+		return $result['end'];
+	}
+	
   	/**
 	 * all fields used in class
 	 */

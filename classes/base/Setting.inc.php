@@ -18,10 +18,12 @@ class Setting {
 			if(!$override) return false;
 			else {
 				$mysql->update("UPDATE setting SET value='$value' WHERE name='$name';");
+				$_SESSION['setting'][$name] = $value;
 				return true;
 			}
 		else {
 			$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
+			$_SESSION['setting'][$name] = $value;
 			return true;
 		}
 	}
@@ -37,12 +39,14 @@ class Setting {
 		global $mysql;
 		if(isset($_SESSION['setting'][$name]))
 			return $_SESSION['setting'][$name];
-		$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_real_escape_string($name)."';");
-		if(isset($result['value']))
-			$result = $result['value'];
-		else
-			$result = $default;
-		$_SESSION['setting'][$name] = $result;
+		else {
+			$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_real_escape_string($name)."';");
+			if(isset($result['value']))
+				$result = $result['value'];
+			else
+				$result = $default;
+			$_SESSION['setting'][$name] = $result;
+		}
 		return $result;
 	}
 }

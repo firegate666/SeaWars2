@@ -6,8 +6,15 @@ class Template {
 	var $layout;
 	var $tags=array();
 	
-	function acl(){
+	function acl($method){
+		if($method == 'clearcache')
+			return true;
 		return false;
+	}
+	
+	function clearcache(){
+		unset($_SESSION['template']);
+		die('cache geleert');
 	}
 	
 	/**

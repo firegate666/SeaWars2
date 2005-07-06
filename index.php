@@ -1,4 +1,5 @@
 <?
+	session_save_path('cache');
 	session_start();
 
 	/**

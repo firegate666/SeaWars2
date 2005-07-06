@@ -1,11 +1,13 @@
 <?
-	session_save_path('cache');
-	session_start();
-
 	/**
 	* one file to rule them all
 	*/
 	require_once dirname(__FILE__).'/config/All.inc.php';
+
+	// start/restore session
+	session_save_path('cache');
+	session_start();
+
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
@@ -13,13 +15,6 @@
 	$method = $_REQUEST["method"];
 	$id	    = $_REQUEST["id"];
 	$vars	= array_merge(array(), $_REQUEST);
-	
-	// clean up request parameters
-// does not work, kills apache
-// maybe because of double escapes
-//	for($i = 0; $i < count($vars); $i++) {
-//		$vars[$i] = mysql_real_escape_string($vars[$i]);
-//	}
 	
 	/**
 	 * Admincall?
@@ -77,7 +72,6 @@
   	}
   	if(get_config('debug', false)) {
   		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount())."<br>";
-  		//print_a($mysql->getQueries());
   	}
   	// clean up the mess
   	$mysql->disconnect();

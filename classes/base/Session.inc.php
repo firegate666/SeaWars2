@@ -6,6 +6,11 @@
       return $_SESSION[$name];
       //return $_COOKIE[$name];
     }
+    
+    function unsetCookie($name) {
+    	unset($_SESSION[$name]);
+    }
+    
     function setCookie($name, $value) {
 		$_SESSION[$name] = $value;
       //setcookie($name, $value, NULL);

@@ -9,6 +9,8 @@
  * Design Info: Every Tech has to depend on something.
  * There is a root tech with id=0, everyone has to know
  * but it is never displayed
+ * 
+ * TODO: Forschungswarteschlange
  */
 class TechTree extends AbstractClass {
 	
@@ -34,15 +36,17 @@ class TechTree extends AbstractClass {
 	
 	public function research(&$vars) {
 		if(isset($vars['ttentryid']) && !empty($vars['ttentryid'])) {
-			if(in_array($vars['ttentryid'], $this->techtree['avail'])) {
+			if(is_array($this->techtree['running']))
+				$error = 'Forschung am Laufen, erst alte Forschung beenden';
+			else if(in_array($vars['ttentryid'], $this->techtree['avail'])) {
 				$ttentry = new TTEntry($vars['ttentryid']);
 				$ttentry->learn();
 			} else {
-				error("Tried to learn something, you can't learn. Some will never learn.", 'TechTree', 'research');
+				$error = "Diese Forschung kannst Du nicht lernen.";
 			}
 		}
 		$techtree = new TechTree();
-		return $techtree->show($vars);
+		return redirect('?class=techtree&error='.$error);
 	}
 	
 	/**
@@ -107,6 +111,7 @@ class TechTree extends AbstractClass {
 				$techlayout .= $this->getLayout($array, "tech_available", $vars);
 			}
 
+		$array['error'] = $vars['error'];
 		$array['categories'] = $catlayout;
 		$array['techs'] = $techlayout;
 		return $this->getLayout($array, "page", $vars);
@@ -122,20 +127,25 @@ class TechTree extends AbstractClass {
 			return Login::isLoggedIn();
 		if ($method == 'research')
 			return Login::isLoggedIn();
+		if ($method == 'dropall')
+			return Login::isLoggedIn();
 		return parent::acl($method);
 	}
 	
+	function dropall() {
+		global $mysql;
+		$spieler_id= SeaWars::player();
+		
+		$query = "DELETE FROM ttexplored WHERE `spieler_id` = $spieler_id AND `techtree_entry_id` <> 0;";
+		$mysql->executeSql($query);
+		$error = "Alle Forschungen gelöscht";
+		return redirect('?class=techtree&error='.$error);
+	}
+
 	function TechTree() {
 		$this->update();
 		$this->load();
 		// get all information
-	}
-	
-	/**
-	 * place new learning for logged in player
-	 * @param	int	$ttentryid	TTEntry ID
-	 */	
-	function learn($ttentryid) {
 	}
 	
 	/**

@@ -6,7 +6,7 @@
 	                               WHERE rp.insel_id=".$insel_id." AND rp.rohstoff_id=r.id;");
 		foreach ($array as $item) {
 			$this->data[] = array ('name' => $item[3], 'id' => $item[2], 'wp' => $item[0], 'ps' => $item[1]);
-		}
+		}		if(empty($this->data))			$this->data = array();
 	}
 }
 

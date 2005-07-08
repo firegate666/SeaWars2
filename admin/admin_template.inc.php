@@ -86,7 +86,7 @@ if (isset ($tpl_layout)) {
       </tr>
       <tr>
         <td>
-          <textarea name=tpl_content cols=80 rows=25><?=htmlentities(Template::getLayout($tpl_class, $tpl_layout,array(),true));?></textarea>
+          <textarea name=tpl_content cols=80 rows=25><?=htmlentities(Template::getLayout($tpl_class, $tpl_layout,array(),true, array(), true));?></textarea>
         </td>
         <td align="left" valign="top">Mögliche Tags: (nicht vergessen, dass Tags immer ein $ vorangestellt werden muss)
           <ul>

@@ -112,14 +112,16 @@ class Template {
 	 * @param	String[]	$array	array of elements to replace tags in
 	 * template
 	 * @param	boolean	$noparse	if true, no replacement is made
+	 * @param	String[]$vars	request parameters
+	 * @param	boolean	$nocache	if false, take template from session cache
 	 * @return	String	template as string
 	 */
-	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array()){
+	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array(), $nocache=false){
 		global $mysql;
 		$class = mysql_real_escape_string($class);
 		$layout = mysql_real_escape_string($layout);
 		$strin = '';
-		if(isset($_SESSION['template'][$class][$layout]))
+		if(isset($_SESSION['template'][$class][$layout]) && !$nocache)
 			$string = $_SESSION['template'][$class][$layout];
 		else {
 			$result = $mysql->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");

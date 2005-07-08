@@ -83,7 +83,7 @@ class TechTree extends AbstractClass {
 				$array['beschreibung'] = $tech->get('description');
 				$now = strtotime(Date::now());
 				$end = strtotime($tech->getend());
-				$array['dauer'] = ($end-$now).' s';
+				$array['dauer'] = ($end-$now);
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
 					$array['image'] = $i->get('url');
@@ -101,7 +101,7 @@ class TechTree extends AbstractClass {
 				$array = array();
 				$array['id'] = $tech->get('id');
 				$array['name'] = $tech->get('name');
-				$array['dauer'] = ($tech->get('aufwand') / $population).' s';
+				$array['dauer'] = ($tech->get('aufwand') / $population);
 				$array['beschreibung'] = $tech->get('description');
 				if($tech->get('imageid') != 0) {
 					$i = new Image($tech->get('imageid'));
@@ -137,7 +137,7 @@ class TechTree extends AbstractClass {
 		$spieler_id= SeaWars::player();
 		
 		$query = "DELETE FROM ttexplored WHERE `spieler_id` = $spieler_id AND `techtree_entry_id` <> 0;";
-		$mysql->executeSql($query);
+		$mysql->update($query);
 		$error = "Alle Forschungen gelöscht";
 		return redirect('?class=techtree&error='.$error);
 	}

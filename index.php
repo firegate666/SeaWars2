@@ -71,7 +71,11 @@
     	error("Class not found",$class,$method);
   	}
   	if(get_config('debug', false)) {
-  		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount())."<br>";
+  		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount());
+  		print " - ";
+  		print '<a href="?class=template&method=clearcache">Clear Cache</a>';
+  		print " - ";
+  		print '<a href="?class=techtree&method=dropall">Forschungen zurücksetzen</a>';
   	}
   	// clean up the mess
   	$mysql->disconnect();

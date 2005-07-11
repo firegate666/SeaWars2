@@ -34,6 +34,12 @@ class TechTree extends AbstractClass {
 		}
 	}
 	
+	/**
+	* learn another tech for logged in player
+	* use $vars['ttentryid']
+	*
+	* @param	String[]	$vars	request parameters
+	*/
 	public function research(&$vars) {
 		if(isset($vars['ttentryid']) && !empty($vars['ttentryid'])) {
 			if(is_array($this->techtree['running']))
@@ -132,6 +138,9 @@ class TechTree extends AbstractClass {
 		return parent::acl($method);
 	}
 	
+	/**
+	* remove alle explored tech for logged in player
+	*/
 	function dropall() {
 		global $mysql;
 		$spieler_id= SeaWars::player();
@@ -142,6 +151,9 @@ class TechTree extends AbstractClass {
 		return redirect('?class=techtree&error='.$error);
 	}
 
+	/**
+	* public constructore, initialize Tech-Tree for logged in player
+	*/
 	function TechTree() {
 		$this->update();
 		$this->load();
@@ -326,6 +338,9 @@ class TTCategory extends AbstractClass {
  */
 class TTEntry extends AbstractClass {
 	
+	/**
+	* learn this TTEntry
+	*/
 	public function learn() {
 		// getPopulation
 		$population = 100;
@@ -356,16 +371,6 @@ class TTEntry extends AbstractClass {
 		$fields[] = array('name' => 'tttypeid', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'ttcategoryid', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'aufwand', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res1_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res2_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res3_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res4_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res5_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res6_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res7_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res8_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res9_abs', 'type' => 'Integer', 'notnull' => true);
-		$fields[] = array('name' => 'res10_abs', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'morale_pc', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'money_abs', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'maxpopulation_pc', 'type' => 'Integer', 'notnull' => true);

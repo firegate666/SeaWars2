@@ -1,43 +1,71 @@
 <?
-  /** 
-    This class is supposed to be seen as Interface for different database connections
-    Abstract class, no functionality
-  */
-  class SQL {
+   /** 
+  This class is supposed to be seen as Interface for different database connections
+  Abstract class, no functionality
+*/
+abstract class SQL {
 
-    /**
-      Connects to Database using global parameters
-      return : databaselink
-    */
-    function connect() {
-    }
+	/** all queries are stored */
+	private $queries;
 
-    /**
-      Disconnects database
-      $dblink : databaselink
-    */
-    function disconnect($dblink) {
-    }
+	/**
+	* DB Ressource connection
+	*/
+	protected $dblink;
 
-    /**
-      Executes SQL insert statement
-      return : last insert id
-    */
-    function insert($query) {
-    }
+	/**
+	* returns number of queries executed
+	* @return	int	number of queries
+	*/
+	public function getQuerycount() {
+		return count($this->queries);
+	}
 
-    /**
-      Executes SQL select statement
-      return : result set as numeric array
-    */
-    function select($query) {
-    }
+	/**
+	 * Return all queries of this instance
+	 */
+	public function getQueries() {
+		return $this->queries;
+	}
 
-    /**
-      Executes SQL update statement
-      return : number of affected rows
-    */
-    function update($query) {
-    }
-  }
+	public function print_error($method, $query) {
+		$msg = mysql_error()."<br><b>Query:</b> $query";
+		error($msg, "MySQL", $method);
+	}
+
+	/**
+	  Connects to Database using global parameters
+	  return : databaselink
+	*/
+	abstract function connect() {
+	}
+
+	/**
+	  Disconnects database
+	  $dblink : databaselink
+	*/
+	abstract function disconnect($dblink) {
+	}
+
+	/**
+	  Executes SQL insert statement
+	  return : last insert id
+	*/
+	abstract function insert($query) {
+	}
+
+	/**
+	  Executes SQL select statement
+	  return : result set as numeric array
+	*/
+	abstract function select($query) {
+	}
+
+	/**
+	  Executes SQL update statement
+	  return : number of affected rows
+	*/
+	abstract function update($query) {
+	}
+}
 ?>

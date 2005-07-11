@@ -6,41 +6,14 @@
  */
 class MySQL extends SQL {
 
-	private $queries;
-	private $querycount;
-	
 	/**
-	* DB Ressource connection
-	*/
-	protected $dblink;
-
-	public function MySQL() {
-		$this->querycount = 0;
-	}
-
-	/**
-	* returns number of queries executed
-	* @return	int	number of queries
-	*/
-	public function getQuerycount() {
-		return $this->querycount;
-	}
-	
-	/**
-	 * Return all queries of this instance
-	 */
-	public function getQueries(){
-		return $this->queries;			
-	}
-
-	/**
-	  Connects to MySQL Database using global parameters
-	  $dbserver
-	  $dbuser
-	  $dbpassword
-	  $dbdatabase
-	  
-	  @return	databaselink
+	* Connects to MySQL Database using global parameters
+	* $dbserver
+	* $dbuser
+	* $dbpassword
+	* $dbdatabase
+	* 
+	* @return	Ressource	databaselink
 	*/
 	function connect() {
 		global $dbserver;
@@ -59,8 +32,8 @@ class MySQL extends SQL {
 	}
 
 	/**
-	  Disconnects database
-	  @dblink	databaselink
+	* Disconnects database
+	* @param	Ressource $dblink	databaselink
 	*/
 	function disconnect() {
 		if($this->dblink != null)
@@ -68,9 +41,9 @@ class MySQL extends SQL {
 	}
 
 	/**
-	  Executes SQL insert statement
-	  @query	sql query
-	  @return	last insert id
+	* Executes SQL insert statement
+	* @param	String	$query	sql query
+	* @return	int	last insert id
 	*/
 	function insert($query) {
 		$this->connect();
@@ -80,16 +53,11 @@ class MySQL extends SQL {
 		return $id;
 	}
 
-	function print_error($method, $query) {
-		$msg = mysql_error()."<br><b>Query:</b> $query"; 
-		error($msg, "MySQL", $method);
-	}
-
 	/**
-	  Executes SQL select statement
-	  @query	sql query
-	  @assoc	if false, return array is numeric
-	  @return	result set as array
+	* Executes SQL select statement
+	* @param	String	$query	sql query
+	* @param	boolean	$assoc	if false, return array is numeric
+	* @return	String[][]	result set as array
 	*/
 	function select($query, $assoc = false) {
 		$this->connect();
@@ -107,9 +75,9 @@ class MySQL extends SQL {
 	}
 
 	/**
-	  Executes SQL statement
-	  @query	sql query
-	  @return	result set with single row
+	* Executes SQL statement
+	* @param	String	$query	sql query
+	* @return	String[]	result set with single row
 	*/
 	function executeSql($query) {
 		$this->connect();
@@ -120,9 +88,9 @@ class MySQL extends SQL {
 	}
 
 	/**
-	  Executes SQL update statement
-	  @query	update statement
-	  @return	number of affected rows
+	* Executes SQL update statement
+	* @param	String	$query	update statement
+	* @return	int	number of affected rows
 	*/
 	function update($query) {
 		$this->connect();

@@ -1,5 +1,6 @@
 <?
 	$template_classes[] = 'page';
+	$template_classes[] = 'admin';
 	
 /**
  * This is a page

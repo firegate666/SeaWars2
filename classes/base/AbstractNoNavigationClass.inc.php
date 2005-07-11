@@ -55,7 +55,7 @@ abstract class AbstractNoNavigationClass {
 	function getlist($classname='') {
 		global $mysql;
 		if(empty($classname)) $classname = $this->class_name();
-		$result = $mysql->select("SELECT id FROM ".mysql_real_escape_string($classname), true);
+		$result = $mysql->select("SELECT id FROM ".mysql_escape_string($classname), true);
 		return $result;
 	}
 	
@@ -109,7 +109,7 @@ abstract class AbstractNoNavigationClass {
 	function load() {
 		global $mysql;
         //if(!$this->exists()) return;
-    	$id 		= mysql_real_escape_string($this->id);
+    	$id 		= mysql_escape_string($this->id);
     	$tablename 	= $this->class_name();
     	$this->data = $mysql->executeSql("SELECT * FROM ".$tablename." WHERE id=$id;");
     	$this->id	= $this->data[id];
@@ -140,7 +140,7 @@ abstract class AbstractNoNavigationClass {
       $keys   = array_keys($this->data);
       $values = array_values($this->data);
       for($i=0;$i<count($values);$i++) {
-      	$values[$i] = "'".mysql_real_escape_string($values[$i])."'";
+      	$values[$i] = "'".mysql_escape_string($values[$i])."'";
       }
       // CREATE SQL Statement
       $tablename = $this->class_name();

@@ -61,15 +61,15 @@ class MySQLInterface {
 			if(!isset($next['field']) || empty($next['field']))
 				error("field must be set for where-claus", 'MySQLInterface', 'createWhere');
 			else
-				$next['field'] = mysql_real_escape_string($next['field']);
+				$next['field'] = mysql_escape_string($next['field']);
 			if(!isset($next['comp']) || empty($next['field']))
 				$next['comp'] = '=';
 			else
-				$next['comp'] = mysql_real_escape_string($next['comp']);
+				$next['comp'] = mysql_escape_string($next['comp']);
 			if(!isset($next['val']) || empty($next['val']))
 				error("value must be set for where-claus", 'MySQLInterface', 'createWhere');
 			else
-				$next['val'] = mysql_real_escape_string($next['val']);
+				$next['val'] = mysql_escape_string($next['val']);
 			if(!isset($next['next']) || empty($next['next']))
 				if($i < (count($where)-1))
 					$next['next'] = 'AND';
@@ -77,7 +77,7 @@ class MySQLInterface {
 				if(!($i < (count($where)-1)))
 					$next['next'] = '';
 				else
-					$next['next'] = mysql_real_escape_string($next['next']);
+					$next['next'] = mysql_escape_string($next['next']);
 					
 			$result[] = $next['field'].' '.$next['comp']."'".$next['val']."'".' '.$next['next'].' '; 
 		}
@@ -88,7 +88,7 @@ class MySQLInterface {
 		$result = array();
 		if(is_array($fields) && !empty($fields) && ($fields != null)) {
 			foreach($fields as $field)
-				$result[] = "$surround".mysql_real_escape_string($field)."$surround";
+				$result[] = "$surround".mysql_escape_string($field)."$surround";
 		} else {
 			if($default == null)
 				error("no elements submitted and no default set",'MySQLInterface', 'create fields');
@@ -103,11 +103,11 @@ class MySQLInterface {
 			if(!isset($item['orderby']))
 				error("missing orderby in statement", 'MySQLInterface', 'createOrderby');
 			else
-				$item['orderby'] = mysql_real_escape_string($item['orderby']);
+				$item['orderby'] = mysql_escape_string($item['orderby']);
 			if(!isset($item['orderdir']) || empty($item['orderdir']))
 				$item['orderdir'] = 'ASC';
 			else
-				$item['orderdir'] = mysql_real_escape_string($item['orderdir']);
+				$item['orderdir'] = mysql_escape_string($item['orderdir']);
 			$result[] = $item['orderby'].' '.$item['orderdir'];
 		}
 		return $result;

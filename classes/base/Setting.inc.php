@@ -10,9 +10,9 @@ class Setting {
 	*/		
 	function set($name, $value, $description = '', $override = true) {
 		global $mysql;
-		$name = mysql_real_escape_string($name);
-		$value = mysql_real_escape_string($value);
-		$description = mysql_real_escape_string($description);
+		$name = mysql_escape_string($name);
+		$value = mysql_escape_string($value);
+		$description = mysql_escape_string($description);
 		$result = Setting::get($name, '');
 		if(!empty($result))
 			if(!$override) return false;
@@ -40,7 +40,7 @@ class Setting {
 		if(isset($_SESSION['setting'][$name]))
 			return $_SESSION['setting'][$name];
 		else {
-			$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_real_escape_string($name)."';");
+			$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_escape_string($name)."';");
 			if(isset($result['value']))
 				$result = $result['value'];
 			else

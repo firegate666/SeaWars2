@@ -30,7 +30,7 @@ class Image extends AbstractClass {
 	*/
         function loadbyname($name) {
 		global $mysql;
-		$name = mysql_real_escape_string($name);
+		$name = mysql_escape_string($name);
 		$query = "SELECT id, name, url FROM image WHERE name='$name';";
 		$array = $mysql->executeSql($query);
 		$this->data = $array;

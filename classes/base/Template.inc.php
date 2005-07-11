@@ -48,8 +48,8 @@ class Template {
 	 */
 	function deleteTemplate($class, $layout) {
 		global $mysql;
-		$class = mysql_real_escape_string($class);
-		$layout = mysql_real_escape_string($layout);
+		$class = mysql_escape_string($class);
+		$layout = mysql_escape_string($layout);
 		$query = "DELETE FROM template WHERE class='$class' AND layout='$layout';";
 		$mysql->update($query);
 	}
@@ -61,8 +61,8 @@ class Template {
 	 */
 	function createTemplate($class, $layout) {
 		global $mysql;
-		$class = mysql_real_escape_string($class);
-		$layout = mysql_real_escape_string($layout);
+		$class = mysql_escape_string($class);
+		$layout = mysql_escape_string($layout);
 		$query = "INSERT INTO template(class, layout) VALUES('$class', '$layout');";
 		$mysql->insert($query);
 	}
@@ -89,7 +89,7 @@ class Template {
 	 */
 	function getLayouts($class) {
 		global $mysql;
-		$class = mysql_real_escape_string($class);
+		$class = mysql_escape_string($class);
 		$result = $mysql->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
 	}
@@ -118,8 +118,8 @@ class Template {
 	 */
 	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array(), $nocache=false){
 		global $mysql;
-		$class = mysql_real_escape_string($class);
-		$layout = mysql_real_escape_string($layout);
+		$class = mysql_escape_string($class);
+		$layout = mysql_escape_string($layout);
 		$strin = '';
 		if(isset($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
 			$string = $_SESSION['template'][$class][$layout];

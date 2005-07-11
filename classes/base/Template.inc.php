@@ -121,12 +121,13 @@ class Template {
 		$class = mysql_real_escape_string($class);
 		$layout = mysql_real_escape_string($layout);
 		$strin = '';
-		if(isset($_SESSION['template'][$class][$layout]) && !$nocache)
+		if(isset($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
 			$string = $_SESSION['template'][$class][$layout];
 		else {
 			$result = $mysql->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
 			$string = $result[0][0];
-			$_SESSION['template'][$class][$layout] = $string;
+			if(get_config('cache_enabled', false))
+				$_SESSION['template'][$class][$layout] = $string;
 		}
 		if($noparse) return $string;
 		$keys = array_keys($array);

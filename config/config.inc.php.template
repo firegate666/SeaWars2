@@ -31,8 +31,8 @@
 		0: logger of
 	*/
 	$_CONFIG["loglevel"] = 2;
-	$_CONFIG["cache"]["enabled"] = true;
-	$_CONFIG["cache"]["dir"]     = 'cache/';
+
+	$_CONFIG["cache_enabled"] = true;
 	
 	// if true, there are template edit links for each template used
 	// while logged in as admin and browsing the pages

@@ -28,7 +28,7 @@ class Image extends AbstractClass {
 	* load image by known name
 	* @param     String   $name             name of image
 	*/
-        function loadbyname($name) {
+    function loadbyname($name) {
 		global $mysql;
 		$name = mysql_escape_string($name);
 		$query = "SELECT id, name, url FROM image WHERE name='$name';";

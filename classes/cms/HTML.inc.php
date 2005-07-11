@@ -3,6 +3,16 @@
  * HTML Wrappers, much improved has to done
  */
 class HTML {
+	
+	/**
+	* build html tag
+	* 
+	* @param	String	$name	name of tag
+	* @param	String	$content	contents of tag
+	* @param	String	$attr	attributes of tag array('name', 'value')
+	* @param	boolean	$closing	if true, closing tag is added, else a single tag is created
+	* @return	String	build tag
+	*/
 	function tag($name, $content='', $attr = array(), $closing=true) {
 		$adds = '';
 		if(is_array($attr)) {
@@ -12,21 +22,23 @@ class HTML {
 			$adds = $attr;
 		}
 		
-		$tag = "<$name $adds>$content";
-		if($closing) $tag .= "</$name>";
+		$tag = "<$name $adds";
+		if($closing) $tag .= ">$content</$name>";
+		else $tag .= " />$content";
 		return $tag;
 	}	
+	
 	function tr($content) {
-		return "<tr>$content</tr>\n";
+		return $this->tag('tr', $content);
 	}
 	
 	function td($content) {
-		return "<td>$content</td>\n";
+		return $this->tag('td', $content);
 	}
 	
 	function table($content) {
 		if(!is_array($content)) {
-			return '<table>'.$content.'</table>';
+			return $this->tag('table', $content);
 		} else {
 			$rows = '';
 			foreach($content as $row) {
@@ -36,7 +48,7 @@ class HTML {
 				}
 				$rows .= HTML::tr($cells); 
 			}
-			return '<table>'.$rows.'</table>';
+			return $this->tag('<table>', $rows);
 			
 		}
 	}	

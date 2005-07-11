@@ -12,16 +12,20 @@ class Error extends AbstractNoNavigationClass {
 
 	/**
 	 * constructor
-	 * @msg		message to be shown
-	 * @class	who throws the error
-	 * @method	when?
+	 *
+	 * @param	String	$msg	message to be shown
+	 * @param	String	$class	who throws the error
+	 * @param	String	$method	when?
 	 */
-	function Error($msg,$class,$method){
+	function Error($msg, $class, $method){
 		$this->msg = $msg;
 		$this->class = $class;
 		$this->method = $method;
 	}
 
+	/**
+	* show errorpage
+	*/
 	function show(&$vars) {
 		if(get_config('cms', false)) {
 			$array = array(

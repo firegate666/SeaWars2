@@ -4,8 +4,13 @@
  */
 abstract class AbstractNoNavigationClass {
 	
+    /** main data array */
     protected $data;
+    
+    /** auto id of object */
     protected $id;
+    
+    
 	protected $language;
 	
 	/**
@@ -39,6 +44,8 @@ abstract class AbstractNoNavigationClass {
 	 * type can be: integer, string, boolean, timestamp
 	 * it has to be implmented in each class, else it throws
 	 * an error
+	 *
+	 * @return	String[][]	all known fields or false if no fields are set
 	 */
 	protected function getFields() {
 		return true;
@@ -49,8 +56,10 @@ abstract class AbstractNoNavigationClass {
 	
 	/**
 	 * returns all rows for class $classname
+	 *
 	 * @param	String	$classname	if not set, $classname = name of actual
 	 * class
+	 * @return	String[][]	complete result
 	 */
 	function getlist($classname='') {
 		global $mysql;
@@ -65,13 +74,19 @@ abstract class AbstractNoNavigationClass {
 
 	/**
 	 * Setter
+	 *
+	 * @param	String	$key	name of attribute
+	 * @param	String	$value	value of attribute
 	 */
 	public function set($key, $value) {
 		$this->data[$key] = $value;
 	}
 	
 	/**
-	 * Getter
+	 * Getter for instance attributes
+	 *
+	 * @param	String	$key	name of attribute
+	 * @return	String	value of attribute
 	 */
 	public function get($key) {
 		if($key == 'id')
@@ -89,12 +104,15 @@ abstract class AbstractNoNavigationClass {
 	/**
 	 * is session registered?
 	 */
-	function isRegisteredSession() {
-		return session_is_registered(session);
-	}
+// is this used?
+//	function isRegisteredSession() {
+//		return session_is_registered(session);
+//	}
 	
 	/**
 	 * does this object exists?
+	 *
+	 * @param	boolean	true, if $this->id exists
 	 */
 	function exists() {
 	   return empty($this->id);
@@ -117,7 +135,7 @@ abstract class AbstractNoNavigationClass {
     }
 
     /**
-     * delete me
+     * delete me, remove record from database
      */
     function delete() {
     	global $mysql;
@@ -132,32 +150,33 @@ abstract class AbstractNoNavigationClass {
      * save me to database
      * fetch all from $this->data and build SQL Statement
      * Update if existed, insert if new
+     *
+     * @return	int	id of object
      */
     function store() {
-    	global $mysql;
-      if(empty($this->data)) return;
-      // Seperate keys from values
-      $keys   = array_keys($this->data);
-      $values = array_values($this->data);
-      for($i=0;$i<count($values);$i++) {
-      	$values[$i] = "'".mysql_escape_string($values[$i])."'";
-      }
-      // CREATE SQL Statement
-      $tablename = $this->class_name();
-      if($this->id=='') {
-	      $query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
-	      //echo($query);
-	      $this->id = $mysql->insert($query);
-      } else {
-		  $query  = "UPDATE $tablename SET";
-		  $query .= " ".$keys[0]."=".$values[0];
-	      for($i=1;$i<count($values);$i++)
-	      	$query .= ", ".$keys[$i]."=".$values[$i];
-	      $query .= " WHERE id=".$this->id.";";
-	      $mysql->update($query);
-      }
-      return $this->id;
-    }
+		global $mysql;
+		if(empty($this->data)) return;
+		// Seperate keys from values
+		$keys   = array_keys($this->data);
+		$values = array_values($this->data);
+		for($i=0;$i<count($values);$i++) {
+			$values[$i] = "'".mysql_escape_string($values[$i])."'";
+		}
+		// CREATE SQL Statement
+		$tablename = $this->class_name();
+		if($this->id=='') {
+			$query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
+			$this->id = $mysql->insert($query);
+		} else {
+			$query  = "UPDATE $tablename SET";
+			$query .= " ".$keys[0]."=".$values[0];
+			for($i=1;$i<count($values);$i++)
+				$query .= ", ".$keys[$i]."=".$values[$i];
+			$query .= " WHERE id=".$this->id.";";
+			$mysql->update($query);
+		}
+		return $this->id;
+	}
     
     /**
      * print myself to console
@@ -166,6 +185,11 @@ abstract class AbstractNoNavigationClass {
       print_a($this);
     }
 	
+	/**
+	* public constructor
+	*
+	* @param	int	$id	id of object
+	*/
 	public function AbstractNoNavigationClass($id='') {
 		if(!$this->getFields()) error("No fields set",$this->class_name(),'Constructor');
 		if(empty($id) || !is_numeric($id)) return;
@@ -176,7 +200,9 @@ abstract class AbstractNoNavigationClass {
 	/**
 	* checks whether it is allowed to call method from outside 	or	 who is
 	* allowed to call.
+	*
 	* @param	String	$method	function to test
+	* @return	boolean	true if allowed, else false
 	*/
 	public function acl($method) {
 		// more rights have to be checked at this place
@@ -186,9 +212,11 @@ abstract class AbstractNoNavigationClass {
 	
 	/**
 	 * get template
+	 *
 	 * @param	String[]	$array	Array with tags for replacement
 	 * @param	String		$layout	Name of template
 	 * @param	String[]	parameters from request
+	 * @return	String	layout
 	 */
 	function getLayout($array, $layout, &$vars) {
 		$t = new Template();
@@ -203,6 +231,7 @@ abstract class AbstractNoNavigationClass {
 	 * generic show using template page
 	 * 
 	 * @param	String[]	$vars	request parameters
+	 * @return	String	output
 	 */
 	function show(& $vars) {
 		return $this->getLayout(array(), "page", $vars);
@@ -210,10 +239,17 @@ abstract class AbstractNoNavigationClass {
 
 	/**
 	 * helps building forms
+	 *
+	 * @param	String	$content	content to show inside of form, if array, build table
+	 * @param	String	$class
+	 * @param	String	$method
+	 * @param	String	$name	name of form
+	 * @param	String[]	$vars	request parameters
+	 * @return	String	form
 	 */
-	function getForm($content='', $class='', $method='',$name='MyForm') {
-		if(empty($class)) $class = $_REQUEST['class'];
-		if(empty($method)) $method = $_REQUEST['method'];
+	function getForm($content='', $class='', $method='',$name='MyForm', $vars=array()) {
+		if(empty($class)) $class = $vars['class'];
+		if(empty($method)) $method = $vars['method'];
 		$o = '<!--getform start-->';
 		$o .= '<form action="index.php" name="'.$name.'" METHOD="POST">';
 		$o .= '<input type="hidden" name="class" value="'.$class.'">';

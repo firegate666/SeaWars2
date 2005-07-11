@@ -5,6 +5,9 @@ class Logger {
 	
 }
 
+class FileLogger extends Logger {
+}
+
 class DBLogger extends Logger {
 }
 ?>

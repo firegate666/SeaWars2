@@ -5,6 +5,12 @@
 
 class Date {
 	
+	/**
+	* get actual date formatted
+	*
+	* @param	String	$formatstring	format date, see php doc
+	* @return	String	formatted date
+	*/
 	public function now($formatstring = '') {
 		if(empty($formatstring)) {
 			$formatstring = Setting::get("timestampformat");

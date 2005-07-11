@@ -6,19 +6,31 @@ class Template {
 	var $layout;
 	var $tags=array();
 	
+	/**
+	* checks whether it is allowed to call method from outside 	or	 who is
+	* allowed to call.
+	*
+	* @param	String	$method	function to test
+	* @return	boolean	true if allowed, else false
+	*/
 	function acl($method){
 		if($method == 'clearcache')
 			return true;
 		return false;
 	}
 	
+	/**
+	* remove all templates from cache
+	*/
 	function clearcache(){
-		unset($_SESSION['template']);
+		if(get_config('cache_enabled', false))
+			unset($_SESSION['template']);
 		die('cache geleert');
 	}
 	
 	/**
 	 * Remove all not substituted tags from $template
+	 *
 	 * @param	String	$template	template contents
 	 */
 	function removeLostTags(&$template) {
@@ -28,6 +40,7 @@ class Template {
 	
 	/**
 	 * parse $template for known tags and store them
+	 *
 	 * @param	String	$template	template contents
 	 */
 	function parseTags($template){
@@ -43,6 +56,7 @@ class Template {
 	
 	/**
 	 * Delete template
+	 *
 	 * @param	String	$class	category
 	 * @param	String	$layout	name
 	 */
@@ -56,6 +70,7 @@ class Template {
 
 	/**
 	 * Create template
+	 *
 	 * @param	String	$class	category
 	 * @param	String	$layout	name
 	 */
@@ -67,11 +82,15 @@ class Template {
 		$mysql->insert($query);
 	}
 	
+	/**
+	* public constructor
+	*/
 	function Template(){
 	}
 	
 	/**
 	 * get all template classes
+	 *
 	 * @return	String[]	all categories sorted
 	 */
 	 function getClasses() {
@@ -84,6 +103,7 @@ class Template {
 	
 	/**
 	 * get all layouts for $class
+	 *
 	 * @param	String	$class	category
 	 * @return	String[]	all layouts
 	 */
@@ -95,18 +115,8 @@ class Template {
 	}
 	
 	/**
-	 * return template from cache or false
-	 * @param	String	$class	category
-	 * @param	String	$layout	template name
-	 * @return	false if not found or
-	 * 			template as string
-	 */
-	function getLayoutCached($class, $layout) {
-		return false;
-	}
-	
-	/**
 	 * Returns parsed template
+	 *
 	 * @param	String	$class	category
 	 * @param	String	$layout	template name
 	 * @param	String[]	$array	array of elements to replace tags in

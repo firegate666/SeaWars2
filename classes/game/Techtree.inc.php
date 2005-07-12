@@ -304,8 +304,8 @@ class TTExplored extends AbstractClass {
 		$query = "SELECT *, COUNT(`techtree_entry_id`) AS erfuellt, COUNT(*) AS Abhängigkeiten 
 					FROM `ttentrydependson` 
 					LEFT JOIN `ttexplored` ON `dependson_id`=`techtree_entry_id`
-    				GROUP BY `ttentrydependson`.`entry_id`
-	  				HAVING Abhängigkeiten=erfuellt AND spieler_id=$spieler_id $techids;";
+    				WHERE spieler_id=$spieler_id GROUP BY `ttentrydependson`.`entry_id`
+	  				HAVING Abhängigkeiten=erfuellt $techids;";
 	  	$temp = $mysql->select($query, true);
 	  	$result = array();
 	  	if(is_array($runningtechs))

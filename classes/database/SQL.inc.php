@@ -6,7 +6,7 @@
 abstract class SQL {
 
 	/** all queries are stored */
-	private $queries;
+	protected $queries;
 
 	/**
 	* DB Ressource connection
@@ -37,35 +37,30 @@ abstract class SQL {
 	  Connects to Database using global parameters
 	  return : databaselink
 	*/
-	abstract function connect() {
-	}
+	abstract function connect();
 
 	/**
 	  Disconnects database
 	  $dblink : databaselink
 	*/
-	abstract function disconnect($dblink) {
-	}
+	abstract function disconnect();
 
 	/**
 	  Executes SQL insert statement
 	  return : last insert id
 	*/
-	abstract function insert($query) {
-	}
+	abstract function insert($query);
 
 	/**
 	  Executes SQL select statement
 	  return : result set as numeric array
 	*/
-	abstract function select($query) {
-	}
+	abstract function select($query, $assoc = false);
 
 	/**
 	  Executes SQL update statement
 	  return : number of affected rows
 	*/
-	abstract function update($query) {
-	}
+	abstract function update($query);
 }
 ?>

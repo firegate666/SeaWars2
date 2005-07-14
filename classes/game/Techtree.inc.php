@@ -23,7 +23,10 @@ class TechTree extends AbstractClass {
 	public function update(){
 		global $mysql;
 		// get all running
-		$query = "SELECT * FROM ttexplored WHERE finished=0 AND spieler_id=".SeaWars::player().";";
+		$spieler_id = SeaWars::player();
+		if(empty($spieler_id))
+			$spieler_id = 0;
+		$query = "SELECT * FROM ttexplored WHERE finished=0 AND spieler_id=".$spieler_id.";";
 		$result = $mysql->select($query, true);
 		foreach($result as $item) {
 			if(strtotime($item['end']) <= strtotime(Date::now())) {
@@ -262,6 +265,8 @@ class TTExplored extends AbstractClass {
 		if(empty($spieler_id))
 			$spieler_id = SeaWars::player();
 		$spieler_id = mysql_escape_string($spieler_id);
+		if(empty($spieler_id))
+			$spieler_id = 0;
 		$query = "SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id." AND finished=1 AND techtree_entry_id <> 0;";
 		return $mysql->select($query, true);
 	}
@@ -277,6 +282,8 @@ class TTExplored extends AbstractClass {
 		if(empty($spieler_id))
 			$spieler_id = SeaWars::player();
 		$spieler_id = mysql_escape_string($spieler_id);
+		if(empty($spieler_id))
+			$spieler_id = 0;
 		$query = "SELECT techtree_entry_id FROM ttexplored WHERE spieler_id=".$spieler_id." AND finished=0;";
 		return $mysql->select($query, true);
 	}
@@ -301,6 +308,8 @@ class TTExplored extends AbstractClass {
 		if(empty($spieler_id))
 			$spieler_id = SeaWars::player();
 		$spieler_id = mysql_escape_string($spieler_id);
+		if(empty($spieler_id))
+			$spieler_id = 0;
 		$query = "SELECT *, COUNT(`techtree_entry_id`) AS erfuellt, COUNT(*) AS Abhängigkeiten 
 					FROM `ttentrydependson` 
 					LEFT JOIN `ttexplored` ON `dependson_id`=`techtree_entry_id`

@@ -18,7 +18,10 @@ class SeaWars extends AbstractClass {
 	 * @return	int	spieler id
 	 */
 	function player() {
-		return Session::getCookie('spieler_id');
+		$playerid = Session::getCookie('spieler_id');
+		if(empty($playerid))
+			$playerid = 0;
+		return $playerid;
 	}
 	
 	function SeaWars($layout='main'){

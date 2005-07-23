@@ -90,4 +90,3 @@ function dialog_confirm(question, dest)
 </table>
 </body>
 </html>
-

@@ -4,8 +4,8 @@
  */
 class Template {
 	var $layout;
-	var $tags=array();
-	
+	var $tags = array ();
+
 	/**
 	* checks whether it is allowed to call method from outside 	or	 who is
 	* allowed to call.
@@ -13,47 +13,47 @@ class Template {
 	* @param	String	$method	function to test
 	* @return	boolean	true if allowed, else false
 	*/
-	function acl($method){
-		if($method == 'clearcache')
+	function acl($method) {
+		if ($method == 'clearcache')
 			return true;
 		return false;
 	}
-	
+
 	/**
 	* remove all templates from cache
 	*/
-	function clearcache(){
-		if(get_config('cache_enabled', false))
-			unset($_SESSION['template']);
+	function clearcache() {
+		if (get_config('cache_enabled', false))
+			unset ($_SESSION['template']);
 		die('cache geleert');
 	}
-	
+
 	/**
 	 * Remove all not substituted tags from $template
 	 *
 	 * @param	String	$template	template contents
 	 */
-	function removeLostTags(&$template) {
+	function removeLostTags(& $template) {
 		$suchmuster = '/\$\{.*\}/i';
-		$template = preg_replace($suchmuster,'',$template);
+		$template = preg_replace($suchmuster, '', $template);
 	}
-	
+
 	/**
 	 * parse $template for known tags and store them
 	 *
 	 * @param	String	$template	template contents
 	 */
-	function parseTags($template){
-		$result = array();
+	function parseTags($template) {
+		$result = array ();
 		$suchmuster = '/\$\{(\w*):(\w*)\}/i';
-		$temp = array();
+		$temp = array ();
 		preg_match_all($suchmuster, $template, $temp, PREG_SET_ORDER);
-		foreach($temp as $item) {
-			$result[$item[1].':'.$item[2]] = array('type' => $item[1], 'value' => $item[2]);
+		foreach ($temp as $item) {
+			$result[$item[1].':'.$item[2]] = array ('type' => $item[1], 'value' => $item[2]);
 		}
 		$this->tags = $result;
 	}
-	
+
 	/**
 	 * Delete template
 	 *
@@ -81,26 +81,26 @@ class Template {
 		$query = "INSERT INTO template(class, layout) VALUES('$class', '$layout');";
 		$mysql->insert($query);
 	}
-	
+
 	/**
 	* public constructor
 	*/
-	function Template(){
+	function Template() {
 	}
-	
+
 	/**
 	 * get all template classes
 	 *
 	 * @return	String[]	all categories sorted
 	 */
-	 function getClasses() {
+	function getClasses() {
 		global $template_classes;
-		if(!isset($template_classes) || empty($template_classes))
-			$template_classes = array();
+		if (!isset ($template_classes) || empty ($template_classes))
+			$template_classes = array ();
 		sort($template_classes);
 		return $template_classes;
 	}
-	
+
 	/**
 	 * get all layouts for $class
 	 *
@@ -113,7 +113,7 @@ class Template {
 		$result = $mysql->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
 	}
-	
+
 	/**
 	 * Returns parsed template
 	 *
@@ -126,36 +126,39 @@ class Template {
 	 * @param	boolean	$nocache	if false, take template from session cache
 	 * @return	String	template as string
 	 */
-	function getLayout($class, $layout,	$array=array(),	$noparse=false,	$vars=array(), $nocache=false){
+	function getLayout($class, $layout, $array = array (), $noparse = false, $vars = array (), $nocache = false) {
 		global $mysql;
 		$class = mysql_escape_string($class);
 		$layout = mysql_escape_string($layout);
 		$strin = '';
-		if(isset($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
+		if (isset ($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
 			$string = $_SESSION['template'][$class][$layout];
 		else {
 			$result = $mysql->select("SELECT content FROM template WHERE class='$class' AND layout='$layout'");
 			$string = $result[0][0];
-			if(get_config('cache_enabled', false))
+			if (get_config('cache_enabled', false))
 				$_SESSION['template'][$class][$layout] = $string;
 		}
-		if($noparse) return $string;
+		if ($noparse)
+			return $string;
 		$keys = array_keys($array);
-		foreach($keys as $key) {
-			$string = str_replace('${'.$key.'}',$array[$key],$string);
+		foreach ($keys as $key) {
+			$string = str_replace('${'.$key.'}', $array[$key], $string);
 		}
 		$this->parseTags($string);
-                $array = array();
-                foreach($this->tags as $key=>$item) {
-                      $p = new $item['type']($item['value']);
-                      $array[$key] = $p->show($vars);
-                }
+		$array = array ();
+		foreach ($this->tags as $key => $item) {
+			$type = mysql_escape_string($item['type']);			$value= mysql_escape_string($item['value']);
+			$p = new $type ($value);
+			$array[$key] = $p->show($vars);
+		}
 		$keys = array_keys($array);
-		foreach($keys as $key) {
-			$string = str_replace('${'.$key.'}',$array[$key],$string);
+		foreach ($keys as $key) {
+			$string = str_replace('${'.$key.'}', $array[$key], $string);
 		}
 		$this->removeLostTags($string);
 		return $string;
 	}
 }
 ?>
+

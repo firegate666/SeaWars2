@@ -37,6 +37,12 @@ class Page extends AbstractNoNavigationClass {
 		$adminlogin = Session::getCookie('adminlogin');
 		if(!empty($adminlogin) && get_config('quickedit'))
 			$output = $this->adminbar($this->name).$output;
+			
+		/* count statistic */
+		$ps = new PageStatistic();
+		$ps->set('template', ($this->name));
+		$ps->store();			
+			
 		return $output;
 	}
 }

@@ -6,6 +6,9 @@ class Template {
 	var $layout;
 	var $tags = array ();
 
+	function idbyname($name) {
+	} 
+	
 	/**
 	* checks whether it is allowed to call method from outside 	or	 who is
 	* allowed to call.

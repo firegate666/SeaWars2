@@ -61,10 +61,12 @@ abstract class AbstractNoNavigationClass {
 	 * class
 	 * @return	String[][]	complete result
 	 */
-	function getlist($classname='') {
+	function getlist($classname='', $ascending=true) {
 		global $mysql;
-		if(empty($classname)) $classname = $this->class_name();
-		$result = $mysql->select("SELECT id FROM ".mysql_escape_string($classname), true);
+		if (empty($classname)) $classname = $this->class_name();
+		if ($ascending) $orderdir = "ORDER BY id ASC";
+		else $orderdir = "ORDER BY id DESC";
+		$result = $mysql->select("SELECT id FROM ".mysql_escape_string($classname)." $orderdir;", true);
 		return $result;
 	}
 	
@@ -267,6 +269,10 @@ abstract class AbstractNoNavigationClass {
 		}
 		$o .= '</form><!--getform end-->';
 		return $o;
+	}
+	
+	protected function error($msg, $action) {
+		error($msg, get_class($this), $action);
 	}
 }
 ?>

@@ -2,8 +2,11 @@
 /**
  * This class ist for counting page statistics
  */
- 
-class PageStatistic extends AbstractNoNavigationClass {
+/*SELECT template, count( id ) as aufrufe
+FROM pagestatistic
+GROUP  BY template
+ORDER BY aufrufe DESC*/
+class PageStatistic extends AbstractTimestampClass {
 
 	/**
 	 * all fields used in class
@@ -12,6 +15,7 @@ class PageStatistic extends AbstractNoNavigationClass {
 		$fields[] = array('name' => 'pagename', 'type' => 'string', 'notnull' => true);
 		$fields[] = array('name' => 'timestamp', 'type' => 'timestamp', 'notnull' => true);
 		$fields[] = array('name' => 'user', 'type' => 'integer', 'notnull' => false);
+		$fields[] = array('name' => 'ip', 'type' => 'string', 'notnull' => true);
 		return $fields;
 	}	
 	
@@ -20,7 +24,7 @@ class PageStatistic extends AbstractNoNavigationClass {
 		if($userid == 0)
 			$userid = null;
 		$this->set('user', $userid);
-		$this->set('timestamp', Date::now());
+		$this->set('ip', getClientIP());
 		parent::store();
 	}
 

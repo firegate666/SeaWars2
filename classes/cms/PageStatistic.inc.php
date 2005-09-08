@@ -8,6 +8,29 @@ GROUP  BY template
 ORDER BY aufrufe DESC*/
 class PageStatistic extends AbstractTimestampClass {
 
+	public function acl($method) {
+		if ($method == 'show')
+			return true;
+		else
+			return parent::check();
+	}
+	
+	public function show($vars) {
+		global $mysql;
+       	$result = $mysql->select("SELECT template, count( id ) as aufrufe
+									FROM pagestatistic
+									GROUP  BY template
+									ORDER BY aufrufe DESC", true);
+		$o = '<html><head><title>Page Statistics</title></head><body>';
+		$o .= '<table><tr><th>Seitenname</th><th>Anzahl Aufrufe</th></tr>';
+		foreach($result as $page) {
+			$o .= '<tr><td align="center">'.$page['template'].'</td>';
+			$o .= '<td align="center">'.$page['aufrufe'].'</td></tr>';
+		}
+		$o .= '</table></body></html>';
+		return $o;
+	}
+
 	/**
 	 * all fields used in class
 	 */

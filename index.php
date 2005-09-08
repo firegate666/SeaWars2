@@ -45,6 +45,11 @@
       		if(!$newclass->acl($method)) error("DENIED", $class, $method); // are you allowed to call?
       		$result = $newclass->$method($vars);
       		if(strtolower($class) == "page") { // are you a page
+      			/* count statistic */
+				$ps = new PageStatistic();
+				$ps->set('template', $id);
+				$ps->store();
+				// output			
       			print $result;
       		} else if(is_string($result)) { // results a string?
 	      		if(get_config("game", false)) {

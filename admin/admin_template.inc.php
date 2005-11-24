@@ -52,7 +52,7 @@ foreach ($array as $items) {
     <?
 
 if (isset ($tpl_class)) {
-	echo ("<td align=left valign=top><table>");
+	echo '<td align=left valign=top><table><tr>';
 	$link = "index.php?admin&template&tpl_class=$tpl_class&tpl_layout=";
 	$array = Template::getLayouts($tpl_class);
 	$marker_start ='';	$marker_end ='';	foreach ($array as $items) {		if($items[0] == $tpl_layout) {			$marker_start ='<b>';			$marker_end ='</b>';		} else {			$marker_start ='';			$marker_end ='';		}?><td align="left" valign="top"><?=$marker_start?>- <?=$items[0]?>

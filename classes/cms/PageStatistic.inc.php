@@ -6,7 +6,7 @@
 FROM pagestatistic
 GROUP  BY template
 ORDER BY aufrufe DESC*/
-class PageStatistic extends AbstractTimestampClass {
+class PageStatistic extends AbstractClass {
 
 	public function acl($method) {
 		if ($method == 'show')
@@ -36,7 +36,6 @@ class PageStatistic extends AbstractTimestampClass {
 	 */
 	public function getFields() {
 		$fields[] = array('name' => 'pagename', 'type' => 'string', 'notnull' => true);
-		$fields[] = array('name' => 'timestamp', 'type' => 'timestamp', 'notnull' => true);
 		$fields[] = array('name' => 'user', 'type' => 'integer', 'notnull' => false);
 		$fields[] = array('name' => 'ip', 'type' => 'string', 'notnull' => true);
 		return $fields;

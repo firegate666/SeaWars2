@@ -9,7 +9,6 @@
 	public function getFields() {
 		$fields[] = array('name' => 'sender', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'empfaenger', 'type' => 'integer', 'notnull' => true);
-		$fields[] = array('name' => 'datum', 'type' => 'timestamp', 'notnull' => true);
 		$fields[] = array('name' => 'betreff', 'type' => 'String', 'size' => 100, 'notnull' => false);
 		$fields[] = array('name' => 'inhalt', 'type' => 'String', 'size' => 500, 'notnull' => false);
 		$fields[] = array('name' => 'art', 'type' => 'integer', 'notnull' => true);
@@ -80,7 +79,7 @@
 		$n=array();
 		$n["betreff"]=$this->data["betreff"];
 		$n["inhalt"]=$this->data["inhalt"];
-		$n["datum"]=$this->data["datum"];
+		$n["datum"]=$this->data["__createdon"];
 		switch ($this->data["art"]) {
 			case 0:
 				$n["art"]="System";

@@ -1,5 +1,5 @@
 <?
-class Flotte extends AbstractTimestampClass {
+class Flotte extends AbstractNoNavigationClass {
 	function setname($newname) {
 	}
 }

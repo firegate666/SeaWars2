@@ -132,8 +132,8 @@ abstract class AbstractNoNavigationClass {
     	$id 		= mysql_escape_string($this->id);
     	$tablename 	= $this->class_name();
     	$this->data = $mysql->executeSql("SELECT * FROM ".$tablename." WHERE id=$id;");
-    	$this->id	= $this->data[id];
-    	unset($this->data[id]);
+    	$this->id	= $this->data['id'];
+    	unset($this->data['id']);
     }
 
     /**
@@ -158,6 +158,12 @@ abstract class AbstractNoNavigationClass {
     function store() {
 		global $mysql;
 		if(empty($this->data)) return;
+
+		// set timestamps
+		if($this->id=='')
+			$this->set('__createdon', Date::now());
+		$this->set('__changedon', Date::now());
+		
 		// Seperate keys from values
 		$keys   = array_keys($this->data);
 		$values = array_values($this->data);

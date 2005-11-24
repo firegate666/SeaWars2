@@ -27,7 +27,7 @@ class Page extends AbstractNoNavigationClass {
 		$result = '';
 		$result .= '<a href="';
 		$result .= 'index.php?admin&template&tpl_class=page&tpl_layout='.$layout;
-		$result .= '" TARGET="_BLANK">Edit Template</a> - <a href="index.php?admin&logout">Adminlogout</a><hr>';
+		$result .= '" TARGET="_BLANK">Edit Template "'.$this->name.'"</a> - <a href="index.php?admin&logout">Adminlogout</a><hr>';
 		return $result;
 	}
 	

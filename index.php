@@ -79,8 +79,10 @@
   		print "<hr><b>Queries executed:</b> ".($mysql->getQuerycount());
   		print " - ";
   		print '<a href="?class=template&method=clearcache">Clear Cache</a>';
-  		print " - ";
-  		print '<a href="?class=techtree&method=dropall">Forschungen zurücksetzen</a>';
+  		if(get_config('game', false)) {
+  			print " - ";
+  			print '<a href="?class=techtree&method=dropall">Forschungen zurücksetzen</a>';
+  		}
   	}
   	// clean up the mess
   	$mysql->disconnect();

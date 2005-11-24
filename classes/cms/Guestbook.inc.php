@@ -1,16 +1,31 @@
 <?php
 	$template_classes[] = 'guestbook';
 	
-class Guestbook extends AbstractTimestampClass {
+class Guestbook extends AbstractNoNavigationClass {
 	
 	function Guestbook($id='') {
 		$this->layout = $id;
-		AbstractTimestampClass::AbstractTimestampClass($id);
+		parent::AbstractNoNavigationClass($id);
+	}
+	
+	function togglestate($vars) {
+		if ($this->get('deleted'))
+			$this->set('deleted', 0);
+		else
+			$this->set('deleted', 1);
+		$this->store(false);
+		if (isset($vars['destination']))
+			return redirect($vars['destination']);
+		else
+			return redirect($_SERVER['HTTP_REFERER']);
+		
 	}
 	
 	function acl($action) {
 		if ($action == 'newentry')
 			return true;
+		else if ($action == 'togglestate')
+			return (Session::getCookie('adminlogin', false) !== false);
 		else
 			return parent::acl($action);
 	}
@@ -48,14 +63,21 @@ class Guestbook extends AbstractTimestampClass {
 		$output = '';
 		foreach($result as $entry) {
 			$gb = new Guestbook($entry['id']);
-			if ($gb->get('deleted') == 1)
+			if (($gb->get('deleted') == 1) && (Session::getCookie('adminlogin', false) == false))
 				continue;
 			$array = array();
 			$array['name'] = $gb->get('name');
 			$array['email'] = $gb->get('email');
 			$array['subject'] = $gb->get('subject');
 			$array['body'] = $gb->get('content');
-			$array['timestamp'] = $gb->get('timestamp');
+			$array['timestamp'] = $gb->get('__createdon');
+			if (Session::getCookie('adminlogin', false) != false) {
+				$link = '<a href="index.php?class=guestbook&method=togglestate&id='.($gb->id).'">';
+				if ($gb->get('deleted'))
+					$output .= '<div>'.$link.'Show</a></div>';
+				else
+					$output .= '<div>'.$link.'Hide</a></div>';
+			}
 			$output .= $this->getLayout($array, $this->layout, $vars);
 		}
 		return $output;

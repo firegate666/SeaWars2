@@ -66,11 +66,11 @@ function dialog_confirm(question, dest)
       <br><a href="index.php?admin&logout">Logout</a>
     </td>
     <td align=left valign=top>
-    <?		if (isset ($template)) {
+    <?		if (isset ($vars['template'])) {
 			include ('admin/admin_template.inc.php');
-		} else if (isset ($image)) {
+		} else if (isset ($vars['image'])) {
 			include ('admin/admin_image.inc.php');
-		} else if (isset ($techtree)) {
+		} else if (isset ($vars['techtree'])) {
 			include ('admin/admin_techtree.inc.php');
 		} else {
 	?>

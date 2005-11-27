@@ -14,7 +14,7 @@
 	}
 
 	if(isset($logout)) {
-		Session::setCookie('adminlogin','',0);
+		Session::cleanUpCookies();
 		header("Location: index.php");
 	}
 
@@ -63,6 +63,8 @@ function dialog_confirm(question, dest)
       <? if(get_config("game", false)) { ?>
       	<a href="index.php?admin&techtree">Tech-Tree</a><br>
       <? } ?>
+      <br><a href="index.php?admin&settings">Settings</a>
+      <br><a href="index.php?admin&config">Configuration</a>
       <br><a href="index.php?admin&logout">Logout</a>
     </td>
     <td align=left valign=top>
@@ -72,6 +74,10 @@ function dialog_confirm(question, dest)
 			include ('admin/admin_image.inc.php');
 		} else if (isset ($vars['techtree'])) {
 			include ('admin/admin_techtree.inc.php');
+		} else if (isset ($vars['settings'])) {
+			include ('admin/admin_settings.inc.php');
+		} else if (isset ($vars['config'])) {
+			include ('admin/admin_config.inc.php');
 		} else {
 	?>
         <h3>CMS Administration</h3>

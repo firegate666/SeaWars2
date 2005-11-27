@@ -11,6 +11,8 @@
 	require_once dirname(__FILE__).'/include/All.inc.php';
  	require_once dirname(__FILE__).'/classes/All.inc.php';
   
+	$s = new Session();
+
  	$class  = $_REQUEST["class"];
 	$method = $_REQUEST["method"];
 	$id	    = $_REQUEST["id"];

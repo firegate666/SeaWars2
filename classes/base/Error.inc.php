@@ -4,7 +4,7 @@
 /**
  * The Error-Class, gets pages for different errors
  */
-class Error extends AbstractNoNavigationClass {
+class Error extends AbstractClass {
 
 	var $class  = '';
 	var $method = '';

@@ -1,4 +1,4 @@
 <?
-  class Archipel extends AbstractClass {
+  class Archipel extends AbstractNavigationClass {
   }
 ?>

@@ -1,6 +1,9 @@
 <?php
 	$d = dirname(__FILE__).'/';
 
+	require_once $d.'AbstractNoNavigationClass.inc.php';
+	require_once $d.'AbstractNavigationClass.inc.php';
+
 	require_once $d.'Login.inc.php';
 	require_once $d.'Allianz.inc.php';
 	require_once $d.'Archipel.inc.php';

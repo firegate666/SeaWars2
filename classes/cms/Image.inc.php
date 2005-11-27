@@ -44,7 +44,7 @@ class Image extends AbstractClass {
 		if (empty ($nameorid))
 			return;
 		if(is_numeric($nameorid)) {
-			AbstractClass::AbstractClass($nameorid);
+			parent::AbstractClass($nameorid);
 		} else
 			$this->loadbyname($nameorid);
 	}

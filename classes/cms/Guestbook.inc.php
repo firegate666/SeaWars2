@@ -1,11 +1,11 @@
 <?php
 	$template_classes[] = 'guestbook';
 	
-class Guestbook extends AbstractNoNavigationClass {
+class Guestbook extends AbstractClass {
 	
 	function Guestbook($id='') {
 		$this->layout = $id;
-		parent::AbstractNoNavigationClass($id);
+		parent::AbstractClass($id);
 	}
 	
 	function togglestate($vars) {

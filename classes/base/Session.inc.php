@@ -51,7 +51,7 @@ class Session extends AbstractClass {
 		$_SESSION = array ();
 	}
 
-	function Session($userid) {
+	function Session($userid='') {
 		$this->data["uid"] = $userid;
 		$this->data["client_ip"] = getClientIP();
 		// in Datenbank speichern und ID übergeben

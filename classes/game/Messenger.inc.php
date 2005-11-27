@@ -1,7 +1,7 @@
 <?
 	$template_classes[] = 'messenger';
 
-  class Messenger extends AbstractClass {
+  class Messenger extends AbstractNavigationClass {
   	
   	/**
 	 * check if method is allowed

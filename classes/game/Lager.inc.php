@@ -8,7 +8,7 @@
 
       function Lager($id='') {
       	if(empty($id)) return;
-          AbstractClass::AbstractClass($id);
+          parent::AbstractClass($id);
           $this->loadres();
       }
 

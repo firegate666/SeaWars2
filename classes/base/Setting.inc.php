@@ -1,5 +1,5 @@
 <?php
-class Setting {
+class Setting extends AbstractClass {
 	
 	/**
 	* set setting in db

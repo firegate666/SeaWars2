@@ -12,7 +12,7 @@
  * 
  * TODO: Forschungswarteschlange
  */
-class TechTree extends AbstractClass {
+class TechTree extends AbstractNavigationClass {
 	
 	protected $categories;
 	protected $techtree;

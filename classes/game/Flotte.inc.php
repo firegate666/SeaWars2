@@ -1,5 +1,5 @@
 <?
-class Flotte extends AbstractNoNavigationClass {
+class Flotte extends AbstractClass {
 	function setname($newname) {
 	}
 }

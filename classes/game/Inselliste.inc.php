@@ -4,7 +4,7 @@
 /**
  * list of islands, islandlistview
  */
-class Inselliste extends AbstractClass {
+class Inselliste extends AbstractNavigationClass {
 	
 	/**
 	 * there are no views in database, only single islands

@@ -5,7 +5,7 @@
 /**
  * This is a page
  */
-class Page extends AbstractNoNavigationClass {
+class Page extends AbstractClass {
 	
 	var $name = '';
 	var $tags = '';
@@ -33,11 +33,12 @@ class Page extends AbstractNoNavigationClass {
 	
 	function show(&$vars) {
 		if($this->name=='') return error("Pagename not given",$this->class_name(),"show");
-		$output = $this->getLayout(array(),$this->name, $vars);
+		$output = "\n".'<!-- created with SmallCMS '.$this->name.'" (start) -->'."\n";
+		$output .= $this->getLayout(array(),$this->name, $vars);
 		$adminlogin = Session::getCookie('adminlogin');
 		if(!empty($adminlogin) && get_config('quickedit'))
 			$output = $this->adminbar($this->name).$output;
-			
+		$output .= "\n".'<!-- created with SmallCMS '.$this->name.'" (end) -->'."\n";
 		return $output;
 	}
 }

@@ -6,7 +6,7 @@
 /**
  * there he is, the player himself
  */
-class Spieler extends AbstractClass {
+class Spieler extends AbstractNavigationClass {
 
 	function getPunkte($spieler_id = '') {
 		if(empty($spieler_id))

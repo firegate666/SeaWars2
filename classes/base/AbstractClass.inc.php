@@ -226,6 +226,12 @@ abstract class AbstractClass {
 	 */
 	function getLayout($array, $layout, &$vars) {
 		$t = new Template();
+
+		// add some basic tags to parse
+		$array['_created_'] = $this->get('__createdon');
+		$array['_changed_'] = $this->get('__changedon');
+		$array['_datetime_'] = Date::now();
+
 		return $t->getLayout($this->class_name(),$layout,$array,false,$vars);
 	}
 	

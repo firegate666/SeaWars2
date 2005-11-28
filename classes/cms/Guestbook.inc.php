@@ -50,6 +50,7 @@ class Guestbook extends AbstractClass {
 		$gb->set('subject', $vars['subject']);
 		$gb->set('content', $vars['content']);
 		$gb->set('email', $vars['email']);
+		$gb->set('ip', getClientIP());
 		$gb->store();
 
 		if (isset($vars['onok']))

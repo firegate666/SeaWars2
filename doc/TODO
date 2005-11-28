@@ -1,6 +1,11 @@
 ########
 # TODO #
 ########
+* Klasse File einführen für abstrakten Zugriff auf alle Uploads
+* entsprechende Klassen, die davon erben (z.B. Image für ausgewählten Zugriff
+
+* Download Tracking von Files (IP, Hitcounter)
+
 * evtl upload für den direkten Zugriff sperren
 * und über Klasse kapseln
 
@@ -12,7 +17,6 @@
 * Abstract Naming of all game class
 SeaWars -> Game etc...
 
-* Seperate AbstractClasses from module cms (getLayout etc....)
 
 * Beim Löschen und speichern müssen depency checks durchgeführt werden, da mysql keine referentielle Integrität kennt
 
@@ -25,3 +29,4 @@ SeaWars -> Game etc...
 * per .htaccess schützen, kein direkter Zugriff
 * Sicherheitsabfrage bei delete im CMS
 * Spieler Passwort verschlüsseln
+* Seperate AbstractClasses from module cms (getLayout etc....)

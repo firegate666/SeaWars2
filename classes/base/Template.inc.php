@@ -133,11 +133,6 @@ class Template {
 		global $mysql;
 		$class = mysql_escape_string($class);
 		$layout = mysql_escape_string($layout);
-
-		// add some basic tags to parse
-		$array['_tcreated_'] = $this->get('__createdon');
-		$array['_tchanged_'] = $this->get('__changedon');
-		
 		$string = '';
 		if (isset ($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
 			$string = $_SESSION['template'][$class][$layout];

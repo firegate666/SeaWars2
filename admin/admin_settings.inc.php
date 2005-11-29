@@ -11,7 +11,7 @@ if(empty($adminlogin)) die("DENIED");
 <?
 	foreach($_SESSION['setting'] as $name=>$value) { ?>
 		<tr>
-		  <td><?=$name?></td>
+		  <td><?=$_SESSION['settingdesc'][$name]?></td>
 		  <td><?
 		  		if ($value === true) echo "true";
 		  		else if ($value === false) echo "false";

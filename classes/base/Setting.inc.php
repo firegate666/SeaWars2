@@ -40,12 +40,15 @@ class Setting extends AbstractClass {
 		if(isset($_SESSION['setting'][$name]))
 			return $_SESSION['setting'][$name];
 		else {
-			$result = $mysql->executeSql("SELECT value FROM setting WHERE name='".mysql_escape_string($name)."';");
-			if(isset($result['value']))
+			$result = $mysql->executeSql("SELECT value, description FROM setting WHERE name='".mysql_escape_string($name)."';");
+			$description = 'no_desc';
+			if(isset($result['value'])) {
+				$description = $result['description'];
 				$result = $result['value'];
-			else
+			} else
 				$result = $default;
 			$_SESSION['setting'][$name] = $result;
+			$_SESSION['settingdesc'][$name] = $description;
 		}
 		return $result;
 	}

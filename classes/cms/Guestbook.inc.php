@@ -1,6 +1,16 @@
 <?php
 	$template_classes[] = 'guestbook';
+
+	Setting::set('moderated_guestbook',
+		'1',
+		'Moderated Guestbook?',
+		false);
 	
+	Setting::set('email_guestbookadmin',
+		'',
+		'Email Guestbookadmin',
+		false);
+
 class Guestbook extends AbstractClass {
 	
 	function Guestbook($id='') {
@@ -51,7 +61,18 @@ class Guestbook extends AbstractClass {
 		$gb->set('content', $vars['content']);
 		$gb->set('email', $vars['email']);
 		$gb->set('ip', getClientIP());
+		$gb->set('deleted', Setting::get('moderated_guestbook', 1));
 		$gb->store();
+
+		if (Setting::get('moderated_guestbook', 1) && Setting::get('email_guestbookadmin', false)) {
+			$m = new Mailer();
+			$from = Setting::get('email_guestbookadmin');
+			$to = Setting::get('email_guestbookadmin');
+			$subject = 'Neuer Gästebucheintrag';
+			$body = 'Ein neuer Gästebucheintrag von "'.$gb->get('name'). '" wartet auf Freischaltung.';
+			$body .= "\n\n".$gb->get('content');
+			$m->simplesend($from, $to, $subject, $body);
+		}
 
 		if (isset($vars['onok']))
 			return redirect($vars['onok']);

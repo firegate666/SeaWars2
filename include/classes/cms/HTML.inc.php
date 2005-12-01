@@ -4,6 +4,13 @@
  */
 class HTML {
 	
+	function input($type, $name, $value) {
+		$attr[] = array('name' => 'name', 'value' => $name);
+		$attr[] = array('name' => 'type', 'value' => $type);
+		$attr[] = array('name' => 'value', 'value' => $value);
+		return HTML::tag('input', '', $attr, false);
+	}
+	
 	/**
 	* build html tag
 	* 
@@ -17,9 +24,7 @@ class HTML {
 		$adds = '';
 		if(is_array($attr)) {
 			foreach($attr as $item)
-				$attr .= $item['name'].'="'.$item['value'].'" ';
-		} else {
-			$adds = $attr;
+				$adds .= $item['name'].'="'.$item['value'].'" ';
 		}
 		
 		$tag = "<$name $adds";
@@ -29,16 +34,16 @@ class HTML {
 	}	
 	
 	function tr($content) {
-		return $this->tag('tr', $content);
+		return HTML::tag('tr', $content);
 	}
 	
 	function td($content) {
-		return $this->tag('td', $content);
+		return HTML::tag('td', $content);
 	}
 	
 	function table($content) {
 		if(!is_array($content)) {
-			return $this->tag('table', $content);
+			return HTML::tag('table', $content);
 		} else {
 			$rows = '';
 			foreach($content as $row) {
@@ -48,7 +53,7 @@ class HTML {
 				}
 				$rows .= HTML::tr($cells); 
 			}
-			return $this->tag('<table>', $rows);
+			return HTML::tag('table', $rows);
 			
 		}
 	}	

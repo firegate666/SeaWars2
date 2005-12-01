@@ -7,7 +7,7 @@
 		false);
 	
 	Setting::set('email_guestbookadmin',
-		'',
+		'false',
 		'Email Guestbookadmin',
 		false);
 

@@ -259,26 +259,26 @@ abstract class AbstractClass {
 	 * @param	String[]	$vars	request parameters
 	 * @return	String	form
 	 */
-	function getForm($content='', $class='', $method='',$name='MyForm', $vars=array()) {
-		if(empty($class)) $class = $vars['class'];
-		if(empty($method)) $method = $vars['method'];
-		$o = '<!--getform start-->';
-		$o .= '<form action="index.php" name="'.$name.'" METHOD="POST">';
-		$o .= '<input type="hidden" name="class" value="'.$class.'">';
-		$o .= '<input type="hidden" name="method" value="'.$method.'">';
+	function getForm($content='', $class='', $method='show',$name='MyForm', $vars=array(), $enctype='') {
+		if(empty($class)) $class = $this->class_name();
+		$o = '<!--getform start-->'."\n";
+		$o .= '<form action="index.php" enctype="'.$enctype.'" name="'.$name.'" METHOD="POST">'."\n";
+		$o .= '<input type="hidden" name="class" value="'.$class.'">'."\n";
+		$o .= '<input type="hidden" name="method" value="'.$method.'">'."\n";
+		$o2 = '';
 		if(is_string($content))
 			$o .= $content;
 		else {
-			$o .= '<table>';
+			$o .= '<table>'."\n";
 			foreach($content as $input) {
-				if($input['descr']=='') $o .= $input['input'];
-				else $o .= HTML::tr('<td>'.$input['descr'].'</td>' .
-							'<td>'.$input['input'].'</td>');
+				if($input['descr']=='') $o2 .= $input['input'];
+				else $o .= HTML::tr('<td>'.$input['descr'].'</td>'."\n".
+							'<td>'.$input['input'].'</td>'."\n");
 			}
-			$o .= '</table>';
+			$o .= '</table>'."\n";
 		}
-		$o .= '</form><!--getform end-->';
-		return $o;
+		$o .= '</form><!--getform end-->'."\n";
+		return $o2.$o;
 	}
 	
 	protected function error($msg, $action) {

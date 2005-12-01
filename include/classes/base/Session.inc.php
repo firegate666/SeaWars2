@@ -22,7 +22,8 @@ class Session extends AbstractClass {
 	* @param	String	$name	name of value
 	*/
 	function unsetCookie($name) {
-		unset ($_SESSION[$name]);
+		if (isset($_SESSION[$name]))
+			unset($_SESSION[$name]);
 	}
 
 	/**

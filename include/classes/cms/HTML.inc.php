@@ -4,13 +4,22 @@
  */
 class HTML {
 	
-	function input($type, $name, $value) {
+	function input($type, $name, $value, $length=false) {
 		$attr[] = array('name' => 'name', 'value' => $name);
 		$attr[] = array('name' => 'type', 'value' => $type);
 		$attr[] = array('name' => 'value', 'value' => $value);
+		if($length !== false)
+			$attr[] = array('name' => 'maxlength', 'value' => $length);
 		return HTML::tag('input', '', $attr, false);
 	}
 	
+	function textarea($name, $value, $cols=50, $rows=10) {
+		$attr[] = array('name' => 'name', 'value' => $name);
+		$attr[] = array('name' => 'cols', 'value' => $cols);
+		$attr[] = array('name' => 'rows', 'value' => $rows);
+		return HTML::tag('textarea', $value, $attr, true);
+	}
+
 	/**
 	* build html tag
 	* 
@@ -30,7 +39,7 @@ class HTML {
 		$tag = "<$name $adds";
 		if($closing) $tag .= ">$content</$name>";
 		else $tag .= " />$content";
-		return $tag;
+		return $tag."\n";
 	}	
 	
 	function tr($content) {

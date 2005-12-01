@@ -261,10 +261,10 @@ abstract class AbstractClass {
 	 */
 	function getForm($content='', $class='', $method='show',$name='MyForm', $vars=array(), $enctype='') {
 		if(empty($class)) $class = $this->class_name();
-		$o = '<!--getform start-->'."\n";
-		$o .= '<form action="index.php" enctype="'.$enctype.'" name="'.$name.'" METHOD="POST">'."\n";
-		$o .= '<input type="hidden" name="class" value="'.$class.'">'."\n";
-		$o .= '<input type="hidden" name="method" value="'.$method.'">'."\n";
+		$o = '<!--getform start-->';
+		$o .= '<form action="index.php" enctype="'.$enctype.'" name="'.$name.'" METHOD="POST">';
+		$o .= HTML::input('hidden', 'class', $class);
+		$o .= HTML::input('hidden', 'method', $method);
 		$o2 = '';
 		if(is_string($content))
 			$o .= $content;
@@ -272,12 +272,12 @@ abstract class AbstractClass {
 			$o .= '<table>'."\n";
 			foreach($content as $input) {
 				if($input['descr']=='') $o2 .= $input['input'];
-				else $o .= HTML::tr('<td>'.$input['descr'].'</td>'."\n".
-							'<td>'.$input['input'].'</td>'."\n");
+				else $o .= HTML::tr('<td>'.$input['descr'].'</td>'.
+							'<td>'.$input['input'].'</td>');
 			}
 			$o .= '</table>'."\n";
 		}
-		$o .= '</form><!--getform end-->'."\n";
+		$o .= '</form><!--getform end-->';
 		return $o2.$o;
 	}
 	

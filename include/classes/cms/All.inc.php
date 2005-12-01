@@ -2,7 +2,6 @@
 	$d = dirname(__FILE__).'/';
 
 	require_once $d.'HTML.inc.php';
-
 	require_once $d.'Page.inc.php';
 	require_once $d.'Image.inc.php';
 	require_once $d.'Link.inc.php';

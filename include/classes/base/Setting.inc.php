@@ -41,7 +41,7 @@ class Setting extends AbstractClass {
 			return $_SESSION['setting'][$name];
 		else {
 			$result = $mysql->executeSql("SELECT value, description FROM setting WHERE name='".mysql_escape_string($name)."';");
-			$description = 'no_desc';
+			$description = 'please re-login';
 			if(isset($result['value'])) {
 				$description = $result['description'];
 				$result = $result['value'];

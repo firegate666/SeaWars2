@@ -9,7 +9,6 @@
 	session_start();
 
 	require_once dirname(__FILE__).'/include/All.inc.php';
- 	require_once dirname(__FILE__).'/classes/All.inc.php';
   
 	$s = new Session();
 

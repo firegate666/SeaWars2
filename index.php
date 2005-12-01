@@ -12,19 +12,31 @@
   
 	$s = new Session();
 
- 	$class  = $_REQUEST["class"];
-	$method = $_REQUEST["method"];
-	$id	    = $_REQUEST["id"];
-	$vars	= array_merge(array(), $_REQUEST);
-	
 	/**
 	 * Admincall?
 	 */
-	if(isset($admin)) {
+	if(isset($_REQUEST["admin"])) {
 		include('admin/admin.php');
 	  	$mysql->disconnect(); // remember to close connection
 		die();
 	}
+
+	/**
+	 * decode query string
+	 */
+ 	if (isset($_REQUEST['class']) ||
+ 		isset($_REQUEST['method']) || 
+ 		isset($_REQUEST['id'])) {
+		 	$class  = $_REQUEST["class"];
+			$method = $_REQUEST["method"];
+			$id	    = $_REQUEST["id"];
+			$vars	= array_merge(array(), $_REQUEST);
+	} else {
+		// new style
+		$qs = $_SERVER['QUERY_STRING'];
+		decodeURI($qs, $class, $method, $id, $vars);
+ 	}
+
 	/**
 	 * Default handling
 	 */

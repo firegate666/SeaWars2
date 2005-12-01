@@ -41,9 +41,9 @@
 	 * Default handling
 	 */
 	if(get_config('usedefaults', true)) {
-		if(empty($class))
+		if(empty($class) or ($class == ''))
 			$class  = get_config("default_class");
-		if(empty($method))
+		if(empty($method) or ($method == ''))
 			$method = get_config("default_method");
 		if(empty($id))
 			$id     = get_config("default_id");

@@ -50,7 +50,7 @@ class HTML {
 		return HTML::tag('td', $content);
 	}
 	
-	function table($content) {
+	function table($content, $border = 0) {
 		if(!is_array($content)) {
 			return HTML::tag('table', $content);
 		} else {
@@ -62,7 +62,7 @@ class HTML {
 				}
 				$rows .= HTML::tr($cells); 
 			}
-			return HTML::tag('table', $rows);
+			return HTML::tag('table', $rows, array(array('name'=>'border','value'=>$border)));
 			
 		}
 	}	

@@ -5,7 +5,7 @@
 abstract class AbstractClass {
 	
     /** main data array */
-    protected $data;
+    protected $data = array();
     
     /** auto id of object */
     protected $id;
@@ -94,6 +94,10 @@ abstract class AbstractClass {
 		return $this->data[$key];
 	}
 
+	public function getData() {
+		return $this->data;
+	}
+
 	/**
 	 * not used yet
 	 * not sure if used anywhen
@@ -115,7 +119,7 @@ abstract class AbstractClass {
 	 * @param	boolean	true, if $this->id exists
 	 */
 	function exists() {
-	   return empty($this->id);
+	   return !empty($this->id);
 	}
 
 	/**
@@ -245,8 +249,13 @@ abstract class AbstractClass {
 	 * @param	String[]	$vars	request parameters
 	 * @return	String	output
 	 */
-	function show(& $vars) {
-		return $this->getLayout(array(), "page", $vars);
+	function show(&$vars, $layout = 'page', $array = array()) {
+		if (!empty($array))
+			$array = array_merge($array, $this->data);
+		else
+			$array = $this->data;
+		$array['id'] = $this->id;
+		return $this->getLayout($array, $layout, $vars);
 	}
 
 	/**

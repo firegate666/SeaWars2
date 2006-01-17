@@ -1,5 +1,5 @@
 <?php
-	$template_classes[] = 'answertype';
+	$template_classes[] = 'questionanswertype';
 
 /**
  * every answer has a type containing a template

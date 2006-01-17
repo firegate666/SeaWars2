@@ -31,16 +31,17 @@ class QuestionaireImport extends AbstractClass {
 			$question->set('blockname', $item[2]); unset($item[2]);
 			$question->set('groupname', $item[3]); unset($item[3]);
 			$question->set('questionaireid', $questionaire_id);
+			$question->store();
 			foreach($item as $at) {
 				$answer = new QuestionAnswer();
 				$answer->set('answertype', $at);
+				$answer->set('questionid', $question->get('id'));
 				$answer->store();
 			}
-			$question->store();
+			
 		}
 
-		print_a($questionaire);	
-		print_a($questions);
+		return redirect('?admin&questionaire');
 	}
 	
 	function verify($vars) {

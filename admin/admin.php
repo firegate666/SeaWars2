@@ -63,21 +63,26 @@ function dialog_confirm(question, dest)
       <? if(get_config("game", false)) { ?>
       	<a href="index.php?admin&techtree">Tech-Tree</a><br>
       <? } ?>
+      <? if(get_config("questionaire", false)) { ?>
+      	<a href="index.php?admin&questionaire">Questionaire</a><br>
+      <? } ?>
       <br><a href="index.php?admin&settings">Settings</a>
       <br><a href="index.php?admin&config">Configuration</a>
       <br><a href="index.php?admin&logout">Logout</a>
     </td>
     <td align=left valign=top>
-    <?		if (isset ($vars['template'])) {
+    <?		if (isset ($_REQUEST['template'])) {
 			include ('admin/admin_template.inc.php');
-		} else if (isset ($vars['image'])) {
+		} else if (isset ($_REQUEST['image'])) {
 			include ('admin/admin_image.inc.php');
-		} else if (isset ($vars['techtree'])) {
+		} else if (isset ($_REQUEST['techtree'])) {
 			include ('admin/admin_techtree.inc.php');
-		} else if (isset ($vars['settings'])) {
+		} else if (isset ($_REQUEST['settings'])) {
 			include ('admin/admin_settings.inc.php');
-		} else if (isset ($vars['config'])) {
+		} else if (isset ($_REQUEST['config'])) {
 			include ('admin/admin_config.inc.php');
+		} else if (isset ($_REQUEST['questionaire'])) {
+			include ('admin/admin_questionaire.inc.php');
 		} else {
 	?>
         <h3>CMS Administration</h3>

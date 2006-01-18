@@ -8,6 +8,7 @@ class QuestionaireImport extends AbstractClass {
 			return true;
 		if ($method == 'finish')
 			return true;
+		return parent::acl($method);
 	}
 	
 	function finish($vars) {

@@ -13,18 +13,32 @@ class Questionaire extends AbstractClass {
 			return true;
 		if ($method == 'submit')
 			return true;
-		else
-			return parent::acl($method);
+		return parent::acl($method);
 	}
 	
 	public function submit($vars) {
-		print_a($vars);
+		if (!isset($vars['question']) || !isset($vars['questionanswer']))
+			error('Fehler bei der Verarbeitung, fehlende Parameter', 'questionaire', 'submit', $vars);
+		foreach($vars['question'] as $qid) {
+			if (isset($vars['questionanswer'][$qid])) { // there are questions with no answers
+				foreach($vars['questionanswer'][$qid] as $qaid=>$value){
+					$qas = new QuestionaireAnswers();
+					$qas->set('questionanswerid', $qaid);
+					$qas->set('questionanswervalue', $value);
+					$qas->set('quserid', QuestionaireUser::LoggedIn()); 
+					$qas->store();
+				}
+			}
+		}
+		return $this->show(array());
 	}
 	
 	public function show($vars) {
 		$questiontpl = 'default';
 		$array['id'] = $this->id;
 		$questions = $this->getNextUnanswered();
+		if (count($questions) == 0)
+			return $this->getLayout($array, $this->id.'end', $vars);
 		$array['questions'] = '';
 		foreach ($questions as $question) {
 			$question = new Question($question['qid']);

@@ -18,7 +18,7 @@ class Question extends AbstractClass {
 		$answers = $this->getAllAnswers();
 		foreach($answers as $answertype) {
 			$at = new QuestionAnswertype($answertype['answertype']);
-			$result .= $at->show($vars, $at->get('name'), array('qaid'=>$answertype['id']));
+			$result .= $at->show($vars, $at->get('name'), array('qid'=>$this->id, 'qaid'=>$answertype['id']));
 		}
 		return $result;
 	}

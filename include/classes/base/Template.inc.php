@@ -134,6 +134,7 @@ class Template {
 		$class = mysql_escape_string($class);
 		$layout = mysql_escape_string($layout);
 		$string = '';
+		$array['__ref__'] = $vars['ref'];
 		if (isset ($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
 			$string = $_SESSION['template'][$class][$layout];
 		else {
@@ -149,11 +150,10 @@ class Template {
 			$string = str_replace('${'.$key.'}', $array[$key], $string);
 		}
 		$this->parseTags($string);
-		$array = array ();
 		foreach ($this->tags as $key => $item) {
 			$type = mysql_escape_string($item['type']);			$value= mysql_escape_string($item['value']);
-			$p = new $type ($value);
-			$array[$key] = $p->show($vars);
+			$obj = new $type ($value);
+			$array[$key] = $obj->show($vars);
 		}
 		$keys = array_keys($array);
 		foreach ($keys as $key) {

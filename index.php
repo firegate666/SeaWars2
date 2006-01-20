@@ -24,6 +24,7 @@
 	/**
 	 * decode query string
 	 */
+	 $vars = array();
  	if (isset($_REQUEST['class']) ||
  		isset($_REQUEST['method']) || 
  		isset($_REQUEST['id'])) {
@@ -36,6 +37,12 @@
 		$qs = $_SERVER['QUERY_STRING'];
 		decodeURI($qs, $class, $method, $id, $vars);
  	}
+
+	if (!isset($vars['ref']))
+		$vars['ref'] = $_SERVER['HTTP_REFERER'];
+	if (empty($vars['ref']))
+		$vars['ref'] = $_SERVER['REQUEST_URI'];
+	
 
 	/**
 	 * Default handling

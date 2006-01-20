@@ -5,8 +5,6 @@
 	require_once $d.'QuestionaireAnswers.inc.php';
 	require_once $d.'QuestionaireUser.inc.php';
 
-	require_once $d.'QuestionBlock.inc.php';
-	require_once $d.'QuestionGroup.inc.php';
 	require_once $d.'Question.inc.php';
 	require_once $d.'QuestionAnswer.inc.php';
 	require_once $d.'QuestionAnswertype.inc.php';

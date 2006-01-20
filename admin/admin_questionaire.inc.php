@@ -42,6 +42,40 @@ if (!isset($_REQUEST['id'])) {
 			<p><b>Beschreibung:</b> <?=$q->get('longdesc');?></p>
 		<?
 		$qs = new Question();
-		echo HTML::table($qs->getlistbyquestionaire($_REQUEST['id']));
+		?>
+		<script language="javascript">
+			function togglevisible(id) {
+				if (document.getElementById(id).style.visibility == 'hidden') {
+					document.getElementById(id).style.display='block';
+					document.getElementById(id).style.visibility='visible';
+					document.getElementById(id+'label').innerHTML = 'verstecken';
+				} else {
+					document.getElementById(id).style.visibility='hidden';
+					document.getElementById(id).style.display='none';
+					document.getElementById(id+'label').innerHTML = 'anzeigen';
+				}
+			}
+		</script>
+		<div onClick="togglevisible('questions');"><b>Fragen <span id="questionslabel">anzeigen</span></b> 
+			<span id="questions" style="visibility:hidden;display:none;">
+			<?=HTML::table($qs->getlistbyquestionaire($_REQUEST['id']));?>
+			</span>
+		</div>
+		<div onClick="togglevisible('answers');"><b>Antworten <span id="answerslabel">anzeigen</span></b> 
+			<span id="answers" style="visibility:hidden;display:none;">
+		<table border="1">
+		<?
+			foreach($q->getAnswerTable() as $row) {
+				echo "<tr>";
+				foreach($row as $column) {
+					echo "<td align='center'>$column</td>";
+				}
+				echo "</tr>";
+			}
+		?>
+		</table>
+			</span>
+		</div>
+		<?
 	}
 ?>

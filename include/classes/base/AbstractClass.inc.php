@@ -290,6 +290,22 @@ abstract class AbstractClass {
 		return $o2.$o;
 	}
 	
+	public function search($where, $sfield='id', $fields='id') {
+		global $mysql;
+		if ($where == null)
+			$this->error('Error in where clause', 'search');
+		if (($sfield == null) || ($sfield == ''))
+			$this->error('Error in where clause (field)', 'search');
+		if (!is_array($fields))
+			$fields = array($fields);
+		if (count($fields) == 0)
+			$this->error('Error in where clause (fields)', 'search');
+		$fields = implode(",", $fields);
+		$query = "SELECT ".$fields." FROM ".($this->class_name()).
+					" WHERE ".$sfield." = '".$where."';";
+		return $mysql->select($query, true);			
+	}
+	
 	protected function error($msg, $action) {
 		error($msg, get_class($this), $action);
 	}

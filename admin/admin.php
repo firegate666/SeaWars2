@@ -41,7 +41,7 @@
 	}
 ?>
 <html>
-<script language="javascript">
+<script type="javascript/text" language="javascript">
 function dialog_confirm(question, dest) 
 {
   if (confirm(question)) location = dest;

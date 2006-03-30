@@ -1,14 +1,15 @@
 <?
 $adminlogin = Session::getCookie('adminlogin');
+$msg = "";
 if(empty($adminlogin)) die("DENIED");
 
-if (isset ($vars['img_delete'])) {
-	if(isset($vars['id'])) {
-	        $i = new Image($vars['id']);
+if (isset ($_REQUEST['img_delete'])) {
+	if(isset($_REQUEST['id'])) {
+	        $i = new Image($_REQUEST['id']);
 	        $i->delete();
 	}
 }
-if (isset ($vars['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset($vars['img_name'])) {
+if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset($_REQUEST['img_name'])) {
 	if (is_uploaded_file($HTTP_POST_FILES['img_file']['tmp_name'])) {
                 $upload_allowed = true;
 		if ($HTTP_POST_FILES['img_file']['type'] == "image/gif") {
@@ -26,7 +27,7 @@ if (isset ($vars['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset(
 			} else {
 				// Datenbankreferenz erstellen
 				$img = new Image();
-				$img->set('name', $vars['img_name']);
+				$img->set('name', $_REQUEST['img_name']);
 				$img->set('url', get_config("uploadpath").$newname);
 				$img->store();
 			}
@@ -35,7 +36,11 @@ if (isset ($vars['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset(
 		} else {
 			$msg .= "Wrong file type<br>\n";
 		}
+	} else {
+		$msg = "Error while uploading";
 	}
+} else {
+	$msg = "Form misconfigured";
 }
 ?>
 <table width=100% border=1>

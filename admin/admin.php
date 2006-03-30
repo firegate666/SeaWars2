@@ -24,7 +24,13 @@
 	}
 
 	$adminlogin = Session::getCookie('adminlogin');
-	if(empty($adminlogin)) { ?>
+?>
+<html>
+  <head>
+    <link href="?page/show/css_w40k" rel="stylesheet" type="text/css"/>
+  </head>
+<body>
+<?	if(empty($adminlogin)) { ?>
 		<h3>Adminlogin</h3>
 		<font color="#FF0000"><?=$error?></font>
 		<form>
@@ -40,14 +46,12 @@
 	<?  die();
 	}
 ?>
-<html>
 <script type="javascript/text" language="javascript">
 function dialog_confirm(question, dest) 
 {
   if (confirm(question)) location = dest;
 }
 </script>
-<body>
 <table width=100%>
   <tr>
     <td align=center valign=absmiddle width=100>CMS Manager</td>
@@ -66,6 +70,10 @@ function dialog_confirm(question, dest)
       <? if(get_config("questionaire", false)) { ?>
       	<a href="index.php?admin&questionaire">Questionaire</a><br>
       <? } ?>
+      <? if(get_config("w40k", false)) { ?>
+      	<a href="index.php?admin&w40k">W40K</a><br>
+      <? } ?>
+      <br><a href="index.php?admin&user">User</a>
       <br><a href="index.php?admin&settings">Settings</a>
       <br><a href="index.php?admin&config">Configuration</a>
       <br><a href="index.php?admin&logout">Logout</a>
@@ -83,6 +91,10 @@ function dialog_confirm(question, dest)
 			include ('admin/admin_config.inc.php');
 		} else if (isset ($_REQUEST['questionaire'])) {
 			include ('admin/admin_questionaire.inc.php');
+		} else if (isset ($_REQUEST['user'])) {
+			include ('admin/admin_user.inc.php');
+		} else if (isset ($_REQUEST['w40k'])) {
+			include ('admin/admin_w40k.inc.php');
 		} else {
 	?>
         <h3>CMS Administration</h3>

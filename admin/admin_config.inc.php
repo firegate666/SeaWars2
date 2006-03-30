@@ -22,3 +22,4 @@ if(empty($adminlogin)) die("DENIED");
 		</tr>
 	<? }
 ?>
+</table>

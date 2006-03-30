@@ -6,7 +6,7 @@ if (isset ($tpl_content)) {
 	unset ($tpl_layout);
 }
 if (isset ($tpl_addlayout)) {
-	Template::createTemplate($tpl_class, $tpl_layoutname);
+	if ($tpl_layoutname != "") {		Template::createTemplate($tpl_class, $tpl_layoutname);		$tpl_layout = $tpl_layoutname;	}
 }
 if (isset ($tpl_delete)) {
 	Template::deleteTemplate($tpl_class, $tpl_layout);
@@ -16,20 +16,7 @@ if (isset ($tpl_delete)) {
 ?>
 <table border=0>
   <tr>
-    <th align="left" valign="top" colspan><a href="index.php?admin&template">Templateklasse</a>
-    <? if(isset($tpl_class)) { ?>
-      / Class: <?=$tpl_class?></th>
-    <td align="left" valign="top">
-      <form>
-        <input type="hidden" name="tpl_addlayout">
-	<input type="hidden" name="admin">
-	<input type="hidden" name="template">
-	<input type="hidden" name="tpl_class" value="<?=$tpl_class?>">
-	<input type="text"   name="tpl_layoutname">
-	<input type="submit" value="Add Layout">
-      </form>
-    </td>
-    <? } else echo("</th>"); ?>
+    <th colspan="6" align="left" valign="top" colspan><a href="index.php?admin&template">Templateklasse</a></th>
   </tr>
   <?
 
@@ -41,29 +28,15 @@ foreach ($array as $items) {
 	if($items == $tpl_class) $options .= '<option selected>'.$items.'</option>';	else $options .= '<option>'.$items.'</option>';
 }
 ?>
-  <tr>
-    <td align="left" valign="top">
-      <form name="selectclass">
-        <input type="hidden" name="admin">
-	<input type="hidden" name="template">
-	<select name="tpl_class" onChange="this.form.submit()"><?=$options?></select>
-      </form>
-    </td>
-    <?
-
-if (isset ($tpl_class)) {
-	echo '<td align=left valign=top><table><tr>';
-	$link = "index.php?admin&template&tpl_class=$tpl_class&tpl_layout=";
-	$array = Template::getLayouts($tpl_class);
-	$marker_start ='';	$marker_end ='';	foreach ($array as $items) {		if($items[0] == $tpl_layout) {			$marker_start ='<b>';			$marker_end ='</b>';		} else {			$marker_start ='';			$marker_end ='';		}?><td align="left" valign="top"><?=$marker_start?>- <?=$items[0]?>
-	<a href="<?=$link?><?=$items[0]?>">(edit)</a>
-	<a href="javascript:dialog_confirm('Wirklich löschen?', '<?=$link?><?=$items[0]?>&tpl_delete');">(delete)</a>
-	<a href="index.php?class=<?=$tpl_class?>&method=show&id=<?=$items[0]?>" target="_blank">(show)</a>
-	<?=$marker_end?></td></tr><?
-
-	}
-	echo ("</table></td>");
-} else
+  <tr>    <form name="selectclass" action="index.php" method="get">      <input type="hidden" name="admin">	  <input type="hidden" name="template">      <th align="left" valign="top">Template Klasse</th>
+      <td align="left" valign="top">
+	    <select name="tpl_class" onChange="this.form.submit()"><?=$options?></select>
+      </td>
+    </form><? if (isset ($tpl_class) && !empty($tpl_class)) { ?>	<form name="showtemplate" action="index.php" method="get">		<input type="hidden" name="admin">		<input type="hidden" name="template">		<input type="hidden" name="tpl_class" value="<?=$tpl_class?>">		<input type="hidden" name="admin">    	<th align=left valign=top>Template</th>    	<td align=left valign=top>			<select name="tpl_layout" size="1" onChange="this.form.submit()"><option></option><?
+$array = Template::getLayouts($tpl_class);
+foreach ($array as $items) {	$selected = '';	if($items[0] == $tpl_layout)		$selected ='SELECTED="SELECTED"';	?><option <?=$selected?>><?=$items[0]?></option><?
+}?>
+			</select>			<input type='submit' value='Bearbeiten'/>			<input type='submit' value='Löschen' name='tpl_delete'/>		</td>	</form></tr><tr>    <form action="index.php" method="get">       	<input type="hidden" name="tpl_addlayout">		<input type="hidden" name="admin">		<input type="hidden" name="template">		<input type="hidden" name="tpl_class" value="<?=$tpl_class?>">    	<td colspan="2">&nbsp;</td>    	<th align="left" valign="top">Neues Template</th>    	<td align="left" valign="top">			<input type="text"   name="tpl_layoutname">			<input type="submit" value="Add Layout">    	</td>	</form></tr><?} else
 	echo ("</tr>");
 ?></table><?
 
@@ -75,7 +48,7 @@ if (isset ($tpl_layout)) {
        if(tagname == 'image') myValue = '<img src="${'+tagname+':'+name+'}">';       else if(tagname == 'plink') myValue = '<a href="${'+tagname+':'+name+'}">linktext</a>';       else if(tagname == 'page')  myValue = '${'+tagname+':'+name+'}';       else myValue = '<'+tagname+'>'+name+'</'+tagname+'>';		if (document.selection) {			document.edittpl.tpl_content.focus();			sel = document.selection.createRange();			sel.text = myValue;		} //MOZILLA/NETSCAPE support		else if (document.edittpl.tpl_content.selectionStart || document.edittpl.tpl_content.selectionStart == '0') {			var startPos = document.edittpl.tpl_content.selectionStart;			var endPos = document.edittpl.tpl_content.selectionEnd;			document.edittpl.tpl_content.value = document.edittpl.tpl_content.value.substring(0, startPos)			+ myValue			+ document.edittpl.tpl_content.value.substring(endPos, document.edittpl.tpl_content.value.length);		} else {			document.edittpl.tpl_content.value += myValue;		}    }
   </script>
   <form action="index.php" method="post" name="edittpl">
-    <input type="submit" value="Änderungen speichern">
+    <p>Template '<?=$tpl_layout?>' bearbeiten</p>    <input type="submit" value="Änderungen speichern">
     <table>
       <tr>
         <td>
@@ -86,7 +59,7 @@ if (isset ($tpl_layout)) {
       </tr>
       <tr>
         <td>
-          <textarea name=tpl_content cols=80 rows=25><?=htmlentities(Template::getLayout($tpl_class, $tpl_layout,array(),true, array(), true));?></textarea>
+          <textarea name=tpl_content cols=80 rows=50><?=htmlentities(Template::getLayout($tpl_class, $tpl_layout,array(),true, array(), true));?></textarea>
         </td>
         <td align="left" valign="top">Mögliche Tags: (nicht vergessen, dass Tags immer ein $ vorangestellt werden muss)
           <ul>
@@ -103,4 +76,3 @@ if (isset ($tpl_layout)) {
     <input type="hidden" name="tpl_layout" value="<?=$tpl_layout?>">
   </form>
 <? } ?>
-

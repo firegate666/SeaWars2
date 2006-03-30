@@ -1,6 +1,4 @@
-<?
-
-/**
+<?/**
 * one file to rule them all
 */
 require_once dirname(__FILE__).'/config/All.inc.php';
@@ -17,8 +15,7 @@ $s = new Session();
  * Admincall?
  */
 if (isset ($_REQUEST["admin"])) {
-	include ('admin/admin.php');
-	$mysql->disconnect(); // remember to close connection
+	include ('admin/admin.php');	$mysql->disconnect(); // remember to close connection
 	die();
 }
 

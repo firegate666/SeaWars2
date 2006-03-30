@@ -50,9 +50,9 @@ class HTML {
 		return HTML::tag('td', $content);
 	}
 	
-	function table($content, $border = 0) {
+	function table($content, $border = 0, $header = "", $footer = "") {
 		if(!is_array($content)) {
-			return HTML::tag('table', $content);
+			return HTML::tag('table', $header.$content.$footer);
 		} else {
 			$rows = '';
 			foreach($content as $row) {
@@ -62,6 +62,7 @@ class HTML {
 				}
 				$rows .= HTML::tr($cells); 
 			}
+			$rows = $header.$rows.$footer;
 			return HTML::tag('table', $rows, array(array('name'=>'border','value'=>$border)));
 			
 		}

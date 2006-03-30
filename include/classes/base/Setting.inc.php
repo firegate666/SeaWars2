@@ -14,7 +14,7 @@ class Setting extends AbstractClass {
 		$value = mysql_escape_string($value);
 		$description = mysql_escape_string($description);
 		$result = Setting::get($name, '');
-		if(!empty($result))
+		if(($result==0) || !empty($result))
 			if(!$override) return false;
 			else {
 				$mysql->update("UPDATE setting SET value='$value' WHERE name='$name';");

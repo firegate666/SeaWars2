@@ -91,6 +91,8 @@ abstract class AbstractClass {
 	public function get($key) {
 		if($key == 'id')
 			return $this->id;
+		if (!isset($this->data[$key]))
+			return null; 
 		return $this->data[$key];
 	}
 
@@ -159,7 +161,7 @@ abstract class AbstractClass {
      */
     function store() {
 		global $mysql;
-		if(empty($this->data)) return;
+		//if(empty($this->data)) return;
 
 		// set timestamps
 		if($this->id=='')
@@ -235,8 +237,11 @@ abstract class AbstractClass {
 		$array['_created_'] = $this->get('__createdon');
 		$array['_changed_'] = $this->get('__changedon');
 		$array['_datetime_'] = Date::now();
-
-		return $t->getLayout($this->class_name(),$layout,$array,false,$vars);
+		
+		if (isset($this->layoutclass))
+			return $t->getLayout($this->layoutclass,$layout,$array,false,$vars);
+		else			
+			return $t->getLayout($this->class_name(),$layout,$array,false,$vars);
 	}
 	
 	function getNavigation(&$vars) {
@@ -250,12 +255,46 @@ abstract class AbstractClass {
 	 * @return	String	output
 	 */
 	function show(&$vars, $layout = 'page', $array = array()) {
-		if (!empty($array))
-			$array = array_merge($array, $this->data);
+		if (!empty($array)) {
+			foreach($this->data as $key=>$value) {
+				if (!isset($array[$key]))
+					$array[$key] = $value;
+			}
+		}
 		else
 			$array = $this->data;
-		$array['id'] = $this->id;
+		if (!isset($array['id']))
+			$array['id'] = $this->id;
 		return $this->getLayout($array, $layout, $vars);
+	}
+
+	function parsefields($vars) {
+		$err = false;
+		if (!$this->getFields()) {
+			$this->data = $var;
+			return true;
+		}
+		foreach($this->getFields() as $field) {
+			// set some defaults
+			if (!isset($field['type'])) $field['type'] = "string";
+			if (!isset($field['notnull'])) $field['notnull'] = false;
+			if (isset($vars[$field['name']])) {
+				$value = $vars[$field['name']];
+				if ($field['notnull'] && empty($value))
+					$err[] = "{$field['name']} is null";
+				if (!settype($value, $field['type']))
+					$err[] = "{$field['name']} type error, must be ".$field['type'];
+				if (isset($field['size']))
+					if (strlen($value) > $field['size'])
+						$err[] = "{$field['name']} too long. Max.: ".$field['size'];
+				$this->data[$field['name']] = $value;
+			} else {
+				// check not null
+				if ($field['notnull'])
+					$err[] = "{$field['name']} is null";
+			}
+		}
+		return $err;
 	}
 
 	/**
@@ -309,5 +348,24 @@ abstract class AbstractClass {
 	protected function error($msg, $action) {
 		error($msg, get_class($this), $action);
 	}
+
+	public function getOptionList($default = 0, $cannull = false, $field = 'name') {
+		$list = $this->getlist();
+		$options = "";
+		if ($cannull)
+			$options = "<option></option>";
+		foreach($list as $item) {
+			$obj = new $this($item['id']);
+			$id = $obj->get('id');
+			$name = $obj->get($field);
+			$selected = "";
+			if ($id == $default)
+				$selected = "SELECTED='SELECTED'";
+			$options .= "<option $selected value='$id'>$name</option>";
+		}
+		return $options;
+	}
+
+
 }
 ?>

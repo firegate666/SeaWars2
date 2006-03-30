@@ -6,7 +6,7 @@ $template_classes[] = 'question';
  */
 class Question extends AbstractClass {
 
-	protected function acl($method) {
+	public function acl($method) {
 		return false;
 	}
 
@@ -16,12 +16,22 @@ class Question extends AbstractClass {
 		return $mysql->select($query, true);
 	}
 
-	public function show($vars) {
-		$result = parent :: show($vars, 'default');
+	public function show($vars, $qlayout = '') {
+		$questionlayout = 'default';
+		if (($qlayout!="") && ($qlayout!=0)) {
+			$t = new Template($qlayout);
+			$questionlayout = $t->get('layout');
+		}
+		$result = parent :: show($vars, $questionlayout);
 		$answers = $this->getAllAnswers();
 		foreach ($answers as $answertype) {
 			$at = new QuestionAnswertype($answertype['answertype']);
-			$result .= $at->show($vars, $at->get('name'), array ('qid' => $this->id, 'qaid' => $answertype['id']));
+			$atlayout = $at->get('name');
+			if (($at->get('layout')!="") && ($at->get('layout')!=0)) {
+				$t = new Template($at->get('layout'));
+				$atlayout = $t->get('layout');
+			}
+			$result .= $at->show($vars, $atlayout, array ('qid' => $this->id, 'qaid' => $answertype['id']));
 		}
 		return $result;
 	}

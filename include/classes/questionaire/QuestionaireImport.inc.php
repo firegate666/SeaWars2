@@ -1,7 +1,7 @@
 <?php
 class QuestionaireImport extends AbstractClass {
 
-	function acl($method) {
+	public function acl($method) {
 		if ($method == 'start')
 			return true;
 		if ($method == 'verify')
@@ -21,10 +21,11 @@ class QuestionaireImport extends AbstractClass {
 		$questionaire = new Questionaire();
 		$questionaire->set('name', $vars['name']);
 		$questionaire->set('author', $vars['author']);
+		$questionaire->set('email', $vars['email']);
 		$questionaire->set('shortdesc', $vars['shortdesc']);
 		$questionaire->set('longdesc', $vars['desc']);
 		$questionaire_id = $questionaire->store();
-
+		$at_translation_table = array();
 		foreach ($questions as $item) {
 			$question = new Question();
 			$question->set('sem_id', $item[0]);
@@ -38,14 +39,20 @@ class QuestionaireImport extends AbstractClass {
 			$question->set('questionaireid', $questionaire_id);
 			$question->store();
 			foreach ($item as $at) {
+				$at = trim($at);
 				$answer = new QuestionAnswer();
-				$answer->set('answertype', $at);
+				if (!isset($at_translation_table[$at])) {
+					$newAT = new QuestionAnswertype();
+					$newAT->set('name', $question->get('sem_id'));
+					$at_translation_table[$at] = $newAT->store();
+				}
+				$answer->set('answertype', $at_translation_table[$at]);
 				$answer->set('questionid', $question->get('id'));
 				$answer->store();
 			}
 
 		}
-
+		die();
 		return redirect('?admin&questionaire');
 	}
 
@@ -61,6 +68,7 @@ class QuestionaireImport extends AbstractClass {
 			$content[] = array ('input' => '<p>Daten vervollständigen:</p>');
 			$content[] = array ('descr' => 'Name', 'input' => HTML :: input('text', 'name', '', 100));
 			$content[] = array ('descr' => 'Autor', 'input' => HTML :: input('text', 'author', '', 100));
+			$content[] = array ('descr' => 'Email', 'input' => HTML :: input('text', 'email', '', 100));
 			$content[] = array ('descr' => 'Kurzbeschreibung', 'input' => HTML :: input('text', 'shortdesc', '', 100));
 			$content[] = array ('descr' => 'Beschreibung', 'input' => HTML :: textarea('desc', ''));
 			$content[] = array ('descr' => '&nbsp;', 'input' => HTML :: input('submit', 'submit', 'Import abschließen'));

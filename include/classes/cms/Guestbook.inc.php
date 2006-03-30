@@ -3,7 +3,7 @@
 
 	Setting::set('moderated_guestbook',
 		'1',
-		'Moderated Guestbook?',
+		'Moderated Guestbook? (1=true, 2=false)',
 		false);
 	
 	Setting::set('email_guestbookadmin',

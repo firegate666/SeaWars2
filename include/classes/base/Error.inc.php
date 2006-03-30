@@ -6,9 +6,9 @@
  */
 class Error extends AbstractClass {
 
-	var $class  = '';
-	var $method = '';
-	var $msg    = '';
+	protected $class  = '';
+	protected $method = '';
+	protected $msg    = '';
 
 	/**
 	 * constructor

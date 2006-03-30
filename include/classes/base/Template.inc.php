@@ -2,7 +2,7 @@
 /**
  * Templatehandling
  */
-class Template {
+class Template extends AbstractClass {
 	var $layout;
 	var $tags = array ();
 
@@ -48,7 +48,7 @@ class Template {
 	 */
 	function parseTags($template) {
 		$result = array ();
-		$suchmuster = '/\$\{(\w*):(\w*)\}/i';
+		$suchmuster = '/\$\{(\w*):(\w*\|?\w+)\}/i';
 		$temp = array ();
 		preg_match_all($suchmuster, $template, $temp, PREG_SET_ORDER);
 		foreach ($temp as $item) {
@@ -85,11 +85,11 @@ class Template {
 		$mysql->insert($query);
 	}
 
-	/**
-	* public constructor
-	*/
-	function Template() {
-	}
+//	/**
+//	* public constructor
+//	*/
+//	function Template() {
+//	}
 
 	/**
 	 * get all template classes
@@ -101,7 +101,7 @@ class Template {
 		if (!isset ($template_classes) || empty ($template_classes))
 			$template_classes = array ();
 		sort($template_classes);
-		return $template_classes;
+		return array_unique($template_classes);
 	}
 
 	/**
@@ -116,6 +116,19 @@ class Template {
 		$result = $mysql->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
 	}
+
+	public function getLayoutOptions($class, $default) {
+		$list = Template::getLayouts($class);
+		$return = "<option value='0'></option>";
+		foreach($list as $layout) {
+			$selected = "";
+			if ($layout[1] == $default)
+				$selected = "SELECTED='SELECTED'";
+			$return .= "<option $selected value='{$layout[1]}'>{$layout[0]}</option>";
+		}
+		return $return;
+	}
+
 
 	/**
 	 * Returns parsed template

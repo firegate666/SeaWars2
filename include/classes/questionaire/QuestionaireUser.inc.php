@@ -30,6 +30,16 @@ class QuestionaireUser extends AbstractClass {
 		return $this->show($vars, 'loginform', $array);
 	}
 
+	public function sendmail($email, $password) {
+		$from = $this->get('email');
+		$to = $this->get('email');
+		$subject = "Benutzerdaten";
+		$body = "Ihre Daten für das Fragebogensystem lauten:\n\nEmail: $email\nPassort: $password";		
+		$m = new Mailer();
+		$m->simplesend($from, $to, $subject, $body);
+		
+	}
+
 	public function register($vars) {
 		$err = false;
 		if (!isset ($vars['email'], $vars['password'], $vars['password2']))
@@ -43,6 +53,7 @@ class QuestionaireUser extends AbstractClass {
 			$this->set('email', $vars['email']);
 			$this->set('password', myencrypt($vars['password']));
 			$this->store();
+			$this->sendmail($vars['email'], $vars['password']);
 			$this->dologin();
 			return redirect($vars['ref']);
 		}

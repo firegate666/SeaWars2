@@ -38,21 +38,19 @@ class QuestionaireImport extends AbstractClass {
 			unset ($item[3]);
 			$question->set('questionaireid', $questionaire_id);
 			$question->store();
-			foreach ($item as $at) {
+			$at = $item[4];
 				$at = trim($at);
 				$answer = new QuestionAnswer();
-				if (!isset($at_translation_table[$at])) {
+				if (!isset($at_translation_table["$at"])) {
 					$newAT = new QuestionAnswertype();
 					$newAT->set('name', $question->get('sem_id'));
-					$at_translation_table[$at] = $newAT->store();
+					$at_translation_table["$at"] = $newAT->store();
 				}
-				$answer->set('answertype', $at_translation_table[$at]);
+				$answer->set('answertype', $at_translation_table["$at"]);
 				$answer->set('questionid', $question->get('id'));
 				$answer->store();
-			}
 
 		}
-		die();
 		return redirect('?admin&questionaire');
 	}
 

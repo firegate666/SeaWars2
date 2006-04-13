@@ -118,9 +118,15 @@ class Questionaire extends AbstractClass {
 			return $this->getLayout($array, $layoutend, $vars);
 		}
 		$array['questions'] = '';
+		$even = false;
 		foreach ($questions as $question) {
 			$question = new Question($question['qid']);
-			$array['questions'] .= $question->show($vars, $this->get('layout_question'));
+			$layout = $this->get('layout_question');
+			if ($even) {
+				$layout = $this->get('layout_question_alt');
+			}
+			$even = !$even;
+			$array['questions'] .= $question->show($vars, $layout);
 		}
 		$layoutmain = $this->id;
 		if (($this->get('layout_main')!="") && ($this->get('layout_main')!=0)) {

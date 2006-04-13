@@ -22,7 +22,7 @@ class Question extends AbstractClass {
 			$t = new Template($qlayout);
 			$questionlayout = $t->get('layout');
 		}
-		$result = parent :: show($vars, $questionlayout);
+		$result = "";
 		$answers = $this->getAllAnswers();
 		foreach ($answers as $answertype) {
 			$at = new QuestionAnswertype($answertype['answertype']);
@@ -33,6 +33,7 @@ class Question extends AbstractClass {
 			}
 			$result .= $at->show($vars, $atlayout, array ('qid' => $this->id, 'qaid' => $answertype['id']));
 		}
+		$result = parent::show($vars, $questionlayout, array('answers'=>$result));
 		return $result;
 	}
 

@@ -1,1 +1,1 @@
-<?/** * Internal Pagelink */class PLink extends Link{	var $link = 'index.php?page/show/';}?>
+<?/** * Internal Pagelink */class PLink extends Link{	function PLink($value) {		parent::Link($value);		$this->link = 'index.php?page/show/';	}}?>

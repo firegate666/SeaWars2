@@ -1,6 +1,6 @@
 <?
 class Session extends AbstractClass {
-	var $sid;
+	protected $sid;
 
 	/**
 	* Return value from session, if not set return default

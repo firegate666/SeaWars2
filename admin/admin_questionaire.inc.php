@@ -97,6 +97,10 @@ if (!isset($_REQUEST['id'])) {
 					<tr>
 						<td>Question</td>
 						<td><select name="field[layout_question]"><?=Template::getLayoutOptions('question', $q->get('layout_question'))?></select></td>
+					</tr>
+					<tr>
+						<td>Question (alt)</td>
+						<td><select name="field[layout_question_alt]"><?=Template::getLayoutOptions('question', $q->get('layout_question_alt'))?></select></td>
 						<td><input type="submit" value="Questionairelayouts speichern"/></td>
 					</tr>
 		<?

@@ -1,5 +1,5 @@
 <?
-$adminlogin = Session::getCookie('adminlogin');
+$adminlogin = (User::hasright('admin') || User::hasright('templateadmin'));
 $msg = "";
 if(empty($adminlogin)) die("DENIED");
 

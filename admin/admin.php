@@ -1,29 +1,14 @@
 <?
-	function login($user, $pass) {
-		
-		$adminuser = get_config('adminuser');
-		$adminpassword = get_config('adminpassword');
-		
-		if(empty($adminuser) || empty($adminpassword))
-			error("No adminuser and/or password set. Update config file", 'admin', 'login');
-		
-		if(($user==$adminuser) && ($pass==$adminpassword)) {
-			Session::setCookie('adminlogin', 'true', NULL);
-			return true;
-		} else return false;
-	}
-
 	if(isset($logout)) {
 		Session::cleanUpCookies();
 		header("Location: index.php");
 	}
 
-	if(isset($login_name) && isset($login_pass)) {
-		if(!login($login_name, $login_pass)) $error = "Wrong username or password";
-		else header("Location: index.php?admin");
-	}
-
-	$adminlogin = Session::getCookie('adminlogin');
+//	if(isset($login_name) && isset($login_pass)) {
+//		if(!login($login_name, $login_pass)) $error = "Wrong username or password";
+//		else header("Location: index.php?admin");
+//	}
+	$adminlogin = User::loggedIn();
 ?>
 <html>
   <head>
@@ -33,16 +18,19 @@
 <?	if(empty($adminlogin)) { ?>
 		<h3>Adminlogin</h3>
 		<font color="#FF0000"><?=$error?></font>
-		<form>
+		<form action="index.php" method="POST">
 		  <table>
-		    <tr><td>Benutzername</td><td><input type="text" name="login_name"></td></tr>
-		    <tr><td>Passwort</td><td><input type="password" name="login_pass"></td></tr>
+		    <tr><td>Benutzername</td><td><input type="text" name="login"></td></tr>
+		    <tr><td>Passwort</td><td><input type="password" name="password"></td></tr>
 		  </table>
 		  <input type="submit" value="login">
-		  <input type="hidden" name="admin">
+		  <input type="hidden" name="class" value="user">
+		  <input type="hidden" name="method" value="login">
+		  <input type="hidden" name="ref" value="?admin">
 		</form>
 		<a href="index.php">Zurück zur Startseite</a>
-
+		</body>
+		</html>
 	<?  die();
 	}
 ?>
@@ -59,24 +47,28 @@ function dialog_confirm(question, dest)
   </tr>
   <tr>
     <td align=center valign=top>
-      <a href="index.php?admin">Startseite</a><br>
-      <a href="index.php?admin&template">Templates</a><br>
+      <a href="index.php?admin">Startseite</a>
+      <br><a href="index.php?admin&template">Templates</a>
       <? if(get_config("cms", false)) { ?>
-	      <a href="index.php?admin&image">Images</a><br>
+	      <br><a href="index.php?admin&image">Images</a>
       <? } ?>
       <? if(get_config("game", false)) { ?>
-      	<a href="index.php?admin&techtree">Tech-Tree</a><br>
+      	<<br>a href="index.php?admin&techtree">Tech-Tree</a>
       <? } ?>
       <? if(get_config("questionaire", false)) { ?>
-      	<a href="index.php?admin&questionaire">Questionaire</a><br>
+      	<br><a href="index.php?admin&questionaire">Questionaire</a>
       <? } ?>
       <? if(get_config("w40k", false)) { ?>
-      	<a href="index.php?admin&w40k">W40K</a><br>
-      <? } ?>
-      <br><a href="index.php?admin&user">User</a>
-      <br><a href="index.php?admin&settings">Settings</a>
-      <br><a href="index.php?admin&config">Configuration</a>
-      <br><a href="index.php?admin&logout">Logout</a>
+      	<br><br><a href="index.php?admin&w40k">W40K</a>
+      	<? if (isset($_REQUEST['w40k'])) { ?>
+      		<br>=&gt; Codices
+      		<br>=&gt; Missionen
+      		<br>=&gt; BattleTypes
+      <? }} ?>
+      </br></br><a href="index.php?admin&user">User</a>
+      </br><a href="index.php?admin&settings">Settings</a>
+      </br><a href="index.php?admin&config">Configuration</a>
+      </br><a href="index.php?user/logout//ref=index.php">Logout</a>
     </td>
     <td align=left valign=top>
     <?		if (isset ($_REQUEST['template'])) {
@@ -98,11 +90,7 @@ function dialog_confirm(question, dest)
 		} else {
 	?>
         <h3>CMS Administration</h3>
-        <p>Bitte im Menü links eine Aktion wählen.
-          <ul>
-            <li>Template: Editieren und verwalten von HTML Templates, Seiten etc...
-            <li>Images: Upload und löschen von Bildern
-          </ul>
+        <p>Willkommen in der Administrationszentrale von smallCMS. Weiter geht es mit den Menüpunkten links.</p>
         </p>
       <? 
 

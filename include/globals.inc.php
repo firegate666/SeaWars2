@@ -48,5 +48,5 @@ function distance($x1, $y1, $x2, $y2) {
  */
 function getClientIP() {
 	return $_SERVER['REMOTE_ADDR'];
-}
+}function std2impDate($date) {	$date_temp = explode("-",$date);	if (count($date_temp) != 3)		return "";	$std_jahr = $date_temp[0];	$std_monat = $date_temp[1];	$std_tag = $date_temp[2];	$pz = 0;	$m = intval($std_jahr / 1000);	$jz = $std_jahr - $m*1000;	if(($std_jahr % 1000) != 0)		$m++;	// Jahrestausendstel bestimmen	$datum = getdate(mktime(0,0,0,$std_monat,$std_tag,$std_jahr));	$day_of_year = ($datum['yday'])+1;	$schaltjahr = date("L",mktime(0,0,0,12,31,$std_jahr));	if($schaltjahr==1)		$maxdays = 366;	else		$maxdays = 365;	$jt = intval((1000 / $maxdays) * $day_of_year);	// Beautify	while(strlen($jz)<3) { $jz = "0".$jz; }	while(strlen($jt)<3) { $jt = "0".$jt; }	while(strlen($m)<2) { $m = "0".$m; }	return "$pz-$jt.$jz/M$m";}
 ?>

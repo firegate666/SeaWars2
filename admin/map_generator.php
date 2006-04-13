@@ -5,8 +5,8 @@
  	
 class MapGenerator {
 	
-	var $width;
-	var $height;
+	protected $width;
+	protected $height;
 	
 	function saveisland($x, $y){
 		$l = new Lager();

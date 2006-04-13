@@ -1,4 +1,4 @@
-<?$adminlogin = Session::getCookie('adminlogin');if(empty($adminlogin)) die("DENIED");
+<?$adminlogin = (User::hasright('admin') || User::hasright('templateadmin'));if(empty($adminlogin)) die("DENIED");
 if (isset ($tpl_content)) {
 	global $mysql;	$tpl_content = html_entity_decode($tpl_content);	$tpl_class = mysql_escape_string($tpl_class);	$tpl_layout = mysql_escape_string($tpl_layout);
 	$tpl_query = "UPDATE template SET content='$tpl_content' WHERE class='$tpl_class' AND layout = '$tpl_layout';";

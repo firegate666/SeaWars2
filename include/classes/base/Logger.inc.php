@@ -1,6 +1,6 @@
 <?php
 class Logger {
-	var $loglevel;
+	protected $loglevel;
 	
 	
 }

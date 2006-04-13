@@ -1,7 +1,7 @@
 <?
 class Newsletter extends AbstractClass {
 
-	function getFields() {
+	public function getFields() {
 		$fields[] = array('name' => 'subject', 'type' => 'String', 'notnull' => true);
 		$fields[] = array('name' => 'body', 'type' => 'String', 'notnull' => true);
 		$fields[] = array('name' => 'from', 'type' => 'String', 'notnull' => true);

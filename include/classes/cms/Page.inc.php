@@ -7,8 +7,8 @@
  */
 class Page extends AbstractClass {
 	
-	var $name = '';
-	var $tags = '';
+	protected $name = '';
+	protected $tags = '';
 	
 	function acl($method) {
 		return true;
@@ -43,7 +43,7 @@ class Page extends AbstractClass {
 
 class Varspage {
 
-	var $attr = '';
+	protected $attr = '';
 
 	function Varspage($id='') {
 		$this->attr = $id;

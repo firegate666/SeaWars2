@@ -34,6 +34,7 @@ if (isset ($_REQUEST['class']) || isset ($_REQUEST['method']) || isset ($_REQUES
 	decodeURI($qs, $class, $method, $id, $vars);
 }
 
+if (!empty($HTTP_POST_FILES['filename']['tmp_name']))	$vars['__files'] = $HTTP_POST_FILES;
 if (!isset ($vars['ref']))
 	$vars['ref'] = $_SERVER['HTTP_REFERER'];
 if (empty ($vars['ref']))

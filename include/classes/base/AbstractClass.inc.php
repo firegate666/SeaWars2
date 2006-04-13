@@ -14,12 +14,34 @@ abstract class AbstractClass {
 	protected $language;
 	
 	/**
+	 * return input field for objectfield
+	 * 
+	 * @param	String	name of field
+	 */
+	public function getInputField($field) {
+		$return = '';
+		switch($field['htmltype']) {
+			case 'input': $return = "<input type='text' name='{$field['name']}' value='"."{$this->get($field['name'])}' size='75'/>";
+				break; 
+			case 'textarea': $return = "<textarea name='{$field['name']}' cols='75' rows='5'>{$this->get($field['name'])}</textarea>";
+				break;
+			case 'select':
+				$return = "<select name='{$field['name']}'>";
+				$obj = new $field['join']();
+				$return .= $obj->getOptionList($this->get($field['name']), true);
+				$return .= "</select>";
+				break;
+		}
+		return $return;
+	}
+	
+	/**
 	 * workaround for get_class to user with lowercase
 	 * tablenames
 	 * 
 	 * @return	String	lowercase class name
 	 */
-	protected function class_name() {
+	public function class_name() {
 		return strtolower(get_class($this));
 	}
 	
@@ -32,6 +54,15 @@ abstract class AbstractClass {
 		$output = XML::get($result);
 		return xml($output);
 	}
+	
+	/**
+	 * test if logged in user has righ $right
+	 * 
+	 * @param String	$userright to test
+	 */
+	public function hasright($right) {
+		return User::hasright($right);
+	}  
 	
 	/**
 	 * All database fields are made public at this place
@@ -47,7 +78,7 @@ abstract class AbstractClass {
 	 *
 	 * @return	String[][]	all known fields or false if no fields are set
 	 */
-	protected function getFields() {
+	public function getFields() {
 		return true;
 		// not yet used
 		// if activated
@@ -61,14 +92,22 @@ abstract class AbstractClass {
 	 * class
 	 * @return	String[][]	complete result
 	 */
-	function getlist($classname='', $ascending=true, $orderby = 'id', $fields = array('id')) {
+	function getlist($classname='', $ascending=true, $orderby = 'id', $fields = array('id'), $limitstart='', $limit='') {
 		global $mysql;
 		if (empty($classname)) $classname = $this->class_name();
 		$orderdir = "ORDER BY ".$orderby." ";
 		$fields = implode(',', $fields);
 		if ($ascending) $orderdir .= "ASC";
 		else $orderdir .= "DESC";
-		$result = $mysql->select("SELECT ".$fields." FROM ".mysql_escape_string($classname)." $orderdir;", true);
+		$limits = '';
+		if ($limitstart != '') {
+			$limits = 'LIMIT '.$limitstart;
+			if ($limit != '')
+				$limits .= ', '.$limit;
+		}
+		else if ($limit != '')
+			$limits = 'LIMIT '.$limit;
+		$result = $mysql->select("SELECT ".$fields." FROM ".mysql_escape_string($classname)." $orderdir $limits;", true);
 		return $result;
 	}
 	
@@ -96,6 +135,9 @@ abstract class AbstractClass {
 		return $this->data[$key];
 	}
 
+	/**
+	 * return data array
+	 */
 	public function getData() {
 		return $this->data;
 	}
@@ -106,14 +148,6 @@ abstract class AbstractClass {
 	 */
 	function load_language($language,$class){
 	}
-	
-	/**
-	 * is session registered?
-	 */
-// is this used?
-//	function isRegisteredSession() {
-//		return session_is_registered(session);
-//	}
 	
 	/**
 	 * does this object exists?
@@ -152,6 +186,15 @@ abstract class AbstractClass {
     	$mysql->update($query);
     }
     
+	/**
+	* returns id of logged in user, 0 if no one is logged in
+	*
+	* @return	integer	userid
+	*/
+   protected function loggedIn() {
+    	return User::loggedIn();
+    }
+    
     /**
      * save me to database
      * fetch all from $this->data and build SQL Statement
@@ -161,12 +204,12 @@ abstract class AbstractClass {
      */
     function store() {
 		global $mysql;
-		//if(empty($this->data)) return;
 
 		// set timestamps
+		$datenow = Date::now();
 		if($this->id=='')
-			$this->set('__createdon', Date::now());
-		$this->set('__changedon', Date::now());
+			$this->set('__createdon', $datenow);
+		$this->set('__changedon', $datenow);
 		
 		// Seperate keys from values
 		$keys   = array_keys($this->data);
@@ -282,11 +325,24 @@ abstract class AbstractClass {
 				$value = $vars[$field['name']];
 				if ($field['notnull'] && empty($value))
 					$err[] = "{$field['name']} is null";
-				if (!settype($value, $field['type']))
-					$err[] = "{$field['name']} type error, must be ".$field['type'];
+				if ($field['type'] == 'date') {
+					$darray = explode("-", $value);
+					if (count($darray) != 3)
+						$err[] = "Unknown date format: $value";
+					else {
+						if (checkdate($darray[1], $darray[2], $darray[0] ) === false)
+							$err[] = "illegal date: $value";
+					}
+					
+				} else
+					if (!settype($value, $field['type']))
+						$err[] = "{$field['name']} type error, must be ".$field['type'];
 				if (isset($field['size']))
 					if (strlen($value) > $field['size'])
 						$err[] = "{$field['name']} too long. Max.: ".$field['size'];
+				if (isset($field['min']))
+					if (strlen($value) < $field['min'])
+						$err[] = "{$field['name']} too short. Min.: ".$field['min'];
 				$this->data[$field['name']] = $value;
 			} else {
 				// check not null
@@ -329,6 +385,14 @@ abstract class AbstractClass {
 		return $o2.$o;
 	}
 	
+	public function advsearch($where=array(), $fields=array('id'), $boolop = 'AND') {
+		global $mysql;
+		$query = "SELECT ".implode(",", $fields)." FROM ".($this->class_name()).
+					" WHERE ".implode(" $boolop ", $where).";";
+		return $mysql->select($query, true);			
+	}
+	
+	
 	public function search($where, $sfield='id', $fields='id') {
 		global $mysql;
 		if ($where == null)
@@ -349,8 +413,8 @@ abstract class AbstractClass {
 		error($msg, get_class($this), $action);
 	}
 
-	public function getOptionList($default = 0, $cannull = false, $field = 'name') {
-		$list = $this->getlist();
+	public function getOptionList($default = 0, $cannull = false, $field = 'name', $asc= true, $orderby='id') {
+		$list = $this->getlist('', $asc, $orderby);
 		$options = "";
 		if ($cannull)
 			$options = "<option></option>";

@@ -216,7 +216,7 @@ class TTEntryRohstoff extends AbstractClass {
   	/**
 	 * all fields used in class
 	 */
-	protected function getFields() {
+	public function getFields() {
 		$fields[] = array('name' => 'rohstoffid', 'type' => 'Integer', 'notnull' => true);
 		$fields[] = array('name' => 'ttentry_resid', 'type' => 'Integer', 'notnull' => true);
 	}

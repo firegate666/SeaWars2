@@ -8,9 +8,9 @@
  * has to removed as soon as navigation
  */
 class SeaWars extends AbstractClass {
-	var $navigation = '';
-	var $mainbody   = '';
-	var $layoutname = '';
+	protected $navigation = '';
+	protected $mainbody   = '';
+	protected $layoutname = '';
 
 	/**
 	 * return id of logged in player

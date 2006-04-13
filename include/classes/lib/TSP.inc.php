@@ -11,10 +11,10 @@
 */
 class TSP {
 
-	var $ids; // array of keys
-	var $costs; // array of costs
+	protected $ids; // array of keys
+	protected $costs; // array of costs
 	
-	var $INFINITY = 100000000; // this is big
+	private $INFINITY = 100000000; // this is big
 
 	/**
 	 * @param	int[]	$ids	assoc array of ids

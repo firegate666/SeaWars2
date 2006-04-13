@@ -11,8 +11,8 @@
 }
 
 /** * This class represents an Island */class Insel extends AbstractNavigationClass {
-	var $rohstoffproduktion;
-	var $lager;
+	protected $rohstoffproduktion;
+	protected $lager;
 	/**	 * all fields used in class	 */	public function getFields() {		$fields[] = array('name' => 'name', 'type' => 'String', 'size' => 100, 'notnull' => true);		$fields[] = array('name' => 'groesse', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'x_pos', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'y_pos', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'spieler_id', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'archipel_id', 'type' => 'integer', 'notnull' => true);		$fields[] = array('name' => 'lager_id', 'type' => 'integer', 'notnull' => true);		return $fields;	}	/**	 * returns all islands with no owner	 * @return	String[][]	array of islands	 */	function getStartIslands() {		global $mysql;		$query = "SELECT insel.id FROM insel, archipel WHERE insel.spieler_id = 0 AND archipel.groessenklasse=1 AND insel.archipel_id = archipel.id;";		$result = $mysql->select($query);		return $result;	}
 	/**	 * update ressource production on island	 */	public function update() {
 		global $mysql;

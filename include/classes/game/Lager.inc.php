@@ -4,7 +4,7 @@
    * islands, ships
    */
   class Lager extends AbstractClass {
-      var $lagerenthaelt;
+      protected $lagerenthaelt;
 
       function Lager($id='') {
       	if(empty($id)) return;

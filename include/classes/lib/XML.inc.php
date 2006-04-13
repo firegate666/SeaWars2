@@ -5,7 +5,7 @@
 * generate proper XML output
 */
 class XML {
-    var $output;
+    protected $output;
 
     function &body(&$content, $root=null, $doctype=null, $version=null) {
         $xmldef = "<?xml version=\"1.0\" encoding=\"".

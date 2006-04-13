@@ -1,6 +1,8 @@
 <?
 
-	$template_classes[]='user';
+$template_classes[]='user';
+$__userrights[] = array('name'=>'useradmin', 'desc'=>'can edit users');
+$__userrights[] = array('name'=>'disabled', 'desc'=>'denied login');
 
 class User extends AbstractClass {
 	
@@ -11,6 +13,14 @@ class User extends AbstractClass {
 	*/
 	public function loggedIn() {
 		return Session::getCookie('user', false);
+	}
+	
+	/**
+	 * test rights for logged in user
+	 */
+	public function hasright($right) {
+		$rights = Session::getCookie('userrights', array());
+		return in_array($right, $rights);
 	}
 	
 	public function acl($method) {
@@ -24,7 +34,7 @@ class User extends AbstractClass {
 	}
 	
 	public function logout($vars){
-		Session::unsetCookie('user');
+		Session::cleanUpCookies();
 		return redirect($vars['ref']);
 	}
 	
@@ -38,6 +48,12 @@ class User extends AbstractClass {
 		if (myencrypt($vars['password']) != $u->get('password'))
 			return error('Password error', 'user', 'login', $vars);
 		Session::setCookie('user', $u->get('id'));
+		Session::setCookie('usergroup', $u->get('groupid'));
+		Session::setCookie('userrights', Usergroup::getUserrights($u->get('groupid')));
+		if ($u->hasright('disabled')) {
+			Session::cleanUpCookies();
+			return error('User disabled', 'user', 'login', $vars);
+		}
 		$u->store();
 		return redirect($vars['ref']);
 	}

@@ -2,16 +2,43 @@
 class Army extends W40K {
 
 	public function acl($method) {
+		if ($method == 'delimage')
+				return ($this->get('userid')==User::loggedIn())
+					|| $this->hasright('admin')
+					|| $this->hasright('w40kadmin');
 		if ($method == 'edit')
 			if ($this->exists())
-				return $this->get('userid')==User::loggedIn();
+				return ($this->get('userid')==User::loggedIn())
+					|| $this->hasright('admin')
+					|| $this->hasright('w40kadmin');
 			else
-				return User::loggedIn();
+				return $this->hasright('w40kuser_intern')
+					|| $this->hasright('w40kuser_extern')
+					|| $this->hasright('w40kadmin');
 		if ($method == 'view')
 			return true;
 		if ($method == 'showlist')
 			return true;
 		return false;
+	}
+
+	function delimage($vars) {
+		if (isset($vars['image'])) {
+			$image = new Image($vars['image']);
+			if ($image->exists() && ($image->get('parentid') == $this->get('id')))
+				$image->delete();
+		}
+		return redirect($vars['ref']);
+	}
+
+	protected function numImages($id = null) {
+		if ($id == null)
+			$id = $this->get('id');
+		
+		$i = new Image();
+		$where[] = "parent='army'";
+		$where[] = "parentid=".$id;
+		return count($i->advsearch($where, array('id')));
 	}
 
 	function parsefields($vars){
@@ -28,11 +55,20 @@ class Army extends W40K {
 			$err = $this->parsefields($vars);
 			if (!empty($err))
 				$array['error'] = implode (", ", $err);
-			else
+			else {
 				$this->store();
+				$array['error'] = "Object saved";
+			}
 		}
 		$codex = new Codex();
 		$array['codexlist'] = $codex->getOptionList($this->data['codex'], false);
+		$image = new Image();
+		$ilist = $image->getlist('', true, 'name', array('*'));
+		$array['imagelist'] = "";
+		foreach($ilist as $iobj) {
+			if (($iobj['parent'] == $this->class_name()) && ($iobj['parentid'] == $this->get('id')))
+				$array['imagelist'] .= $this->show($vars, 'army_edit_image', $iobj); 			
+		}
 		return parent::show($vars, 'army_edit', $array);
 	}
 
@@ -45,6 +81,25 @@ class Army extends W40K {
 		$array['battles'] = "battles";
 		$codex = new Codex($this->get('codex'));
 		$array['codexname'] = $codex->get('name');
+		
+		$b = new Battle();
+		$battles = $b->getListByArmy($this->get('id'));
+		$battlerows = "";
+		foreach($battles as $entry) {
+			$mission = new Mission($entry['mission']);
+			$entry['missionname'] = $mission->get('name');
+			$bt = new BattleType($entry['battletypeid']);
+			$entry['battletypename'] = $bt->get('name');
+			$battlerows .= $b->show($vars, 'battle_list_row', $entry);
+		}
+		$array['battlerows'] = $battlerows;
+		$image = new Image();
+		$ilist = $image->getlist('', true, 'name', array('*'));
+		$array['imagelist'] = "";
+		foreach($ilist as $iobj) {
+			if (($iobj['parent'] == $this->class_name()) && ($iobj['parentid'] == $this->get('id')))
+				$array['imagelist'] .= $this->show($vars, 'army_view_image', $iobj); 			
+		}
 		return parent::show($vars, 'army_view', $array);
 	}
 
@@ -63,11 +118,12 @@ class Army extends W40K {
 		$rows = '';
 		foreach($list as $entry) {
 			$codex = new Codex($entry['codex']);
-			$entry['codex'] = $codex->get('name');
+			$entry['codexname'] = $codex->get('name');
 			$u = new User($entry['userid']);
-			$entry['user'] = $u->get('login');
+			$entry['username'] = $u->get('login');
 			if (!empty($entry['comment']))
 				$entry['hastext'] = "T";
+			$entry['icount'] = $this->numImages($entry['id']);
 			$rows .= parent::show($vars, 'army_list_row', $entry);
 		}
 		$array['rows'] = $rows;
@@ -98,8 +154,8 @@ class Army extends W40K {
                           'notnull' => false);
 		$fields[] = array('name' => 'comment',
                           'type' => 'string',
-                          'size' => 10000,
-                          'notnull' => true);
+                          'size' => 100000,
+                          'notnull' => false);
 
 		return $fields;
 	}

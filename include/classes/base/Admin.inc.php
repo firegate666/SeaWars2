@@ -1,7 +1,5 @@
 <?php
-
-	Setting::set('admincss', '// admincss', 'Admin (CSS)', false);
-
+$__userrights[] = array('name'=>'admin', 'desc'=>'can use all admin'); 
 
 class Admin {
 }

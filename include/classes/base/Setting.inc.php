@@ -1,4 +1,7 @@
 <?php
+$__userrights[] = array('name'=>'configadmin', 'desc'=>'can view config');
+$__userrights[] = array('name'=>'settingsadmin', 'desc'=>'can edit settings');
+
 class Setting extends AbstractClass {
 	
 	/**
@@ -14,15 +17,21 @@ class Setting extends AbstractClass {
 		$value = mysql_escape_string($value);
 		$description = mysql_escape_string($description);
 		$result = Setting::get($name, '');
-		if(($result==0) || !empty($result))
+		if(($result==0) || !empty($result)) {
 			if(!$override) return false;
 			else {
-				$mysql->update("UPDATE setting SET value='$value' WHERE name='$name';");
+				$mysql->update("UPDATE setting SET value='$value' WHERE name='$name';") or die(mysql_error());
 				$_SESSION['setting'][$name] = $value;
 				return true;
 			}
-		else {
-			$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
+		} else {
+			//$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
+			$s = new Setting();
+			$s->set('name', $name);
+			$s->set('value', $value);
+			$s->set('description', $description);
+			$s->store();
+			print_a($s);
 			$_SESSION['setting'][$name] = $value;
 			return true;
 		}

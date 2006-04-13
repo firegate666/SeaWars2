@@ -2,9 +2,12 @@
 /**
  * Templatehandling
  */
+
+$__userrights[] = array('name'=>'templateadmin', 'desc'=>'can edit templates & images');
+
 class Template extends AbstractClass {
-	var $layout;
-	var $tags = array ();
+	protected $layout;
+	protected $tags = array ();
 
 	function idbyname($name) {
 	} 

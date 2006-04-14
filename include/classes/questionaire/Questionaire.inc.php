@@ -64,8 +64,11 @@ class Questionaire extends AbstractClass {
 		if (!QuestionaireUser :: LoggedIn())
 			error('Um an Umfragen teilzunehmen, muss man eingelogged sein', 'questionaire', 'submit', $vars);
 		if (!isset ($vars['question']) || !isset ($vars['questionanswer']))
-			return $this->show(array ('err' => 'Fehler bei der Verarbeitung, fehlende Parameter'));
+			return $this->show(array ('err' => 'Es müssen alle Fragen beantwortet werden, bevor die Seite abgeschickt werden kann.'));
 		// TODO überprüfen, ob dieser User diese Frage schon beantwortet hat
+		$lastcc = Session::getCookie('questionaire_last_questioncount', null);
+		if ($lastcc != count($vars['questionanswer']))
+			return $this->show(array ('err' => 'Es müssen alle Fragen beantwortet werden, bevor die Seite abgeschickt werden kann.'));
 		foreach ($vars['question'] as $qid) {
 			if (isset ($vars['questionanswer'][$qid])) { // there are questions with no answers
 				foreach ($vars['questionanswer'][$qid] as $qaid => $value) {
@@ -117,6 +120,7 @@ class Questionaire extends AbstractClass {
 			}
 			return $this->getLayout($array, $layoutend, $vars);
 		}
+		Session::setCookie('questionaire_last_questioncount', count($questions));
 		$array['questions'] = '';
 		$even = false;
 		foreach ($questions as $question) {

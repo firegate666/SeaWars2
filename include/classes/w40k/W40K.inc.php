@@ -10,6 +10,48 @@ class W40K extends AbstractClass {
 	protected $layoutclass = "w40k";
 	protected $image;
 	
+	protected function numImages($id = null) {
+		if ($id == null)
+			$id = $this->get('id');
+		
+		$i = new Image();
+		$where[] = "parent='".$this->class_name()."'";
+		$where[] = "parentid=".$id;
+		return count($i->advsearch($where, array('id')));
+	}
+
+	public function acl($method) {
+		if ($method == 'delimage')
+				return ($this->get('userid')==User::loggedIn())
+					|| $this->hasright('admin')
+					|| $this->hasright('w40kadmin');
+		if ($method == 'prioimage')
+				return ($this->get('userid')==User::loggedIn())
+					|| $this->hasright('admin')
+					|| $this->hasright('w40kadmin');
+		return false;
+	}
+
+	function delimage($vars) {
+		if (isset($vars['image'])) {
+			$image = new Image($vars['image']);
+			if ($image->exists() && ($image->get('parentid') == $this->get('id')))
+				$image->delete();
+		}
+		return redirect($vars['ref']);
+	}
+
+	function prioimage($vars) {
+		if (isset($vars['image']) && isset($vars['prio'])) {
+			$image = new Image($vars['image']);
+			if ($image->exists() && ($image->get('parentid') == $this->get('id'))) {
+				$image->set('prio', $vars['prio']);
+				$image->store();
+			}
+		}
+		return redirect($vars['ref']);
+	}
+	
 	public function parsefields($vars) {
 		$err = parent::parsefields($vars);
 		if ($err !== false)

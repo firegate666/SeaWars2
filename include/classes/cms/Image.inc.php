@@ -27,6 +27,9 @@ class Image extends AbstractClass {
 		$fields[] = array('name' => 'size',
                           'type' => 'integer',
                           'notnull' => true);
+		$fields[] = array('name' => 'prio',
+                          'type' => 'integer',
+                          'notnull' => false);
 		$fields[] = array('name' => 'type',
                           'type' => 'string',
                           'size' => 100,

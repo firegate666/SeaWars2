@@ -61,13 +61,32 @@ class Mission extends W40K {
 		$orderby = "name";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
+		if (isset($vars['limit']) && !empty($vars['limit'])) {
+			$limit = mysql_escape_string($vars['limit']);
+			$limitstart = mysql_escape_string($vars['limitstart']);
+		}
 		$list = $this->getlist('', true, $orderby,
 				array('id',
 					'name',
 					'comment',
 					'rounds',
 					'category',
-				));
+				), $limitstart, $limit);
+		$array['orderby'] = $orderby;
+		$array['prevlimit'] = '';
+		$array['nextlimit'] = '';
+		$array['limit'] = '';
+		$array['limitstart'] = '';
+		if ($limit != '') {
+			$array['prevlimit'] = $limitstart - $limit;
+			if ($array['prevlimit'] < 0)
+				$array['prevlimit'] = 0;
+			$array['nextlimit'] = '';
+			if (count($list)==$limit)
+				$array['nextlimit'] = $limitstart + $limit;
+			$array['limit'] = $limit;
+			$array['limitstart'] = $limitstart;
+		}
 		$rows = '';
 		foreach($list as $entry) {
 			if (strlen($entry['comment']) > 50)

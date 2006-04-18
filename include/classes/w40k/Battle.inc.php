@@ -75,10 +75,11 @@ class Battle extends W40K {
 					|| $this->hasright('w40kuser_extern')
 					|| $this->hasright('w40kadmin');
 		if ($method == 'delete')
-			return $this->get('userid')==User::loggedIn();
+			return $this->get('userid')==User::loggedIn()
+				|| $this->hasright('w40kadmin');
 		if ($method == 'showlist')
 			return true;
-		return false;
+		return parent::acl($method);
 	}
 	
 	function delete($vars) {
@@ -96,6 +97,12 @@ class Battle extends W40K {
 		$orderby = "name";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
+		$limit = '';
+		$limitstart = '';
+		if (isset($vars['limit']) && !empty($vars['limit'])) {
+			$limit = mysql_escape_string($vars['limit']);
+			$limitstart = mysql_escape_string($vars['limitstart']);
+		}
 		$list = $this->getlist('', true, $orderby,
 				array('id',
 					'name',
@@ -109,7 +116,23 @@ class Battle extends W40K {
 					'year',
 					'impdate',
 					'realdate',
-				));
+					'comment',
+				), $limitstart, $limit);
+		$array['orderby'] = $orderby;
+		$array['prevlimit'] = '';
+		$array['nextlimit'] = '';
+		$array['limit'] = '';
+		$array['limitstart'] = '';
+		if ($limit != '') {
+			$array['prevlimit'] = $limitstart - $limit;
+			if ($array['prevlimit'] < 0)
+				$array['prevlimit'] = 0;
+			$array['nextlimit'] = '';
+			if (count($list)==$limit)
+				$array['nextlimit'] = $limitstart + $limit;
+			$array['limit'] = $limit;
+			$array['limitstart'] = $limitstart;
+		}
 		$rows = '';
 		foreach($list as $entry) {
 			if(isset($vars['battletype']) && ($vars['battletype'] != ''))
@@ -119,6 +142,9 @@ class Battle extends W40K {
 			$entry['missionname'] = $mission->get('name');
 			$bt = new BattleType($entry['battletypeid']);
 			$entry['battletypename'] = $bt->get('name');
+			if (!empty($entry['comment']))
+				$entry['hastext'] = "T";
+			$entry['icount'] = $this->numImages($entry['id']);
 			$rows .= parent::show($vars, 'battle_list_row', $entry);
 		}
 		$bt = new BattleType();
@@ -168,7 +194,7 @@ class Battle extends W40K {
 			case 2: $array['win2']="CHECKED='CHECKED'"; break;
 		}
 		$image = new Image();
-		$ilist = $image->getlist('', true, 'name', array('*'));
+		$ilist = $image->getlist('', true, 'prio', array('*'));
 		$array['imagelist'] = "";
 		foreach($ilist as $iobj) {
 			if (($iobj['parent'] == $this->class_name()) && ($iobj['parentid'] == $this->get('id')))
@@ -203,7 +229,7 @@ class Battle extends W40K {
 		$bt = new BattleType($this->get('battletypeid'));
 		$array['battletypename'] = $bt->get('name');
 		$image = new Image();
-		$ilist = $image->getlist('', true, 'name', array('*'));
+		$ilist = $image->getlist('', true, 'prio', array('*'));
 		$array['imagelist'] = "";
 		foreach($ilist as $iobj) {
 			if (($iobj['parent'] == $this->class_name()) && ($iobj['parentid'] == $this->get('id')))

@@ -111,22 +111,28 @@ class Codex extends W40K {
 		
 		$limit = '';
 		$limitstart = '';
-		if (isset($vars['limit']))
+		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);
-		if (isset($vars['limitstart']))
 			$limitstart = mysql_escape_string($vars['limitstart']);
+		}
 		$list = $this->getlist('', true, $orderby,
 				array('*',
 				), $limitstart, $limit);
 		$array['orderby'] = $orderby;
-		$array['prevlimit'] = $limitstart - $limit;
-		if ($array['prevlimit'] < 0)
-			$array['prevlimit'] = '';
+		$array['prevlimit'] = '';
 		$array['nextlimit'] = '';
-		if (count($list)==$limit)
-			$array['nextlimit'] = $limitstart + $limit;
-		$array['limit'] = $limit;
-		$array['limitstart'] = $limitstart;
+		$array['limit'] = '';
+		$array['limitstart'] = '';
+		if ($limit != '') {
+			$array['prevlimit'] = $limitstart - $limit;
+			if ($array['prevlimit'] < 0)
+				$array['prevlimit'] = 0;
+			$array['nextlimit'] = '';
+			if (count($list)==$limit)
+				$array['nextlimit'] = $limitstart + $limit;
+			$array['limit'] = $limit;
+			$array['limitstart'] = $limitstart;
+		}
 		$rows = '';
 		foreach($list as $entry) {
 			if (strlen($entry['comment']) > 50)

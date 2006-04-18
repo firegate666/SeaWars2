@@ -2,10 +2,6 @@
 class Army extends W40K {
 
 	public function acl($method) {
-		if ($method == 'delimage')
-				return ($this->get('userid')==User::loggedIn())
-					|| $this->hasright('admin')
-					|| $this->hasright('w40kadmin');
 		if ($method == 'edit')
 			if ($this->exists())
 				return ($this->get('userid')==User::loggedIn())
@@ -19,27 +15,9 @@ class Army extends W40K {
 			return true;
 		if ($method == 'showlist')
 			return true;
-		return false;
+		return parent::acl($method);
 	}
 
-	function delimage($vars) {
-		if (isset($vars['image'])) {
-			$image = new Image($vars['image']);
-			if ($image->exists() && ($image->get('parentid') == $this->get('id')))
-				$image->delete();
-		}
-		return redirect($vars['ref']);
-	}
-
-	protected function numImages($id = null) {
-		if ($id == null)
-			$id = $this->get('id');
-		
-		$i = new Image();
-		$where[] = "parent='army'";
-		$where[] = "parentid=".$id;
-		return count($i->advsearch($where, array('id')));
-	}
 
 	function parsefields($vars){
 		if ($this->get('userid')==null)
@@ -107,6 +85,12 @@ class Army extends W40K {
 		$orderby = "name";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
+		$limit = '';
+		$limitstart = '';
+		if (isset($vars['limit']) && !empty($vars['limit'])) {
+			$limit = mysql_escape_string($vars['limit']);
+			$limitstart = mysql_escape_string($vars['limitstart']);
+		}
 		$list = $this->getlist('', true, $orderby,
 				array('id',
 					'name',
@@ -114,7 +98,22 @@ class Army extends W40K {
 					'codex',
 					'userid',
 					'comment',
-				));
+				), $limitstart, $limit);
+		$array['orderby'] = $orderby;
+		$array['prevlimit'] = '';
+		$array['nextlimit'] = '';
+		$array['limit'] = '';
+		$array['limitstart'] = '';
+		if ($limit != '') {
+			$array['prevlimit'] = $limitstart - $limit;
+			if ($array['prevlimit'] < 0)
+				$array['prevlimit'] = 0;
+			$array['nextlimit'] = '';
+			if (count($list)==$limit)
+				$array['nextlimit'] = $limitstart + $limit;
+			$array['limit'] = $limit;
+			$array['limitstart'] = $limitstart;
+		}
 		$rows = '';
 		foreach($list as $entry) {
 			$codex = new Codex($entry['codex']);

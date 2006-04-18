@@ -13,6 +13,12 @@
 <html>
   <head>
     <link href="?page/show/css_w40k" rel="stylesheet" type="text/css"/>
+	<script>
+		function dialog_confirm(question, dest) 
+		{
+  			if (confirm(question)) location = dest;
+		}
+	</script>
   </head>
 <body>
 <?	if(empty($adminlogin)) { ?>
@@ -34,12 +40,7 @@
 	<?  die();
 	}
 ?>
-<script type="javascript/text" language="javascript">
-function dialog_confirm(question, dest) 
-{
-  if (confirm(question)) location = dest;
-}
-</script>
+
 <table width=100%>
   <tr>
     <td align=center valign=absmiddle width=100>CMS Manager</td>

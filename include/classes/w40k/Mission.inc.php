@@ -6,7 +6,7 @@ class Mission extends W40K {
 			return true;
 		if ($method == 'showlist')
 			return true;
-		return false;
+		return parent::acl($method);
 	}
 
 	/**

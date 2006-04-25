@@ -97,7 +97,7 @@ class Codex extends W40K {
 			return true;
 		if ($method == 'showlist')
 			return true;
-		return false;
+		return parent::acl($method);
 	}
 
 	function view(&$vars) {

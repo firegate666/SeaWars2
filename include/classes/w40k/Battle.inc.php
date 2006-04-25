@@ -92,7 +92,7 @@ class Battle extends W40K {
 		$query = "SELECT *, CONCAT(year,'-',month,'-',day) as date FROM battle WHERE player1=$armyid OR player2=$armyid";
 		return $mysql->select($query, true);
 	}
-	
+
 	function showlist(&$vars) {
 		$orderby = "name";
 		if (isset($vars['orderby']))
@@ -152,7 +152,59 @@ class Battle extends W40K {
 		$array['battletype'] = $vars['battletype'];
 		$array['orderby'] = $orderby;
 		$array['rows'] = $rows;
+		$statrows = '';
+		foreach($this->getStats(null, $array['battletype']) as $entry) {
+			$statrows .= parent::show($vars, 'battle_stat_row', $entry);
+		}
+		$array['statrows'] = $statrows;
 		return parent::show($vars, 'battle_list', $array);
+	}
+
+	function getStats($playerid=null, $battletype = null) {
+		global $mysql;
+		$PLAYER = '';
+		if ($playerid != null) {
+			$PLAYER = "AND a.id='".mysql_escape_string($playerid)."'";
+		}
+
+		$BATTLETYPE = '';
+		if ($battletype != null) {
+			$BATTLETYPE = "AND battletypeid='".mysql_escape_string($battletype)."'";
+		}
+
+		$query1 = "SELECT player1, winner, vp1 as plus, vp2 as minus,
+					(vp1-vp2) as punkte, count(*) as anzahl, a.id as armyid, a.name as army,
+					sum(winner+1) as score
+				FROM battle, army a
+				WHERE player1=a.id $BATTLETYPE $PLAYER
+				GROUP BY player1
+				ORDER BY punkte DESC;";
+
+		$query2 = "SELECT player2, winner, vp2 as plus, vp1 as minus,
+					(vp2-vp1) as punkte, count(*) as anzahl, a.id as armyid, a.name as army,
+					IF(winner=0,sum(winner+1),sum(winner)) as score
+				FROM battle, army a
+				WHERE player2=a.id $BATTLETYPE $PLAYER
+				GROUP BY player2
+				ORDER BY punkte DESC;";
+
+		$result1 = $mysql->select($query1, true);
+		$result2 = $mysql->select($query2, true);
+                
+		$result = array();
+		foreach($result1 as $row)
+			$result[$row['armyid']] = $row;
+		
+		foreach($result2 as $row) {
+			if (isset($result[$row['armyid']])) {
+				$result[$row['armyid']]['punkte'] += $row['punkte'];
+				$result[$row['armyid']]['anzahl'] += $row['anzahl'];
+				$result[$row['armyid']]['score'] += $row['score'];
+			} else
+				$result[$row['armyid']] = $row;
+		}
+
+		return $result;
 	}
 
 	function parsefields($vars){

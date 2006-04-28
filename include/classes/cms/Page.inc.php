@@ -11,12 +11,14 @@ class Page extends AbstractClass {
 	protected $tags = '';
 	
 	function acl($method) {
-		return true;
+		if ($method == 'show')
+			return true;
+		return false;
 	}
 	
 	function Page($name='') {
 		if(empty($name)) 
-			error("No page name given", "Page", "Constructor");
+			error("No page name given", $this->class_name(), "Constructor");
 		$this->name = $name;
 	}	
 	

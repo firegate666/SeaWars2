@@ -9,10 +9,14 @@
 //		else header("Location: index.php?admin");
 //	}
 	$adminlogin = User::loggedIn();
+
+	if(empty($adminlogin)) {
+		header("Location: ?admin/show/login");
+	}
 ?>
 <html>
   <head>
-    <link href="?page/show/css_w40k" rel="stylesheet" type="text/css"/>
+    <link href="?admin/show/css" rel="stylesheet" type="text/css"/>
 	<script>
 		function dialog_confirm(question, dest) 
 		{
@@ -21,26 +25,6 @@
 	</script>
   </head>
 <body>
-<?	if(empty($adminlogin)) { ?>
-		<h3>Adminlogin</h3>
-		<font color="#FF0000"><?=$error?></font>
-		<form action="index.php" method="POST">
-		  <table>
-		    <tr><td>Benutzername</td><td><input type="text" name="login"></td></tr>
-		    <tr><td>Passwort</td><td><input type="password" name="password"></td></tr>
-		  </table>
-		  <input type="submit" value="login">
-		  <input type="hidden" name="class" value="user">
-		  <input type="hidden" name="method" value="login">
-		  <input type="hidden" name="ref" value="?admin">
-		</form>
-		<a href="index.php">Zurück zur Startseite</a>
-		</body>
-		</html>
-	<?  die();
-	}
-?>
-
 <table width=100%>
   <tr>
     <td align=center valign=absmiddle width=100>CMS Manager</td>
@@ -54,7 +38,7 @@
 	      <br><a href="index.php?admin&image">Images</a>
       <? } ?>
       <? if(get_config("game", false)) { ?>
-      	<<br>a href="index.php?admin&techtree">Tech-Tree</a>
+      	<br>a href="index.php?admin&techtree">Tech-Tree</a>
       <? } ?>
       <? if(get_config("questionaire", false)) { ?>
       	<br><a href="index.php?admin&questionaire">Questionaire</a>

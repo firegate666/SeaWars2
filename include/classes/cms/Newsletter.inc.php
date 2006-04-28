@@ -9,6 +9,14 @@ class Newsletter extends AbstractClass {
 		return $fields;
 	}
 
+	public function acl($method){
+		if ($method=='subscribe')
+			return true;
+		if ($method=='unsubscribe')
+			return true;
+		return false;
+	}
+
 	function send() {
 		// alle subscriber auslesen
 		$subscribers = array();

@@ -12,7 +12,7 @@ class PageStatistic extends AbstractClass {
 		if ($method == 'show')
 			return true;
 		else
-			return parent::check();
+			return parent::acl($method);
 	}
 	
 	public function show($vars) {

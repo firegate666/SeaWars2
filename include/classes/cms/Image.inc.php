@@ -4,11 +4,13 @@
  */
 class Image extends AbstractClass {
 
-		public function acl($method){
-			return false;
-		}
+	public function acl($method){
+		if ($method=='show')
+			return true;
+		return false;
+	}
 
-    	public function getFields() {
+   	public function getFields() {
 		$fields[] = array('name' => 'parent',
                           'type' => 'string',
                           'size' => 100,

@@ -1,6 +1,6 @@
 <?/** * real links */class Link {
 	protected $value;	protected $link;	
-	function show(& $vars) {
+	public function acl($method){		if ($method=='show')			return true;		return false;	}	function show(& $vars) {
 		return $this->link.$this->value;
 	}
 

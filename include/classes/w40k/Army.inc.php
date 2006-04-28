@@ -39,7 +39,7 @@ class Army extends W40K {
 			}
 		}
 		$codex = new Codex();
-		$array['codexlist'] = $codex->getOptionList($this->data['codex'], false);
+		$array['codexlist'] = $codex->getOptionList($this->data['codex'], false, 'name', true, 'name');
 		$image = new Image();
 		$ilist = $image->getlist('', true, 'name', array('*'));
 		$array['imagelist'] = "";
@@ -51,15 +51,9 @@ class Army extends W40K {
 	}
 
 	function view(&$vars) {
-		$array['battlecount'] = "battlecount";
-		$array['win'] = "win";
-		$array['deuce'] = "deuce";
-		$array['lost'] = "lost";
-		$array['gallery'] = "gallery";
-		$array['battles'] = "battles";
 		$codex = new Codex($this->get('codex'));
 		$array['codexname'] = $codex->get('name');
-		
+
 		$b = new Battle();
 		$battles = $b->getListByArmy($this->get('id'));
 		$battlerows = "";
@@ -71,6 +65,9 @@ class Army extends W40K {
 			$battlerows .= $b->show($vars, 'battle_list_row', $entry);
 		}
 		$array['battlerows'] = $battlerows;
+		
+		$array = array_merge($array, $this->getPlayerStats());
+
 		$image = new Image();
 		$ilist = $image->getlist('', true, 'name', array('*'));
 		$array['imagelist'] = "";
@@ -78,7 +75,39 @@ class Army extends W40K {
 			if (($iobj['parent'] == $this->class_name()) && ($iobj['parentid'] == $this->get('id')))
 				$array['imagelist'] .= $this->show($vars, 'army_view_image', $iobj); 			
 		}
+		$u = new User($this->get('userid'));
+		$array['username'] = $u->get('login');
 		return parent::show($vars, 'army_view', $array);
+	}
+
+	function getPlayerStats($playerid=null) {
+		if ($playerid == null)
+			$playerid = $this->get('id');
+		$array['win'] = 0;
+		$array['deuce'] = 0;
+		$array['lost'] = 0;
+		$array['winpc'] = 0;
+		$array['deucepc'] = 0;
+		$array['lostpc'] = 0;
+		$array['vpplus'] = 0;
+		$array['vpminus'] = 0;
+		$array['vp'] = 0;
+		$b = new Battle();
+		$stats = $b->getStats($playerid);
+		$array['battlecount'] = $stats[$playerid]['anzahl'];
+		if ($array['battlecount'] > 0) {
+			$array['win'] = $stats[$playerid]['wins'];
+			$array['deuce'] = $stats[$playerid]['deuce'];
+			$array['lost'] = $stats[$playerid]['lost'];
+			$array['winpc'] = round($array['win'] / $array['battlecount'], 2);
+			$array['deucepc'] = round($array['deuce'] / $array['battlecount'], 2);;
+			$array['lostpc'] = round($array['lost'] / $array['battlecount'], 2);;
+			$array['vpplus'] = $stats[$playerid]['plus'];
+			$array['vpminus'] = $stats[$playerid]['minus'];
+			$array['vp'] = $stats[$playerid]['punkte'];
+		} else
+			$array['battlecount'] = 0;
+		return $array;
 	}
 
 	function showlist(&$vars) {

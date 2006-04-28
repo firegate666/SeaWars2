@@ -1,5 +1,6 @@
 <?php
-	$template_classes[] = 'guestbook';
+$template_classes[] = 'guestbook';
+$__userrights[] = array('name'=>'guestbookadmin', 'desc'=>'can edit guestbook'); 
 
 	Setting::set('moderated_guestbook',
 		'1',
@@ -35,7 +36,7 @@ class Guestbook extends AbstractClass {
 		if ($action == 'newentry')
 			return true;
 		else if ($action == 'togglestate')
-			return (Session::getCookie('adminlogin', false) !== false);
+			return $this->hasright('guestbookadmin');
 		else
 			return parent::acl($action);
 	}

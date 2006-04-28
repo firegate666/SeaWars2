@@ -38,17 +38,18 @@ abstract class W40K extends AbstractClass {
 			if ($image->exists() && ($image->get('parentid') == $this->get('id')))
 				$image->delete();
 		}
-		return redirect($vars['ref']);
+		return redirect("?".$this->class_name()."/edit/".$this->get('id'));
 	}
 
 	function prioimage($vars) {
-		if (isset($vars['image']) && isset($vars['prio'])) {
-			$image = new Image($vars['image']);
-			if ($image->exists() && ($image->get('parentid') == $this->get('id'))) {
-				$image->set('prio', $vars['prio']);
-				$image->store();
+		if (!empty($vars['prio']))
+			foreach($vars['prio'] as $id=>$value) {
+				$image = new Image($id);
+				if ($image->exists() && ($image->get('parentid') == $this->get('id'))) {
+					$image->set('prio', $value);
+					$image->store();
+				}
 			}
-		}
 		return redirect($vars['ref']);
 	}
 	

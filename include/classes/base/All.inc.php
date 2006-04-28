@@ -8,8 +8,6 @@
 	
 	require_once $d.'Date.inc.php';
 	require_once $d.'Mailer.inc.php';
-	require_once $d.'Admin.inc.php';
-
 
 	require_once $d.'Template.inc.php';
 	require_once $d.'Error.inc.php';

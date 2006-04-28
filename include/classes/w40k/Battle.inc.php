@@ -153,7 +153,15 @@ class Battle extends W40K {
 		$array['orderby'] = $orderby;
 		$array['rows'] = $rows;
 		$statrows = '';
-		foreach($this->getStats(null, $array['battletype']) as $entry) {
+		$stats = $this->getStats(null, $array['battletype']);
+        $punkte = array();
+        $score = array();
+		foreach ($stats as $key => $row) {
+	        $score[$key] = $row['score'];
+	        $punkte[$key] = $row['punkte'];
+		}
+		array_multisort($score, SORT_DESC, SORT_NUMERIC, $punkte, SORT_DESC, SORT_NUMERIC, $stats);
+		foreach($stats as $entry) {
 			$statrows .= parent::show($vars, 'battle_stat_row', $entry);
 		}
 		$array['statrows'] = $statrows;
@@ -172,36 +180,60 @@ class Battle extends W40K {
 			$BATTLETYPE = "AND battletypeid='".mysql_escape_string($battletype)."'";
 		}
 
-		$query1 = "SELECT player1, winner, vp1 as plus, vp2 as minus,
-					(vp1-vp2) as punkte, count(*) as anzahl, a.id as armyid, a.name as army,
-					sum(winner+1) as score
+		$query1 = "SELECT player1, sum(vp1) as plus, sum(vp2) as minus,
+					count(*) as anzahl, a.id as armyid, a.name as army,
+					IF(winner=0, sum(1), sum(0)) as deuce,
+					IF(winner=1, sum(1), sum(0)) as wins,
+					IF(winner=2, sum(1), sum(0)) as lost
 				FROM battle, army a
 				WHERE player1=a.id $BATTLETYPE $PLAYER
-				GROUP BY player1
-				ORDER BY punkte DESC;";
+				GROUP BY player1, winner;";
 
-		$query2 = "SELECT player2, winner, vp2 as plus, vp1 as minus,
-					(vp2-vp1) as punkte, count(*) as anzahl, a.id as armyid, a.name as army,
-					IF(winner=0,sum(winner+1),sum(winner)) as score
+		$query2 = "SELECT player2, sum(vp2) as plus, sum(vp1) as minus,
+					count(*) as anzahl, a.id as armyid, a.name as army,
+					IF(winner=0, sum(1), sum(0)) as deuce,
+					IF(winner=1, sum(1), sum(0)) as lost,
+					IF(winner=2, sum(1), sum(0)) as wins
 				FROM battle, army a
 				WHERE player2=a.id $BATTLETYPE $PLAYER
-				GROUP BY player2
-				ORDER BY punkte DESC;";
+				GROUP BY player2, winner;";
 
 		$result1 = $mysql->select($query1, true);
 		$result2 = $mysql->select($query2, true);
-                
+
 		$result = array();
+
 		foreach($result1 as $row)
-			$result[$row['armyid']] = $row;
-		
+			if (isset($result[$row["armyid"]])) {
+				$result[$row["armyid"]]['plus'] += $row['plus'];
+				$result[$row["armyid"]]['minus'] += $row['minus'];
+				$result[$row["armyid"]]['anzahl'] += $row['anzahl'];
+				$result[$row["armyid"]]['deuce'] += $row['deuce'];
+				$result[$row["armyid"]]['wins'] += $row['wins'];
+				$result[$row["armyid"]]['lost'] += $row['lost'];
+				$result[$row["armyid"]]['punkte'] = $result[$row["armyid"]]['plus'] - $result[$row["armyid"]]['minus'];
+				$result[$row["armyid"]]['score'] = 2*$result[$row["armyid"]]['wins'] + $result[$row["armyid"]]['deuce'];
+			} else {
+				$result[$row["armyid"]] = $row;
+				$result[$row["armyid"]]['punkte'] = $row['plus'] - $row['minus'];
+				$result[$row["armyid"]]['score'] = 2*$row['wins'] + $row['deuce'];
+			}
+
 		foreach($result2 as $row) {
-			if (isset($result[$row['armyid']])) {
-				$result[$row['armyid']]['punkte'] += $row['punkte'];
-				$result[$row['armyid']]['anzahl'] += $row['anzahl'];
-				$result[$row['armyid']]['score'] += $row['score'];
-			} else
-				$result[$row['armyid']] = $row;
+			if (isset($result[$row["armyid"]])) {
+				$result[$row["armyid"]]['plus'] += $row['plus'];
+				$result[$row["armyid"]]['minus'] += $row['minus'];
+				$result[$row["armyid"]]['anzahl'] += $row['anzahl'];
+				$result[$row["armyid"]]['deuce'] += $row['deuce'];
+				$result[$row["armyid"]]['wins'] += $row['wins'];
+				$result[$row["armyid"]]['lost'] += $row['lost'];
+				$result[$row["armyid"]]['punkte'] = $result[$row["armyid"]]['plus'] - $result[$row["armyid"]]['minus'];
+				$result[$row["armyid"]]['score'] = 2*$result[$row["armyid"]]['wins'] + $result[$row["armyid"]]['deuce'];
+			} else {
+				$result[$row["armyid"]] = $row;
+				$result[$row["armyid"]]['punkte'] = $row['plus'] - $row['minus'];
+				$result[$row["armyid"]]['score'] = 2*$row['wins'] + $row['deuce'];
+			}
 		}
 
 		return $result;

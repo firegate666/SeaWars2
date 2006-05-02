@@ -8,4 +8,5 @@
 	require_once $d.'BattleType.inc.php';
 	require_once $d.'Codex.inc.php';
 	require_once $d.'Mission.inc.php';
+	require_once $d.'W40KUser.inc.php';
 ?>

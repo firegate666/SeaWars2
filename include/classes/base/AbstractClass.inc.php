@@ -346,7 +346,7 @@ abstract class AbstractClass {
 				$this->data[$field['name']] = $value;
 			} else {
 				// check not null
-				if ($field['notnull'])
+				if (($field['notnull'] || $field['password']))
 					$err[] = "{$field['name']} is null";
 			}
 		}

@@ -26,6 +26,8 @@ class User extends AbstractClass {
 	public function acl($method) {
 		if ($method=='logout')
 			return true;
+		if ($method=='edit')
+			return $this->get('id') == $this->loggedIn();
 		if ($method=='login')
 			return true;
 		if ($method=='register')
@@ -67,10 +69,18 @@ class User extends AbstractClass {
                           'type' => 'string',
                           'size' => 100,
                           'notnull' => true);
+		$fields[] = array('name' => 'signature',
+                          'type' => 'string',
+                          'size' => 100,
+                          'notnull' => false);
+		$fields[] = array('name' => 'show_email',
+                          'type' => 'integer',
+                          'notnull' => false);
 		$fields[] = array('name' => 'password',
                           'type' => 'string',
                           'size' => 100,
-                          'notnull' => true);
+                          'notnull' => true,
+                          'password' => true);
 
 		return $fields;
 	}
@@ -82,8 +92,9 @@ class User extends AbstractClass {
 				($vars['password2'] != $vars['password']))
 			$err[] ='Passwords do not match';
 		if (isset($vars['login']) && !empty($vars['login']))
-			if(count($this->search($vars['login'], 'login'))>0)
-				$err[] = 'Username already exists';
+			if (!($vars['login'] == $this->get('login')))
+				if(count($this->search($vars['login'], 'login'))>0)
+					$err[] = 'Username already exists';
 		if(!empty($vars['password']))
 			$vars['password'] = myencrypt($vars['password']);
 		$return = parent::parsefields($vars);
@@ -115,5 +126,29 @@ class User extends AbstractClass {
 		}
 		return parent::show($vars, 'register', $array);
 	}
+	
+	function edit(&$vars) {
+		$array = array();
+		if (isset($vars['submit'])) {
+			$vars['groupid'] = $this->get('groupid');
+			if (isset($vars['show_email']))
+				$vars['show_email'] = 1;
+			else
+				$vars['show_email'] = 0;
+			$err = $this->parsefields($vars);
+			if (!empty($err))
+				$array['error'] = implode (", ", $err);
+			else {
+				$this->store();
+				$array['error'] = "Object saved";
+			}
+		}
+		$array['show_email'] = '';
+		if ($this->get('show_email') == 1)
+			$array['show_email'] = 'CHECKED="CHECKED"';
+		return parent::show($vars, 'edit', $array);
+	}
+	
+	
 }
 ?>

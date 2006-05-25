@@ -44,10 +44,13 @@ class QuestionaireUser extends AbstractClass {
 		$err = false;
 		if (!isset ($vars['email'], $vars['password'], $vars['password2']))
 			$err[] = 'Email or password not submitted';
+
 		$search = $this->search($vars['email'], 'email');
-		if (count($search) != 0) {
+		if (count($search) != 0)
 			$err[] = "Diese Email ist bereits vergeben";
-		}
+
+		if ($vars['password'] != $vars['password2'])
+			$err[] = "Die Passwörter müssen übereinstimmen";
 
 		if (!$err) {
 			$this->set('email', $vars['email']);

@@ -1,5 +1,6 @@
 <?php
 $template_classes[] = 'questionaire';
+$__userrights[] = array('name'=>'questionaireadmin', 'desc'=>'can edit questionaires');
 
 /**
  * This is questionaire

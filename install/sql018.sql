@@ -53,4 +53,29 @@ CREATE TABLE `extendible` (
   UNIQUE KEY `name` (`parent`,`parentid`,`name`)
 );
 
+-- default user
+INSERT INTO `usergroup` (__createdon, __changedon, name) VALUES (
+	'2006-03-30 15:49:41',
+	'2006-04-07 16:49:02',
+	'Administrator'
+);
+
+INSERT INTO `user` (__createdon, __changedon, login, email, password, groupid, signature, show_email) VALUES (
+	'2006-04-06 18:12:16',
+	'2006-05-29 13:09:52',
+	'administrator',
+	'administrator',
+	'b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3',
+	1,
+	'',
+	0
+);
+
+INSERT INTO `userrights` (__createdon, __changedon, userright, usergroupid) VALUES ('2006-04-07 16:49:02', '2006-04-07 16:49:02', 'templateadmin', 1);
+INSERT INTO `userrights` (__createdon, __changedon, userright, usergroupid) VALUES ('2006-04-07 16:49:02', '2006-04-07 16:49:02', 'useradmin', 1);
+INSERT INTO `userrights` (__createdon, __changedon, userright, usergroupid) VALUES ('2006-04-07 16:49:02', '2006-04-07 16:49:02', 'admin', 1);
+INSERT INTO `userrights` (__createdon, __changedon, userright, usergroupid) VALUES ('2006-04-07 16:49:02', '2006-04-07 16:49:02', 'configadmin', 1);
+INSERT INTO `userrights` (__createdon, __changedon, userright, usergroupid) VALUES ('2006-04-07 16:49:02', '2006-04-07 16:49:02', 'settingsadmin', 1);
+
+
 INSERT INTO dbversion(sql_id, sql_subid) VALUES (18, 0);

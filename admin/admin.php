@@ -25,13 +25,19 @@
 	</script>
   </head>
 <body>
-<table width=100%>
+<table width="100%"">
   <tr>
-    <td align=center valign=absmiddle width=100>CMS Manager</td>
-    <td align=center valign=absmiddle><h3>Administration</h3></td>
+    <td align="left" valign="absmiddle" width="200">CMS Manager</td>
+    <td align="left" valign="absmiddle">
+    <?
+    	$admin = new Admin('topframe');
+    	$vars = array();
+    	echo $admin->show($vars);
+    ?>
+    </td>
   </tr>
   <tr>
-    <td align=center valign=top>
+    <td align="left" valign="top" width="100">
       <a href="index.php?admin">Startseite</a>
       <br><a href="index.php?admin&template">Templates</a>
       <? if(get_config("cms", false)) { ?>
@@ -55,7 +61,7 @@
       </br><a href="index.php?admin&config">Configuration</a>
       </br><a href="index.php?user/logout//ref=index.php">Logout</a>
     </td>
-    <td align=left valign=top>
+    <td align="left" valign="top">
     <?		if (isset ($_REQUEST['template'])) {
 			include ('admin/admin_template.inc.php');
 		} else if (isset ($_REQUEST['image'])) {
@@ -74,7 +80,7 @@
 			include ('admin/admin_w40k.inc.php');
 		} else {
 	?>
-        <h3>CMS Administration</h3>
+        <h3>Startseite</h3>
         <p>Willkommen in der Administrationszentrale von smallCMS. Weiter geht es mit den Menüpunkten links.</p>
         </p>
       <? 

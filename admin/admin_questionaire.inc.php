@@ -1,5 +1,5 @@
 <?
-$adminlogin = Session::getCookie('adminlogin');
+$adminlogin = (User::hasright('admin') || User::hasright('questionaireadmin'));
 if(empty($adminlogin)) die("DENIED");
 
 if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['value']) || is_array($_REQUEST['field']))) {

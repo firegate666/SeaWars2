@@ -92,8 +92,18 @@ abstract class AbstractClass {
 	 * class
 	 * @return	String[][]	complete result
 	 */
-	function getlist($classname='', $ascending=true, $orderby = 'id', $fields = array('id'), $limitstart='', $limit='') {
+	function getlist($classname='', $ascending=true, $orderby = 'id',
+				 $fields = array('id'), $limitstart='', $limit='',
+				 $wherea=array(), $boolop = 'AND') {
 		global $mysql;
+		$where = null;
+		if (!empty($wherea) && is_array($wherea))
+			foreach($wherea as $cond)
+				if (isset($cond['key']) && isset($cond['value']))
+					$where[] = " {$cond['key']} = '{$cond['value']}' ";
+		if(!empty($where))
+			$where = " WHERE ".implode($boolop, $where);
+			
 		if (empty($classname)) $classname = $this->class_name();
 		$orderdir = "ORDER BY ".$orderby." ";
 		$fields = implode(',', $fields);
@@ -107,7 +117,7 @@ abstract class AbstractClass {
 		}
 		else if ($limit != '')
 			$limits = 'LIMIT '.$limit;
-		$result = $mysql->select("SELECT ".$fields." FROM ".mysql_escape_string($classname)." $orderdir $limits;", true);
+		$result = $mysql->select("SELECT ".$fields." FROM ".mysql_escape_string($classname)." $where $orderdir $limits;", true);
 		return $result;
 	}
 	

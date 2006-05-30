@@ -43,7 +43,8 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['val
 <?
 $q = new Questionaire();
 if (!isset($_REQUEST['id'])) {
-	$list = $q->getlist();
+	$list = $q->getlist('', true, 'id', array('id'),
+			'', '', array(array('key'=>'userid', 'value'=>User::loggedIn())));
 } else {
 	$list[] = array('id' => $_REQUEST['id']);
 }	

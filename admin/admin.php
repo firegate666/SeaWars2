@@ -60,6 +60,11 @@
       </br><a href="index.php?admin&settings">Settings</a>
       </br><a href="index.php?admin&config">Configuration</a>
       </br><a href="index.php?user/logout//ref=index.php">Logout</a>
+		<?
+	    	$admin = new Admin('customnavi');
+	    	$vars = array();
+	    	echo $admin->show($vars);
+	    ?>
     </td>
     <td align="left" valign="top">
     <?		if (isset ($_REQUEST['template'])) {
@@ -79,14 +84,11 @@
 		} else if (isset ($_REQUEST['w40k'])) {
 			include ('admin/admin_w40k.inc.php');
 		} else {
+	    	$admin = new Admin('index');
+	    	$vars = array();
+	    	echo $admin->show($vars);
+		}
 	?>
-        <h3>Startseite</h3>
-        <p>Willkommen in der Administrationszentrale von smallCMS. Weiter geht es mit den Menüpunkten links.</p>
-        </p>
-      <? 
-
-	}
-?>
     </td>
   </tr>
 </table>

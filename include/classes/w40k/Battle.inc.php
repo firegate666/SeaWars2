@@ -103,6 +103,9 @@ class Battle extends W40K {
 			$limit = mysql_escape_string($vars['limit']);
 			$limitstart = mysql_escape_string($vars['limitstart']);
 		}
+		$where = array();
+		if(isset($vars['battletype']) && ($vars['battletype'] != ''))
+			$where[] = array('key'=>'battletypeid', 'value'=>$vars['battletype']);
 		$list = $this->getlist('', true, $orderby,
 				array('id',
 					'name',
@@ -117,7 +120,7 @@ class Battle extends W40K {
 					'impdate',
 					'realdate',
 					'comment',
-				), $limitstart, $limit);
+				), $limitstart, $limit, $where);
 		$array['orderby'] = $orderby;
 		$array['prevlimit'] = '';
 		$array['nextlimit'] = '';
@@ -135,9 +138,9 @@ class Battle extends W40K {
 		}
 		$rows = '';
 		foreach($list as $entry) {
-			if(isset($vars['battletype']) && ($vars['battletype'] != ''))
-				if ($entry['battletypeid'] != $vars['battletype'])
-					continue;
+//			if(isset($vars['battletype']) && ($vars['battletype'] != ''))
+//				if ($entry['battletypeid'] != $vars['battletype'])
+//					continue;
 			$mission = new Mission($entry['mission']);
 			$entry['missionname'] = $mission->get('name');
 			$bt = new BattleType($entry['battletypeid']);

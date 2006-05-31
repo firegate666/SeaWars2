@@ -6,11 +6,6 @@ class Usergroup extends AbstractClass {
 		return false;
 	}
 	
-	public function logout($vars){
-		Session::unsetCookie('user');
-		return redirect($vars['ref']);
-	}
-	
 	public function getFields() {
 		$fields[] = array('name' => 'name',
                           'type' => 'string',

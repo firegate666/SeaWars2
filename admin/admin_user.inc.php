@@ -1,5 +1,4 @@
 <?
-//$adminlogin = Session::getCookie('adminlogin');
 $adminlogin = (User::hasright('admin') || User::hasright('useradmin'));
 if(!$adminlogin) die("DENIED");
 
@@ -51,27 +50,30 @@ if (!isset($_REQUEST['usergroup'])) {
 	
 	<table width="100%">
 		<tr>
-			<th width="25%">Login</th>
-			<th width="30%">Email</th>
-			<th width="5%">Group</th>
-			<th width="20%">seit</th>
-			<th width="20%">leztes Login</th>
+			<th align="left" width="25%">Login</th>
+			<th align="left" width="30%">Email</th>
+			<th align="left" width="5%">Group</th>
+			<th align="left" width="20%">seit</th>
+			<th align="left" width="20%">leztes Login</th>
 		</tr>
 	<?
 		$u = new User();
-		$userlist = $u->getlist('', true, 'login', array('*'));
-		foreach($userlist as $user) { 
-			$ug = new Usergroup($user['groupid']);
-			if (!empty($_REQUEST['usergroupid']) && ($user['groupid']!=$_REQUEST['usergroupid']))
-				continue;
+		$where = array();
+		if (!empty($_REQUEST['usergroupid']))
+			$where[] = array('key'=>'groupid', 'value'=>$_REQUEST['usergroupid']);
+		$ul = $u->getlist('', true, 'login', array('*'), '', '', $where);
+		foreach($ul as $myuser) { 
+			$ug = new Usergroup($myuser['groupid']);
+			//if (!empty($_REQUEST['usergroupid']) && ($user['groupid']!=$_REQUEST['usergroupid']))
+			//	continue;
 		?>
 			<tr>
-				<td><?=$user['login']?></td>
-				<td><?=$user['email']?></td>
+				<td><?=$myuser['login']?></td>
+				<td><?=$myuser['email']?></td>
 				<td><?=$ug->get('name')?></td>
-				<td><?=$user['__createdon']?></td>
-				<td><?=$user['__changedon']?></td>
-				<td><a href="?admin&user&userid=<?=$user['id']?>">bearbeiten</a></td>
+				<td><?=$myuser['__createdon']?></td>
+				<td><?=$myuser['__changedon']?></td>
+				<td><a href="?admin&user&userid=<?=$myuser['id']?>"><img src="img/edit.gif" border="0"/></a></td>
 			</tr>
 		<? }
 	?>
@@ -87,7 +89,7 @@ if (!isset($_REQUEST['userid'])) {?>
 		$u = new Usergroup();
 		foreach($u->getlist('', true, 'name', array('*')) as $ug) { ?>
 			<tr>
-				<td><?=$ug['name']?> (<a href="?admin&user&usergroup&id=<?=$ug['id']?>">bearbeiten</a>)</td>
+				<td><?=$ug['name']?> (<a href="?admin&user&usergroup&id=<?=$ug['id']?>"><img src="img/edit.gif" border="0"/></a>)</td>
 			</tr>
 		<? } ?>
 	</table>
@@ -156,4 +158,5 @@ if (isset($_REQUEST['userid'])) {
 				<td>&nbsp;</td><td><input type="submit" name="store" value="Speichern"/></td>
 			</tr>
 	</form>
-<? } ?>
+<? }
+ ?>

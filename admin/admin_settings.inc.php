@@ -42,7 +42,7 @@ if(empty($adminlogin)) die("DENIED");
 		  		else if ($value === false) echo "false";
 		  		else echo $value;
 		  ?></td>
-		  <td>(<a href="?admin&settings&edit&name=<?=$name?>">edit</a>)</td>
+		  <td>(<a href="?admin&settings&edit&name=<?=$name?>"><img src="img/edit.gif" border="0"/></a>)</td>
 		</tr>
 	<? }
 ?></table>

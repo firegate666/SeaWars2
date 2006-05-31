@@ -80,7 +80,7 @@ if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['img_file']) && is
 $array = Image :: getImageList();
 foreach ($array as $item) {
 ?><li><a href="javascript:show('<?=$item[2]?>')"><?=$item[1]?></a>
-         - <a href="javascript:dialog_confirm('Wirklich löschen?', 'index.php?admin&image&img_show&img_delete&id=<?=$item[0]?>');">(delete)</a>
+         - <a href="javascript:dialog_confirm('Wirklich löschen?', 'index.php?admin&image&img_show&img_delete&id=<?=$item[0]?>');">(<img src="img/delete.gif" border="0"/>)</a>
          </li><? 
 
 }

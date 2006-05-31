@@ -39,6 +39,7 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['val
 		<th>Erstellt am</th>
 		<th>Veröffentlicht</th>
 		<th>Geschlossen</th>
+		<th>&nbsp;</th>
 	</tr>
 <?
 $q = new Questionaire();
@@ -72,6 +73,10 @@ if (!isset($_REQUEST['id'])) {
 			<td><a href="?admin&questionaire&id=<?=$qid?>&field=closed&value=<?=$qc1?>">
 					<?=$qc2?>
 				</a>
+			</td>
+			<td>
+				<a href="?admin&questionaire&id=<?=$q->get('id');?>"><img src="img/edit.gif" border="0"/></a>
+				<img src="img/delete.gif" border="0"/>
 			</td>
 		</tr>
 		<?		

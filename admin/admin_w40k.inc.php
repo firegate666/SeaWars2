@@ -28,7 +28,7 @@ if (isset($_REQUEST['store'])) {
 		<? $t = new $_REQUEST['type']();
 		   $list = $t->getlist('', true, 'name', array('id', 'name'));
 		   foreach($list as $item) {
-				echo "<li>{$item['name']} (<a href='?admin&w40k&type={$_REQUEST['type']}&id={$item['id']}#edit'>bearbeiten</a> / löschen</a>)</li>";
+				echo "<li>{$item['name']} (<a href='?admin&w40k&type={$_REQUEST['type']}&id={$item['id']}#edit'><img src='img/edit.gif' border='0'/></a> / <img src='img/delete.gif' border='0'/></a>)</li>";
 		   }
 		?>
 		</ul><a name="edit">

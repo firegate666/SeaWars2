@@ -99,8 +99,10 @@ class Questionaire extends AbstractClass {
 	
 	public function show($vars) {
 		$qu = new QuestionaireUser();
-		if (!$qu->loggedin())
+		if (!$qu->loggedin()) {
+			$vars['questionaireid'] = $this->get('id');
 			return $qu->loginform($vars);
+		}
 
 		$questiontpl = 'default';
 		if (($this->get('layout_question')!="") && ($this->get('layout_question')!=0)) {

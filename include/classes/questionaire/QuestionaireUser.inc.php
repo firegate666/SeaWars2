@@ -16,6 +16,9 @@ class QuestionaireUser extends AbstractClass {
 
 	public function registerform($vars) {
 		$array = array ();
+		$array['questionaireid'] = '';
+		if (!empty($vars['questionaireid']))
+			$array['questionaireid'] = $vars['questionaireid'];
 		if (isset ($vars['err']))
 			$array['err'] = $vars['err'];
 
@@ -24,14 +27,18 @@ class QuestionaireUser extends AbstractClass {
 
 	public function loginform($vars) {
 		$array = array ();
+		$array['questionaireid'] = '';
+		if (!empty($vars['questionaireid']))
+			$array['questionaireid'] = $vars['questionaireid'];
 		if (isset ($vars['err']))
 			$array['err'] = $vars['err'];
 
 		return $this->show($vars, 'loginform', $array);
 	}
 
-	public function sendmail($email, $password) {
-		$from = $this->get('email');
+	public function sendmail($email, $password, $from='') {
+		if (empty($from))
+			$from = $this->get('email');
 		$to = $this->get('email');
 		$subject = "Benutzerdaten";
 		$body = "Ihre Daten für das Fragebogensystem lauten:\n\nEmail: $email\nPassort: $password";		
@@ -42,7 +49,7 @@ class QuestionaireUser extends AbstractClass {
 
 	public function register($vars) {
 		$err = false;
-		if (!isset ($vars['email'], $vars['password'], $vars['password2']))
+		if (empty($vars['email']) || empty($vars['password']) || empty($vars['password2']))
 			$err[] = 'Email or password not submitted';
 
 		$search = $this->search($vars['email'], 'email');
@@ -56,7 +63,13 @@ class QuestionaireUser extends AbstractClass {
 			$this->set('email', $vars['email']);
 			$this->set('password', myencrypt($vars['password']));
 			$this->store();
-			$this->sendmail($vars['email'], $vars['password']);
+			$sender = '';
+			if (!empty($vars['questionaireid'])) {
+				$questionaire = new Questionaire($vars['questionaireid']);
+				if ($questionaire->exists())
+					$sender = $questionaire->get('email');
+			}
+			$this->sendmail($vars['email'], $vars['password'], $sender);
 			$this->dologin();
 			return redirect($vars['ref']);
 		}
@@ -81,9 +94,10 @@ class QuestionaireUser extends AbstractClass {
 
 	public function login($vars) {
 		$err = false;
-		if (!isset ($vars['email'], $vars['password']))
+		if (empty($vars['email']) || empty($vars['password']))
 			$err[] = 'Email or password wrong';
-		$result = $this->search($vars['email'], 'email');
+		if (!$err)
+			$result = $this->search($vars['email'], 'email');
 		if (count($result) != 1)
 			$err[] = 'User not found';
 		if (!$err) {

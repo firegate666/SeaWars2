@@ -29,17 +29,18 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['val
 
 <h3>Questionaire Administration</h3>
 <h4><a href="?questionaireimport/start">Import starten</a></h4>
-<table border="1">
+<table border="0">
 	<tr>
-		<th>ID</th>
-		<th>Titel</th>
-		<th>Autor</th>
-		<th>Email</th>
-		<th>Kurzbeschreibung</th>
-		<th>Erstellt am</th>
-		<th>Veröffentlicht</th>
-		<th>Geschlossen</th>
-		<th>&nbsp;</th>
+		<th align="left">ID</th>
+		<th align="left">Titel</th>
+		<th align="left">Autor</th>
+		<th align="left">Email</th>
+		<th align="left">Kurzbeschreibung</th>
+		<th align="left">Erstellt am</th>
+		<th align="left">RandPage</th>
+		<th align="left">Veröffentlicht</th>
+		<th align="left">Geschlossen</th>
+		<th align="left">&nbsp;</th>
 	</tr>
 <?
 $q = new Questionaire();
@@ -49,11 +50,14 @@ if (!isset($_REQUEST['id'])) {
 } else {
 	$list[] = array('id' => $_REQUEST['id']);
 }	
+	$rowclass[0] = "adminrow";
+	$rowclass[1] = "adminrowalt";
+	$count = 0;
 	foreach($list as $id) {
 		$q = new Questionaire($id['id']);
 		?>
-		<tr>
-			<td><a href="?admin&questionaire&id=<?=$q->get('id');?>"><?=$q->get('id');?></a></td>
+		<tr class="<?=$rowclass[$count]?>">
+			<td align="right"><a href="?admin&questionaire&id=<?=$q->get('id');?>"><?=$q->get('id');?></a></td>
 			<td><?=$q->get('name');?></td>
 			<td><?=$q->get('author');?></td>
 			<td><?=$q->get('email');?></td>
@@ -62,10 +66,16 @@ if (!isset($_REQUEST['id'])) {
 			<?
 				$qid = $q->get('id');
 				$qp1 = ($q->get('published')==0)?'1':'0';
-				$qp2 = ($q->get('published')==0)?'nein':'ja';
+				$qp2 = ($q->get('published')==0)?'<img src="img/notverified.gif" border="0"/>':'<img src="img/verified.gif" border="0"/>';
 				$qc1 = ($q->get('closed')==0)?'1':'0';
-				$qc2 = ($q->get('closed')==0)?'nein':'ja';
+				$qc2 = ($q->get('closed')==0)?'<img src="img/notverified.gif" border="0"/>':'<img src="img/verified.gif" border="0"/>';
+				$qr1 = ($q->get('randompages')==0)?'1':'0';
+				$qr2 = ($q->get('randompages')==0)?'<img src="img/notverified.gif" border="0"/>':'<img src="img/verified.gif" border="0"/>';
 			?>
+			<td><a href="?admin&questionaire&id=<?=$qid?>&field=randompages&value=<?=$qr1?>">
+					<?=$qr2?>
+				</a>
+			</td>
 			<td><a href="?admin&questionaire&id=<?=$qid?>&field=published&value=<?=$qp1?>">
 					<?=$qp2?>
 				</a>
@@ -79,7 +89,8 @@ if (!isset($_REQUEST['id'])) {
 				<img src="img/delete.gif" border="0"/>
 			</td>
 		</tr>
-		<?		
+		<?	
+		($count==0)?$count=1:$count=0;	
 	}
 ?></table><?
 	if (isset($_REQUEST['id'])) {

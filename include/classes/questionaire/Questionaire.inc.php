@@ -36,8 +36,8 @@ class Questionaire extends AbstractClass {
 						WHERE qas.questionanswerid = qa.id
 						AND qa.questionid = q.id
 						AND q.questionaireid = ". ($this->id)."
-						AND qas.verified = 1
 						ORDER BY qas.quserid, q.id;";
+//						--AND qas.verified = 1
 		$result = $mysql->select($query, true);
 		$return = array ();
 		foreach ($result as $answer) {
@@ -111,13 +111,18 @@ class Questionaire extends AbstractClass {
 			$questiontpl = $t->get('layout');
 		}
 		$array['id'] = $this->id;
-		if (isset ($vars['err']))
+		$questions = array();
+		if (isset ($vars['err'])) {
 			$array['error'] = $vars['err'];
-		$questions = $this->getNextUnanswered();
+			$questions = Session::getCookie('lastpage');
+		} else {
+			$questions = $this->getNextUnanswered(($this->get('randompages') == 1));
+			Session::setCookie('lastpage', $questions);
+		}
 		if (count($questions) == 0) {
 			$this->sendmail(QuestionaireUser::LoggedIn());
-			QuestionaireAnswers::finalize($this->get('id'), QuestionaireUser::LoggedIn());
-			QuestionaireUser :: dologout();
+			//QuestionaireAnswers::finalize($this->get('id'), QuestionaireUser::LoggedIn());
+			QuestionaireUser::dologout();
 			$layoutend = $this->id.'end';
 			if (($this->get('layout_end')!="") && ($this->get('layout_end')!=0)) {
 				$t = new Template($this->get('layout_end'));
@@ -142,12 +147,44 @@ class Questionaire extends AbstractClass {
 			$t = new Template($this->get('layout_main'));
 			$layoutmain = $t->get('layout');
 		}
+		$this->stats['abs_unanswered'] = Session::getCookie('abs_unanswered');
+		$this->stats['abs_questions'] = Session::getCookie('abs_questions');
+		$this->stats['abs_answered'] = Session::getCookie('abs_answered');
+		$this->stats['abs_unanswered_in_page'] = Session::getCookie('abs_unanswered_in_page');
+		$this->stats['pc_unanswered'] = Session::getCookie('pc_unanswered');
+		$this->stats['pc_answered'] = Session::getCookie('pc_answered');
 		$array = array_merge($array, $this->stats);
 		$array = array_merge($array, $this->data);
 		return $this->getLayout($array, $layoutmain, $vars);
 	}
 
 	protected function getNextRandomPageFromBlock($questions) {
+		$result = array ();
+		$qid = null;
+		$pagenumbers = array();
+		foreach ($questions as $question) {
+			if ($qid == null) {
+				$result[$question['groupname']][] = $question;
+				$qid = $question['blockname'];
+				$pagenumbers[] = $question['groupname'];
+			} else {
+				if ($question['blockname'] == $qid) {
+					$result[$question['groupname']][] = $question;
+					$pagenumbers[] = $question['groupname'];
+				} else
+					break;
+			}
+		}
+		
+		$pagecount = count($pagenumbers);
+		$randompage = rand(0,$pagecount - 1);
+		$result = $result[$pagenumbers[$randompage]];
+
+		Session::setCookie('abs_unanswered_in_page', count($result));
+		Session::setCookie('pc_unanswered', (Session::getCookie('abs_unanswered') / Session::getCookie('abs_questions'))*100);
+		Session::setCookie('pc_answered', 100 - Session::getCookie('pc_unanswered'));
+
+		return $result;
 	}
 
 	protected function getQuestioncount() {
@@ -164,11 +201,13 @@ class Questionaire extends AbstractClass {
 	 */
 	protected function getNextUnanswered($random = false) {
 		$questions = $this->getAllUnanswered();
-		$this->stats['abs_unanswered'] = count($questions);
-		$this->stats['abs_questions'] = $this->getQuestioncount();
-		$this->stats['abs_answered'] = $this->stats['abs_questions'] - $this->stats['abs_unanswered'];
+		
+		Session::setCookie('abs_unanswered', count($questions));
+		Session::setCookie('abs_questions', $this->getQuestioncount());
+		Session::setCookie('abs_answered', Session::getCookie('abs_questions') - Session::getCookie('abs_unanswered'));
+		
 		if ($random)
-			return getNextRandomPageFromBlock($questions);
+			return $this->getNextRandomPageFromBlock($questions);
 		$result = array ();
 		$qid = null;
 		foreach ($questions as $question) {
@@ -182,9 +221,11 @@ class Questionaire extends AbstractClass {
 					break;
 			}
 		}
-		$this->stats['abs_unanswered_in_page'] = count($result);
-		$this->stats['pc_unanswered'] = ($this->stats['abs_unanswered'] / $this->stats['abs_questions'])*100;
-		$this->stats['pc_answered'] = 100 - $this->stats['pc_unanswered'];
+
+		Session::setCookie('abs_unanswered_in_page', count($result));
+		Session::setCookie('pc_unanswered', (Session::getCookie('abs_unanswered') / Session::getCookie('abs_questions'))*100);
+		Session::setCookie('pc_answered', 100 - Session::getCookie('pc_unanswered'));
+
 		return $result;
 	}
 

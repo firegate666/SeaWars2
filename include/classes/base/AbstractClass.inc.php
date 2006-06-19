@@ -117,7 +117,8 @@ abstract class AbstractClass {
 		}
 		else if ($limit != '')
 			$limits = 'LIMIT '.$limit;
-		$result = $mysql->select("SELECT ".$fields." FROM ".mysql_escape_string($classname)." $where $orderdir $limits;", true);
+		$query = "SELECT ".$fields." FROM ".mysql_escape_string($classname)." $where $orderdir $limits;";
+		$result = $mysql->select($query, true);
 		return $result;
 	}
 	

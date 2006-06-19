@@ -25,13 +25,12 @@ class Setting extends AbstractClass {
 				return true;
 			}
 		} else {
-			//$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
+			$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
 			$s = new Setting();
 			$s->set('name', $name);
 			$s->set('value', $value);
 			$s->set('description', $description);
 			$s->store();
-			print_a($s);
 			$_SESSION['setting'][$name] = $value;
 			return true;
 		}
@@ -46,9 +45,9 @@ class Setting extends AbstractClass {
 	*/
 	function get($name, $default='') {
 		global $mysql;
-		if(isset($_SESSION['setting'][$name]))
-			return $_SESSION['setting'][$name];
-		else {
+//		if(isset($_SESSION['setting'][$name]))
+//			return $_SESSION['setting'][$name];
+//		else {
 			$result = $mysql->executeSql("SELECT value, description FROM setting WHERE name='".mysql_escape_string($name)."';");
 			$description = 'please re-login';
 			if(isset($result['value'])) {
@@ -58,7 +57,7 @@ class Setting extends AbstractClass {
 				$result = $default;
 			$_SESSION['setting'][$name] = $result;
 			$_SESSION['settingdesc'][$name] = $description;
-		}
+//		}
 		return $result;
 	}
 }

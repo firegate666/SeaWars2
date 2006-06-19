@@ -153,8 +153,15 @@ if (!isset($_REQUEST['id'])) {
 			<span id="answers" style="visibility:hidden;display:none;">
 		<table border="1">
 		<?
-			foreach($q->getAnswerTable() as $row) {
+			$list = $q->getAnswerTable();
+			if (empty($list))
+				echo("<tr><td>Keine Ergebnisse</td></tr>");
+			foreach($list as $key=>$row) {
 				echo "<tr>";
+				if ($key == 0)
+					echo "<td>User</td>";
+				else
+					echo "<td>$key</td>";
 				foreach($row as $column) {
 					echo "<td align='center'>$column</td>";
 				}

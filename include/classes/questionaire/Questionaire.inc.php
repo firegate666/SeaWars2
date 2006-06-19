@@ -35,7 +35,8 @@ class Questionaire extends AbstractClass {
 						FROM question q, questionaireanswers qas, questionanswer qa
 						WHERE qas.questionanswerid = qa.id
 						AND qa.questionid = q.id
-						AND q.questionaireid = ". ($this->id)." 
+						AND q.questionaireid = ". ($this->id)."
+						AND qas.verified = 1
 						ORDER BY qas.quserid, q.id;";
 		$result = $mysql->select($query, true);
 		$return = array ();
@@ -115,6 +116,7 @@ class Questionaire extends AbstractClass {
 		$questions = $this->getNextUnanswered();
 		if (count($questions) == 0) {
 			$this->sendmail(QuestionaireUser::LoggedIn());
+			QuestionaireAnswers::finalize($this->get('id'), QuestionaireUser::LoggedIn());
 			QuestionaireUser :: dologout();
 			$layoutend = $this->id.'end';
 			if (($this->get('layout_end')!="") && ($this->get('layout_end')!=0)) {

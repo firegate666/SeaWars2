@@ -102,9 +102,12 @@ class QuestionaireUser extends AbstractClass {
 			$err[] = 'User not found';
 		if (!$err) {
 			$q = new QuestionaireUser($result[0]['id']);
-			$q->dologin();
-			$q->store();
-			return redirect($vars['ref']);
+			if ($q->get('password') == myencrypt($vars['password'])) {
+				$q->dologin();
+				$q->store();
+				return redirect($vars['ref']);
+			} else
+				$err[] = 'Password wrong';
 		}
 		$vars['err'] = implode("\n", $err);
 		return $this->loginform($vars);

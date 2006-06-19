@@ -24,6 +24,7 @@ class QuestionaireImport extends AbstractClass {
 		$questionaire->set('email', $vars['email']);
 		$questionaire->set('shortdesc', $vars['shortdesc']);
 		$questionaire->set('longdesc', $vars['desc']);
+		$questionaire->set('userid', User::loggedIn());
 		$questionaire_id = $questionaire->store();
 		$at_translation_table = array();
 		foreach ($questions as $item) {

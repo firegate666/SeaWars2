@@ -104,6 +104,11 @@ class Questionaire extends AbstractClass {
 			$vars['questionaireid'] = $this->get('id');
 			return $qu->loginform($vars);
 		}
+		$qu = new QuestionaireUser(QuestionaireUser::LoggedIn());
+		if ($qu->get('lastquestionaire') == 0) {
+			$qu->set('lastquestionaire', $this->get('id'));
+			$qu->store();
+		}
 
 		$questiontpl = 'default';
 		if (($this->get('layout_question')!="") && ($this->get('layout_question')!=0)) {
@@ -120,9 +125,11 @@ class Questionaire extends AbstractClass {
 			Session::setCookie('lastpage', $questions);
 		}
 		if (count($questions) == 0) {
-			$this->sendmail(QuestionaireUser::LoggedIn());
+			$this->sendmail($qu->get('id'));
 			//QuestionaireAnswers::finalize($this->get('id'), QuestionaireUser::LoggedIn());
-			QuestionaireUser::dologout();
+			$qu->set('lastquestionaire', 0);
+			$qu->store();
+			$qu->dologout();
 			$layoutend = $this->id.'end';
 			if (($this->get('layout_end')!="") && ($this->get('layout_end')!=0)) {
 				$t = new Template($this->get('layout_end'));

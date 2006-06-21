@@ -105,6 +105,8 @@ class QuestionaireUser extends AbstractClass {
 			if ($q->get('password') == myencrypt($vars['password'])) {
 				$q->dologin();
 				$q->store();
+				if ($q->get('lastquestionaire') != 0)
+					return redirect('index.php?questionaire/show/'.$q->get('lastquestionaire'));
 				return redirect($vars['ref']);
 			} else
 				$err[] = 'Password wrong';

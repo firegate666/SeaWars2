@@ -38,6 +38,9 @@ class QuestionaireImport extends AbstractClass {
 			$question->set('groupname', $item[3]);
 			unset ($item[3]);
 			$question->set('questionaireid', $questionaire_id);
+			$check = $question->get('sem_id');
+			if (empty($check))
+				continue;
 			$question->store();
 			$at = $item[4];
 				$at = trim($at);

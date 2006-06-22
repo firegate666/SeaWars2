@@ -9,6 +9,11 @@ class Questionaire extends AbstractClass {
 
 	protected $stats = array();
 
+	/**
+	 * get all answertye ids for one questionaire
+	 * @param	int	$questionaireid
+	 * @return	array
+	 */
 	public function getAnswertypeIDs($questionaireid = null) {
 		global $mysql;
 		$id = $this->get('id');
@@ -165,7 +170,10 @@ class Questionaire extends AbstractClass {
 		return $this->getLayout($array, $layoutmain, $vars);
 	}
 
-	protected function getNextRandomPageFromBlock($questions) {
+	/**
+	 * __PRIVATE__
+	 */
+	private function getNextRandomPageFromBlock($questions) {
 		$result = array ();
 		$qid = null;
 		$pagenumbers = array();
@@ -194,6 +202,9 @@ class Questionaire extends AbstractClass {
 		return $result;
 	}
 
+	/**
+	 * return number of total questions
+	 */
 	protected function getQuestioncount() {
 		if (Session::getCookie('questionaire_abs_questions', false))
 			return Session::getCookie('questionaire_abs_questions');
@@ -205,6 +216,9 @@ class Questionaire extends AbstractClass {
 
 	/**
 	 * get all unanswered questions for logged in user but only next page
+	 * 
+	 * @param	boolean	$random	if true, return not next page but random page
+	 * from block
 	 */
 	protected function getNextUnanswered($random = false) {
 		$questions = $this->getAllUnanswered();

@@ -26,10 +26,19 @@ abstract class AbstractClass {
 			case 'textarea': $return = "<textarea name='{$field['name']}' cols='75' rows='5'>{$this->get($field['name'])}</textarea>";
 				break;
 			case 'select':
-				$return = "<select name='{$field['name']}'>";
-				$obj = new $field['join']();
-				$return .= $obj->getOptionList($this->get($field['name']), true);
-				$return .= "</select>";
+				$return = "<select name='{$field['name']}'>\n";
+				if (is_array($field['join'])) {
+					foreach($field['join'] as $key=>$value) {
+						$SELECTED = '';
+						if ($this->get($field['name']) == $value)
+							$SELECTED = 'SELECTED="SELECTED"';	
+						$return .= '<option '.$SELECTED.' value="'.$value.'">'.$key.'</option>'."\n";
+					}
+				} else {
+					$obj = new $field['join']();
+					$return .= $obj->getOptionList($this->get($field['name']), true);
+				}
+				$return .= "</select>\n";
 				break;
 		}
 		return $return;

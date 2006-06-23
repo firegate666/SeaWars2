@@ -27,6 +27,24 @@ class BattleType extends W40K {
                           'htmltype' => 'select',
                           'desc'=>'Parent',
                           'join' => 'battletype');
+		$fields[] = array('name' => 'sortfirst',
+                          'type' => 'string',
+                          'notnull' => false,
+                          'htmltype' => 'select',
+                          'desc'=>'Sort First',
+                          'join' => array('Anzahl Spiele'=>'anzahl', 'Siegespunkte'=>'punkte', 'Punkte'=>'score'));
+		$fields[] = array('name' => 'sortsecond',
+                          'type' => 'string',
+                          'notnull' => false,
+                          'htmltype' => 'select',
+                          'desc'=>'Sort Second',
+                          'join' => array('Anzahl Spiele'=>'anzahl', 'Siegespunkte'=>'punkte', 'Punkte'=>'score'));
+		$fields[] = array('name' => 'sortthird',
+                          'type' => 'string',
+                          'notnull' => false,
+                          'htmltype' => 'select',
+                          'desc'=>'Sort Third',
+                          'join' => array('Anzahl Spiele'=>'anzahl', 'Siegespunkte'=>'punkte', 'Punkte'=>'score'));
 		return $fields;
 	}	
 }

@@ -94,7 +94,7 @@ class Battle extends W40K {
 	}
 
 	function showlist(&$vars) {
-		$orderby = "name";
+		$orderby = "realdate";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
 		$limit = '';
@@ -106,7 +106,7 @@ class Battle extends W40K {
 		$where = array();
 		if(isset($vars['battletype']) && ($vars['battletype'] != ''))
 			$where[] = array('key'=>'battletypeid', 'value'=>$vars['battletype']);
-		$list = $this->getlist('', true, $orderby,
+		$list = $this->getlist('', false, $orderby,
 				array('id',
 					'name',
 					'player1',
@@ -138,9 +138,6 @@ class Battle extends W40K {
 		}
 		$rows = '';
 		foreach($list as $entry) {
-//			if(isset($vars['battletype']) && ($vars['battletype'] != ''))
-//				if ($entry['battletypeid'] != $vars['battletype'])
-//					continue;
 			$mission = new Mission($entry['mission']);
 			$entry['missionname'] = $mission->get('name');
 			$bt = new BattleType($entry['battletypeid']);
@@ -150,7 +147,7 @@ class Battle extends W40K {
 			$entry['icount'] = $this->numImages($entry['id']);
 			$rows .= parent::show($vars, 'battle_list_row', $entry);
 		}
-		$bt = new BattleType();
+		$bt = new BattleType($vars['battletype']);
 		$array['battletypeoptionlist'] = $bt->getOptionList($vars['battletype']); 
 		$array['battletype'] = $vars['battletype'];
 		$array['orderby'] = $orderby;
@@ -159,11 +156,21 @@ class Battle extends W40K {
 		$stats = $this->getStats(null, $array['battletype']);
         $punkte = array();
         $score = array();
+        $anzahl = array();
 		foreach ($stats as $key => $row) {
+	        $anzahl[$key] = $row['anzahl'];
 	        $score[$key] = $row['score'];
 	        $punkte[$key] = $row['punkte'];
 		}
-		array_multisort($score, SORT_DESC, SORT_NUMERIC, $punkte, SORT_DESC, SORT_NUMERIC, $stats);
+		if (($bt->get('sortfirst') != "") && ($bt->get('sortsecond') != "") && ($bt->get('sortthird') != "")) {
+			$first = $bt->get('sortfirst');
+			$second = $bt->get('sortsecond');
+			$third = $bt->get('sortthird');
+			array_multisort($$first, SORT_DESC, SORT_NUMERIC,
+							$$second, SORT_DESC, SORT_NUMERIC,
+							$$third, SORT_DESC, SORT_NUMERIC,
+							$stats);
+		}
 		foreach($stats as $entry) {
 			$statrows .= parent::show($vars, 'battle_stat_row', $entry);
 		}

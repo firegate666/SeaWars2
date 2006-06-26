@@ -51,10 +51,26 @@ class Questionaire extends AbstractClass {
 		}
 		return $return;
 	}
+	
+	public function csv($vars) {
+		$result = $this->getAnswerTable();
+		$content = "";
+		foreach($result as $row) {
+			foreach($row as $cell) {
+				$content .= "$cell;\t";
+			}
+			$content .= "\n";
+		}
+		@header("Content-type: text/comma-separated-values;");
+		@header("Content-disposition: attachment; filename=export_"."questionaire"."_".time().".csv");
+		print $content;
+	}
 
 	public function acl($method) {
 		if (!$this->exists())
 			return false;
+		if ($method == 'csv')
+			return true;		
 		if (($this->get('published') == 1) && ($this->get('closed') == 0)) {
 			if ($method == 'show')
 				return true;

@@ -25,6 +25,15 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['val
 	unset($_REQUEST['value']);
 	unset($_REQUEST['atlayout']);
 }
+
+if (isset($_REQUEST['delete'])) {
+	$q = new Questionaire($_REQUEST['delete']);
+	if ($q->exists()) {
+		$q->set('deleted', 1);
+		$q->store();
+	}
+	unset($_REQUEST['delete']);
+}
 ?>
 
 <h3>Questionaire Administration</h3>
@@ -46,7 +55,7 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['val
 $q = new Questionaire();
 if (!isset($_REQUEST['id'])) {
 	$list = $q->getlist('', true, 'id', array('id'),
-			'', '', array(array('key'=>'userid', 'value'=>User::loggedIn())));
+			'', '', array(array('key'=>'deleted', 'value'=>0), array('key'=>'userid', 'value'=>User::loggedIn())));
 } else {
 	$list[] = array('id' => $_REQUEST['id']);
 }	
@@ -86,7 +95,11 @@ if (!isset($_REQUEST['id'])) {
 			</td>
 			<td>
 				<a href="?admin&questionaire&id=<?=$q->get('id');?>"><img src="img/edit.gif" border="0" title="details Bearbeiten"/></a>
-				<img src="img/delete.gif" border="0" title="Löschen"/>
+				
+				<a href="javascript:dialog_confirm('Wirklich löschen?', '?admin&questionaire&delete=<?=$q->get('id');?>');">
+					<img src="img/delete.gif" border="0" title="Löschen"/>
+				</a>
+				
 				<a href="?questionaire/csv/<?=$q->get('id');?>"><img src="img/export.png" border="0" title="CSV Export"/></a>
 			</td>
 		</tr>

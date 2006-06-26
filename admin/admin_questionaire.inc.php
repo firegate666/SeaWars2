@@ -37,9 +37,9 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['field']) && (isset($_REQUEST['val
 		<th align="left">Email</th>
 		<th align="left">Kurzbeschreibung</th>
 		<th align="left">Erstellt am</th>
-		<th align="left">RandPage</th>
-		<th align="left">Veröffentlicht</th>
-		<th align="left">Geschlossen</th>
+		<th align="left"><img src="img/shuffle.png" border="0" title="Zufällige Seitenreihenfolge"/></th>
+		<th align="left"><img src="img/publish.jpg" border="0" title="Fragebogen veröffentlichen"/></th>
+		<th align="left"><img src="img/locked.gif" border="0" title="Fragebogen schließen"/></th>
 		<th align="left">&nbsp;</th>
 	</tr>
 <?
@@ -66,11 +66,11 @@ if (!isset($_REQUEST['id'])) {
 			<?
 				$qid = $q->get('id');
 				$qp1 = ($q->get('published')==0)?'1':'0';
-				$qp2 = ($q->get('published')==0)?'<img src="img/notverified.gif" border="0"/>':'<img src="img/verified.gif" border="0"/>';
+				$qp2 = ($q->get('published')==0)?'<img src="img/notverified.gif" border="0" title="Veröffentlichen?"/>':'<img src="img/verified.gif" border="0" title="Veröffentlichung beenden?"/>';
 				$qc1 = ($q->get('closed')==0)?'1':'0';
-				$qc2 = ($q->get('closed')==0)?'<img src="img/notverified.gif" border="0"/>':'<img src="img/verified.gif" border="0"/>';
+				$qc2 = ($q->get('closed')==0)?'<img src="img/notverified.gif" border="0" title="Schließen?"/>':'<img src="img/verified.gif" border="0" title="Wiedereröffnen?"/>';
 				$qr1 = ($q->get('randompages')==0)?'1':'0';
-				$qr2 = ($q->get('randompages')==0)?'<img src="img/notverified.gif" border="0"/>':'<img src="img/verified.gif" border="0"/>';
+				$qr2 = ($q->get('randompages')==0)?'<img src="img/notverified.gif" border="0" title="Zufällige Seitenreihenfolge?"/>':'<img src="img/verified.gif" border="0" title="keine zufällige Seitenreihenfolge?"/>';
 			?>
 			<td><a href="?admin&questionaire&id=<?=$qid?>&field=randompages&value=<?=$qr1?>">
 					<?=$qr2?>
@@ -85,8 +85,9 @@ if (!isset($_REQUEST['id'])) {
 				</a>
 			</td>
 			<td>
-				<a href="?admin&questionaire&id=<?=$q->get('id');?>"><img src="img/edit.gif" border="0"/></a>
-				<img src="img/delete.gif" border="0"/>
+				<a href="?admin&questionaire&id=<?=$q->get('id');?>"><img src="img/edit.gif" border="0" title="details Bearbeiten"/></a>
+				<img src="img/delete.gif" border="0" title="Löschen"/>
+				<a href="?questionaire/csv/<?=$q->get('id');?>"><img src="img/export.png" border="0" title="CSV Export"/></a>
 			</td>
 		</tr>
 		<?	
@@ -166,7 +167,7 @@ if (!isset($_REQUEST['id'])) {
 		<?
 			$list = $q->getAnswerTable();
 			if (empty($list))
-				echo("<tr><td>Keine Ergebnisse</td></tr>");
+				echo("<tr><td>Keine Ergebnisse</td></tr>\n");
 			foreach($list as $key=>$row) {
 				echo "<tr>";
 				if ($key == 0)
@@ -176,7 +177,7 @@ if (!isset($_REQUEST['id'])) {
 				foreach($row as $column) {
 					echo "<td align='center'>$column</td>";
 				}
-				echo "</tr>";
+				echo "</tr>\n";
 			}
 		?>
 		</table>

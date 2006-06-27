@@ -2,6 +2,7 @@
 $template_classes[] = 'w40k';
 $__userrights[] = array('name'=>'codexadmin', 'desc'=>'can edit codices'); 
 $__userrights[] = array('name'=>'missionadmin', 'desc'=>'can edit missions');
+$__userrights[] = array('name'=>'battletypeadmin', 'desc'=>'can edit battle types');
 $__userrights[] = array('name'=>'w40kuser_extern', 'desc'=>'can use W40K');
 $__userrights[] = array('name'=>'w40kuser_intern', 'desc'=>'can use W40K');
 $__userrights[] = array('name'=>'w40kadmin', 'desc'=>'can edit codices & missions');

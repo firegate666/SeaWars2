@@ -1,0 +1,93 @@
+#######################
+# QUESTIONAIRE - show #
+#######################
+
+${pc_answered}: Prozentual beantwortete Fragen
+${pc_unanswered}: Prozentual nicht-beantwortete Fragen
+${abs_answered}: Absolut beantwortete Fragen
+${abs_unanswered}: Absolut unbeantwortete Fragen
+${abs_questions}: Anzahl Fragen im Bogen
+
+${name}: Name des Fragebogens
+${author}: Autor
+${email}: Email des Autors
+${shortdesc}: Kurzbeschreibung
+${longdesc}: Langbeschreibung
+
+${error}: Rückgabefehlermeldung
+
+<form action="index.php" method="post">
+  <input type="hidden" name="class" value="questionaire"/>
+  <input type="hidden" name="method" value="submit"/>
+  <input type="hidden" name="id" value="${id}"/>
+
+  ${questions}: Hier die Fragen anzeigen lassen
+  
+   <input type="submit"/>
+</form>
+
+############
+# QUESTION #
+############
+
+${name}: Fragestellung
+${id}: ID
+${sem_id}: Semantische ID
+${blockname}: Blockname
+${groupname}: Seitenname
+${answers}: Hier die Antwortmöglichkeiten anzeigen lassen
+
+<input type="hidden" name="question[]" value="${id}"/>
+
+######################
+# QUESTIONANSWERTYPE #
+######################
+
+<input name="questionanswer[${qid}][${qaid}]" type="text"/>
+
+################################
+# QUESTIONAIREUSER - loginform #
+################################
+
+${err}: Rückgabefehlermeldung
+${questionaireid}: Fragebogen-ID (für Link zum Registrieren)
+
+<form action="index.php" method="post">
+	<input type="hidden" name="class" value="questionaireuser"/>
+	<input type="hidden" name="method" value="login"/>
+	<input type="hidden" name="id" value=""/>
+	<input type="hidden" name="ref" value="${__ref__}"/>
+	<input type="text" name="email"/>
+	<input type="password" name="password"/>
+	<input type="submit"/>
+</form>
+
+###################################
+# QUESTIONAIREUSER - registerform #
+###################################
+
+${err}: Rückgabefehlermeldung
+
+<form action="index.php" method="post">
+	<input type="hidden" name="class" value="questionaireuser"/>
+	<input type="hidden" name="method" value="register"/>
+	<input type="hidden" name="id" value=""/>
+	<input type="hidden" name="ref" value="${__ref__}"/>
+	<input type="hidden" name="questionaireid" value="${questionaireid}"/>
+    <input type="text" name="email"/>
+	<input type="password" name="password"/>
+	<input type="password" name="password2"/>
+	<input type="submit"/>
+</form>
+
+###################################
+# QUESTIONAIREUSER - registerform #
+###################################
+
+<form action="index.php" method="post">
+	<input type="hidden" name="class" value="questionaireuser"/>
+	<input type="hidden" name="method" value="logout"/>
+	<input type="hidden" name="ref"/>
+	<input type="submit"/>
+</form>
+	

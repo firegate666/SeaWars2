@@ -11,12 +11,9 @@
 
 * alle Klassenobjekte m?ssen eine ID bekommen (z.B. Rohstoffproduktion)
 
-* Benutzergruppen definieren, z.B. Admin
-* Passwort aus admin.php entfernen, Zugriff über Benutzergruppen regeln.
 
 * Abstract Naming of all game class
 SeaWars -> Game etc...
-
 
 * Beim Löschen und speichern müssen depency checks durchgeführt werden, da mysql keine referentielle Integrität kennt
 
@@ -30,3 +27,5 @@ SeaWars -> Game etc...
 * Sicherheitsabfrage bei delete im CMS
 * Spieler Passwort verschlüsseln
 * Seperate AbstractClasses from module cms (getLayout etc....)
+* Benutzergruppen definieren, z.B. Admin
+* Passwort aus admin.php entfernen, Zugriff über Benutzergruppen regeln.

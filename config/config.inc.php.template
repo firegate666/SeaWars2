@@ -1,24 +1,24 @@
 <?
 	// copy to config.inc.php and replace with valid values
-	$dbserver   = "<servername>";	// Datenbankserver
+	$dbserver   = "<servername>"; // Datenbankserver
 	$dbuser     = "<username>";	// Datenbankbenutzer
 	$dbpassword = "<password>";	// Benutzerpasswort
 	$dbdatabase = "<database>";	// Datenbank
 
+	$_CONFIG['system'] = 'http://www.firegate.de';
+	$_CONFIG['sender'] = 'marco@firegate.de';
+	$_CONFIG['receiver'] = 'marco@firegate.de';
+	
 	// Store passwords encrypted?
 	// Never change on a running system
 	$_CONFIG['encryptpwd'] = true;
 
-	// stripped from admin.php
-	// has to be replaced by Users and Groups sometimes
-	$_CONFIG['adminuser'] = '';
-	$_CONFIG['adminpassword'] = '';
-
 	// enable modules
-	$_CONFIG["cms"] = false;	// enable CMS
+	$_CONFIG["cms"] = false;
+	$_CONFIG["game"] = false;
+	$_CONFIG["questionaire"] = false;
+	$_CONFIG["w40k"] = false;	
 
-	$_CONFIG["game"] = false;	// enable Game
-	
 	// this is where are uploaded files are stored
 	// chmod 777
 	$_CONFIG["uploadpath"] = 'upload/';
@@ -32,14 +32,14 @@
 	*/
 	$_CONFIG["loglevel"] = 2;
 
-	$_CONFIG["cache_enabled"] = true;
+	$_CONFIG["cache_enabled"] = false;
 	
 	// if true, there are template edit links for each template used
 	// while logged in as admin and browsing the pages
 	$_CONFIG["quickedit"] = false;
 	
 	// if true, there are defaults for class, method and/or id if not set
-	$_CONFIG["usedefaults"] = true;
+	$_CONFIG["usedefaults"] = false;
 
 	// each of these can be set, but mus not.
 	// Only used if $_CONFiG["usedefaults"] = true

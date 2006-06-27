@@ -36,7 +36,7 @@ class Questionaire extends AbstractClass {
 	 */
 	public function getAnswerTable() {
 		global $mysql;
-		$query = "SELECT q.sem_id, qas.questionanswervalue, qas.quserid
+		$query = "SELECT q.sem_id, qas.questionanswervalue, qas.quserid, qas.__createdon
 						FROM question q, questionaireanswers qas, questionanswer qa
 						WHERE qas.questionanswerid = qa.id
 						AND qa.questionid = q.id

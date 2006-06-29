@@ -1,7 +1,9 @@
 <?php
 $template_classes[] = 'questionaire';
 $__userrights[] = array('name'=>'questionaireadmin', 'desc'=>'can edit questionaires');
+/*
 
+ */
 /**
  * This is questionaire
  */
@@ -29,6 +31,16 @@ class Questionaire extends AbstractClass {
 					AND q.questionaireid = $id
 					ORDER BY q.id";
 		return $mysql->select($query, true);
+	}
+
+	public function getAnswerCount() {
+ 		global $mysql;
+ 		$query = "SELECT count(DISTINCT qas.quserid) as anzahl
+		FROM question q, questionaireanswers qas, questionanswer qa
+		WHERE qas.questionanswerid = qa.id AND qa.questionid = q.id AND q.questionaireid = ".$this->get('id')."
+		ORDER  BY qas.quserid, q.id;";
+		$result = $mysql->select($query, true);
+		return $result[0]['anzahl'];
 	}
 
 	/**

@@ -46,6 +46,7 @@ if (isset($_REQUEST['delete'])) {
 		<th align="left">Email</th>
 		<th align="left">Kurzbeschreibung</th>
 		<th align="left">Erstellt am</th>
+		<th align="left">Fertig</th>
 		<th align="left"><img src="img/shuffle.png" border="0" title="Zufällige Seitenreihenfolge"/></th>
 		<th align="left"><img src="img/publish.jpg" border="0" title="Fragebogen veröffentlichen"/></th>
 		<th align="left"><img src="img/locked.gif" border="0" title="Fragebogen schließen"/></th>
@@ -72,6 +73,7 @@ if (!isset($_REQUEST['id'])) {
 			<td><?=$q->get('email');?></td>
 			<td><?=$q->get('shortdesc');?></td>
 			<td><?=$q->get('__createdon');?></td>
+			<td align="right"><?=$q->getAnswerCount();?></td>
 			<?
 				$qid = $q->get('id');
 				$qp1 = ($q->get('published')==0)?'1':'0';

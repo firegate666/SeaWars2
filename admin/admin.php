@@ -41,7 +41,7 @@
       <a href="index.php?admin">Startseite</a>
       <br><a href="index.php?admin&template">Templates</a>
       <? if(get_config("cms", false)) { ?>
-	      <br><a href="index.php?admin&image">Images</a>
+	      <br><a href="index.php?admin&image">Dateien</a>
       <? } ?>
       <? if(get_config("game", false)) { ?>
       	<br>a href="index.php?admin&techtree">Tech-Tree</a>

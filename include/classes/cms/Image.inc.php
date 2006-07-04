@@ -40,12 +40,12 @@ class Image extends AbstractClass {
 		return $fields;
 	}
     
-    public function parsefields($vars, $parent = '', $parentid = ''){
+    public function parsefields($vars, $parent = '0', $parentid = '0'){
     	$vars['parent'] = $parent;
     	$vars['parentid'] = $parentid;
     	$err = false;
-    	if (!in_array($vars['type'], array('image/gif', 'image/pjpeg', 'image/jpeg')))
-    		$err[] = "Image must be: image/gif, image/pjpeg or image/jpeg; found: ".$vars['type'];
+//    	if (!in_array($vars['type'], array('image/gif', 'image/pjpeg', 'image/jpeg')))
+//    		$err[] = "Image must be: image/gif, image/pjpeg or image/jpeg; found: ".$vars['type'];
     	if (!is_uploaded_file($vars['tmp_name']))
     		$err[] = "Upload failed";
     	$vars['name'] = str_replace (" ", "_", $vars['name']);
@@ -56,7 +56,7 @@ class Image extends AbstractClass {
     	$vars['name'] = str_replace ("Ö", "Oe", $vars['name']);
     	$vars['name'] = str_replace ("Ü", "Ue", $vars['name']);
     	$vars['name'] = str_replace ("ß", "ss", $vars['name']);
-    	$url = get_config("uploadpath").randomstring(25).$parent.$parentid.$vars['name'];
+    	$url = get_config("uploadpath").randomstring(25)."-".$parent."-".$parentid."-".$vars['name'];
     	if ($err === false) {
     		$res = copy($vars['tmp_name'], $url);
 	    	if (!$res)
@@ -82,9 +82,11 @@ class Image extends AbstractClass {
 	/**
 	 * returns all know images
 	 */
-	function getImageList() {
+	function getImageList($where="") {
 		global $mysql;
-		$query = "SELECT id, name, url FROM image;";
+		if (is_array($where))
+			$where = " WHERE ".implode(' AND ', $where);
+		$query = "SELECT id, name, url, type FROM image $where;";
 		$array = $mysql->select($query);
 		return $array;
 	}

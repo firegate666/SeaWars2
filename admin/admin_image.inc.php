@@ -9,43 +9,25 @@ if (isset ($_REQUEST['img_delete'])) {
 	        $i->delete();
 	}
 }
-if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['img_file']) && isset($_REQUEST['img_name'])) {
-	if (is_uploaded_file($HTTP_POST_FILES['img_file']['tmp_name'])) {
-                $upload_allowed = true;
-		if ($HTTP_POST_FILES['img_file']['type'] == "image/gif") {
-			$extension = ".gif";
-		} else {
-			$extension = ".jpg";
-		}
-		$newname = randomstring(25).$extension;
-
-		if (($HTTP_POST_FILES['img_file']['type'] == "image/gif") || ($HTTP_POST_FILES['img_file']['type'] == "image/pjpeg") || ($HTTP_POST_FILES['img_file']['type'] == "image/jpeg")) {
-			$msg .= "Upload wird gestartet.<br>";
-                        $res = copy($HTTP_POST_FILES['img_file']['tmp_name'], get_config("uploadpath").$newname);
-			if (!$res) {
-				$msg .= "Upload fehlgeschlagen!";
-			} else {
-				// Datenbankreferenz erstellen
-				$img = new Image();
-				$img->set('name', $_REQUEST['img_name']);
-				$img->set('url', get_config("uploadpath").$newname);
-				$img->store();
-			}
-			$msg .= "Dateigröße: ".$HTTP_POST_FILES['img_file']['size']." bytes<br>\n";
-			$msg .= "Dateityp: ".$HTTP_POST_FILES['img_file']['type']."<br>\n";
-		} else {
-			$msg .= "Wrong file type<br>\n";
-		}
+if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['filename'])) {
+	$image = new Image();
+	$result = $image->parsefields($HTTP_POST_FILES['filename']);
+	if ($result === false) {
+		$msg .= "Dateigröße: ".$HTTP_POST_FILES['filename']['size']." bytes<br>\n";
+		$msg .= "Dateityp: ".$HTTP_POST_FILES['filename']['type']."<br>\n";
+		if (!empty($_REQUEST['img_name']))
+			$image->set('name', $_REQUEST['img_name']);
+		$image->store();
 	} else {
-		$msg = "Error while uploading";
+		$msg .= implode($result);
 	}
 } else {
-	$msg = "Form misconfigured";
+	$msg = "ready for upload";
 }
 ?>
 <table width=100% border=1>
   <tr>
-    <th colspan=2>Bilderverwaltung</th>
+    <th colspan=2>Dateiverwaltung</th>
   <tr>
     <td  align=left valign=top><a href="index.php?admin&image&img_upload">Upload</a></td>
     <td  align=left valign=top><a href="index.php?admin&image&img_show">Anzeigen / Löschen</a></td>
@@ -60,33 +42,46 @@ if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['img_file']) && is
          <tr>
            <th colspan=2>Bild hochladen</th>
          </tr>
-         <tr><td align=left valign=top>Dateiname</td><td align=left valign=top><input type="file" name="img_file"></td></tr>
+         <tr><td align=left valign=top>Dateiname</td><td align=left valign=top><input type="file" name="filename"></td></tr>
          <tr><td align=left valign=top>Bildname </td><td align=left valign=top><input type="text" name="img_name"></td></tr>
          <tr><td  align=left valign=top colspan=2><input type="submit" value="Upload"></td></tr>
        </form></table>
        <?=$msg?>
      </td>
   <? } ?>
-  <? if(isset($img_show)) { ?>
-     <script>
-       function show(url) {
-         document.preview.src = url;
-       }
-     </script>
-     <td align="left" valign="top"><ul><?
-
-
-
-$array = Image :: getImageList();
+  <? if(isset($img_show)) {
+  		$image = new Image();
+  		$default = $_REQUEST['filter_type'];
+		$optionlist = $image->getOptionList($default, false, 'type', true, 'type', 'type');
+?>
+     <td colspan=2 align=left valign=top>
+<form method="get">
+	<input type="hidden" name="admin"/>
+	<input type="hidden" name="image"/>
+	<input type="hidden" name="img_show"/>
+<table>
+	<tr>
+		<th align=left valign=top>Bildname</th>
+		<th align=left valign=top><select name="filter_type" onChange="this.form.submit();"><option value="">Dateityp</option><?=$optionlist?></select></th>
+		<th/>
+	</tr>
+<?
+$where = '';
+if (!empty($_REQUEST['filter_type']))
+	$where[] = "type='{$_REQUEST['filter_type']}'";
+$array = Image :: getImageList($where);
 foreach ($array as $item) {
-?><li><a href="javascript:show('<?=$item[2]?>')"><?=$item[1]?></a>
-         - <a href="javascript:dialog_confirm('Wirklich löschen?', 'index.php?admin&image&img_show&img_delete&id=<?=$item[0]?>');">(<img src="img/delete.gif" border="0"/>)</a>
-         </li><? 
-
+?>
+<tr>
+	<td><a href="<?=$item[2]?>" target="_blank"><?=$item[1]?></a></td>
+	<td><?=$item[3]?></td>
+    <td><a href="javascript:dialog_confirm('Wirklich löschen?', 'index.php?admin&image&img_show&img_delete&id=<?=$item[0]?>');"><img src="img/delete.gif" border="0"/></a></td>
+</tr>
+<? 
 }
 ?>
-     </ul></td>
-     <td><img name="preview" src="">
+</table>
+</form>
      </td>
   <? } ?>
   </tr>

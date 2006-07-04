@@ -433,19 +433,17 @@ abstract class AbstractClass {
 		error($msg, get_class($this), $action);
 	}
 
-	public function getOptionList($default = 0, $cannull = false, $field = 'name', $asc= true, $orderby='id') {
+	public function getOptionList($default = 0, $cannull = false, $field = 'name', $asc= true, $orderby='id', $value = 'id') {
 		$list = $this->getlist('', $asc, $orderby);
 		$options = "";
 		if ($cannull)
 			$options = "<option></option>";
 		foreach($list as $item) {
 			$obj = new $this($item['id']);
-			$id = $obj->get('id');
-			$name = $obj->get($field);
 			$selected = "";
-			if ($id == $default)
+			if ($obj->get($value) == $default)
 				$selected = "SELECTED='SELECTED'";
-			$options .= "<option $selected value='$id'>$name</option>";
+			$options .= "<option $selected value='".$obj->get($value)."'>".$obj->get($field)."</option>";
 		}
 		return $options;
 	}

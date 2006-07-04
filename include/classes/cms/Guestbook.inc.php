@@ -86,7 +86,7 @@ class Guestbook extends AbstractClass {
 		$output = '';
 		foreach($result as $entry) {
 			$gb = new Guestbook($entry['id']);
-			if (($gb->get('deleted') == 1) && (Session::getCookie('adminlogin', false) == false))
+			if (($gb->get('deleted') == 1) && (!$this->hasright('guestbookadmin')))
 				continue;
 			$array = array();
 			$array['name'] = $gb->get('name');
@@ -94,7 +94,7 @@ class Guestbook extends AbstractClass {
 			$array['subject'] = $gb->get('subject');
 			$array['body'] = $gb->get('content');
 			$array['timestamp'] = $gb->get('__createdon');
-			if (Session::getCookie('adminlogin', false) != false) {
+			if ($this->hasright('guestbookadmin')) {
 				$link = '<a href="index.php?class=guestbook&method=togglestate&id='.($gb->id).'">';
 				if ($gb->get('deleted'))
 					$output .= '<div>'.$link.'Show</a></div>';

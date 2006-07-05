@@ -1,4 +1,7 @@
 <?php
+
+Setting::set('army_defaultpagelimit', '', 'Army Default Pagelimit', false);
+
 class Army extends W40K {
 
 	public function acl($method) {

@@ -1,4 +1,7 @@
 <?php
+
+Setting::set('codex_defaultpagelimit', '', 'Codex Default Pagelimit', false);
+
 class Codex extends W40K {
 
 	/**

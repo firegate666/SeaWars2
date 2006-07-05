@@ -1,4 +1,7 @@
 <?php
+
+Setting::set('mission_defaultpagelimit', '', 'Mission Default Pagelimit', false);
+
 class Mission extends W40K {
 
 	public function acl($method) {

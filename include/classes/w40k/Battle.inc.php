@@ -1,5 +1,11 @@
 <?php
+
+Setting::set('battle_defaultpagelimit', '', 'Battle Default Pagelimit', false);
+
 class Battle extends W40K {
+
+	protected $mbarmies1 = array();
+	protected $mbarmies2 = array();
 
 	public function getFields() {
 		$fields[] = array('name' => 'points',
@@ -56,6 +62,9 @@ class Battle extends W40K {
 		$fields[] = array('name' => 'battletypeid',
                           'type' => 'integer',
                           'notnull' => false);
+		$fields[] = array('name' => 'multibattle',
+                          'type' => 'integer',
+                          'notnull' => true);
 		$fields[] = array('name' => 'realdate',
                           'type' => 'date',
                           'notnull' => true);
@@ -196,7 +205,7 @@ class Battle extends W40K {
 					IF(winner=1, sum(1), sum(0)) as wins,
 					IF(winner=2, sum(1), sum(0)) as lost
 				FROM battle, army a
-				WHERE player1=a.id $BATTLETYPE $PLAYER
+				WHERE player1=a.id $BATTLETYPE $PLAYER AND multibattle = 0
 				GROUP BY player1, winner;";
 
 		$query2 = "SELECT player2, sum(vp2) as plus, sum(vp1) as minus,
@@ -205,7 +214,7 @@ class Battle extends W40K {
 					IF(winner=1, sum(1), sum(0)) as lost,
 					IF(winner=2, sum(1), sum(0)) as wins
 				FROM battle, army a
-				WHERE player2=a.id $BATTLETYPE $PLAYER
+				WHERE player2=a.id $BATTLETYPE $PLAYER AND multibattle = 0
 				GROUP BY player2, winner;";
 
 		$result1 = $mysql->select($query1, true);
@@ -258,7 +267,36 @@ class Battle extends W40K {
 			$vars['battletypeid'] = 0;
 		$vars['impdate'] = std2impDate("{$vars['year']}-{$vars['month']}-{$vars['day']}");
 		$vars['realdate'] = "{$vars['year']}-{$vars['month']}-{$vars['day']}";
-		return parent::parsefields($vars);
+		
+		
+		$return = parent::parsefields($vars);
+
+		// store multibattle
+		if (($return === false) && ($vars['multibattle'] == 1)) {
+			$mb = new MultiBattle();
+			$mb->store();
+			$this->set('multibattle', $mb->get('id'));
+			
+			$this->mbarmies1 = $vars['multibattle1'];
+			foreach($vars['multibattle1'] as $army1) {
+				$mba = new MultiBattleArmy();
+				$mba->set('army_id', $army1);
+				$mba->set('player', 1);
+				$mba->set('multibattle', $mb->get('id'));
+				$mba->store();
+			}
+
+			$this->mbarmies2 = $vars['multibattle2'];
+			foreach($vars['multibattle2'] as $army2) {
+				$mba = new MultiBattleArmy();
+				$mba->set('army_id', $army2);
+				$mba->set('player', 2);
+				$mba->set('multibattle', $mb->get('id'));
+				$mba->store();
+			}
+		}
+		
+		return $return;
 	}
 
 	function edit(&$vars) {
@@ -286,6 +324,14 @@ class Battle extends W40K {
 			case 0: $array['deuce']="CHECKED='CHECKED'"; break;
 			case 1: $array['win1']="CHECKED='CHECKED'"; break;
 			case 2: $array['win2']="CHECKED='CHECKED'"; break;
+			default: $array['deuce']="CHECKED='CHECKED'"; break;
+		}
+
+		$array['mbarmylist1'] = $army->getOptionList($this->mbarmies1, false, 'name', true, 'name');
+		$array['mbarmylist2'] = $army->getOptionList($this->mbarmies2, false, 'name', true, 'name');
+		switch($this->get('multibattle')) {
+			case 0: $array['multibattleno']="CHECKED='CHECKED'"; break;
+			default: $array['multibattleyes']="CHECKED='CHECKED'"; break;
 		}
 		$image = new Image();
 		$ilist = $image->getlist('', true, 'prio', array('*'));
@@ -295,6 +341,26 @@ class Battle extends W40K {
 				$array['imagelist'] .= $this->show($vars, 'battle_edit_image', $iobj); 			
 		}
 		return parent::show($vars, 'battle_edit', $array);
+	}
+
+	protected function loadMultibattles() {
+		if (!$this->get('multibattle'))
+			return;
+		$mb = new Multibattle($this->get('multibattle'));
+		$mba = new MultiBattleArmy();
+		$where[] = array('key'=>'multibattle', 'value'=>$mb->get('id'));
+		$list = $mba->getlist('', true, 'id', array('*'), '', '', $where);
+		foreach($list as $entry) {
+			if ($entry['player'] == 1)
+				$this->mbarmies1[] = $entry['army_id'];
+			if ($entry['player'] == 2)
+				$this->mbarmies2[] = $entry['army_id'];
+		}
+	}
+	
+	public function Battle($id='') {
+		parent::W40K($id);
+		$this->loadMultibattles();
 	}
 
 	function view(&$vars) {
@@ -320,6 +386,18 @@ class Battle extends W40K {
 			case 1 : $array['winnername'] = $array['army1name'];break;
 			case 2 : $array['winnername'] = $array['army2name'];break;
 		}
+		$this->mbarmies1_names = array();
+		$this->mbarmies2_names = array();
+		foreach($this->mbarmies1 as $army_id) {
+			$a = new Army($army_id);
+			$this->mbarmies1_names[] = $a->get('name');
+		}
+		foreach($this->mbarmies2 as $army_id) {
+			$a = new Army($army_id);
+			$this->mbarmies2_names[] = $a->get('name');
+		}
+		$array['mbarmies1'] = implode(', ', $this->mbarmies1_names);
+		$array['mbarmies2'] = implode(', ', $this->mbarmies2_names);
 		$bt = new BattleType($this->get('battletypeid'));
 		$array['battletypename'] = $bt->get('name');
 		$image = new Image();
@@ -333,4 +411,6 @@ class Battle extends W40K {
 	}
 
 }
+
+
 ?>

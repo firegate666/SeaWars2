@@ -228,8 +228,8 @@ abstract class AbstractClass {
 		// set timestamps
 		$datenow = Date::now();
 		if($this->id=='')
-			$this->set('__createdon', $datenow);
-		$this->set('__changedon', $datenow);
+			$this->data['__createdon'] = $datenow;
+		$this->data['__changedon'] = $datenow;
 		
 		// Seperate keys from values
 		$keys   = array_keys($this->data);

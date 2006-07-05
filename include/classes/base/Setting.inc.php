@@ -4,6 +4,15 @@ $__userrights[] = array('name'=>'settingsadmin', 'desc'=>'can edit settings');
 
 class Setting extends AbstractClass {
 	
+	public function Setting($name = null) {
+		if (($name == null) || ($name == '')) 
+			return;
+		global $mysql;
+		$result = $mysql->executeSql("SELECT id FROM setting WHERE name='".mysql_escape_string($name)."';");
+		$this->id = $result['id'];
+		$this->load();
+	}
+
 	/**
 	* set setting in db
 	* @param	String	$name	name of setting
@@ -16,24 +25,16 @@ class Setting extends AbstractClass {
 		$name = mysql_escape_string($name);
 		$value = mysql_escape_string($value);
 		$description = mysql_escape_string($description);
-		$result = Setting::get($name, '');
-		if(($result==0) || !empty($result)) {
-			if(!$override) return false;
-			else {
-				$mysql->update("UPDATE setting SET value='$value' WHERE name='$name';") or die(mysql_error());
-				$_SESSION['setting'][$name] = $value;
-				return true;
-			}
-		} else {
-			$mysql->insert("INSERT INTO setting(name, value, description) VALUES ('$name', '$value', '$description');");
-			$s = new Setting();
-			$s->set('name', $name);
-			$s->set('value', $value);
-			$s->set('description', $description);
-			$s->store();
-			$_SESSION['setting'][$name] = $value;
-			return true;
-		}
+		$setting = new Setting($name);
+		$setting->data['name'] = $name;
+		$setting->data['description'] = $description;
+		if ($override)
+			$setting->data['value'] = $value;
+		$setting->store();
+		$_SESSION['setting'][$name] = $setting->data['value'];
+		if (empty($_SESSION['settingdesc'][$name]))
+			$_SESSION['settingdesc'][$name] = $setting->data['description'];
+		return true;
 	}
 	
 	/**
@@ -43,22 +44,20 @@ class Setting extends AbstractClass {
 	* @param	String	$default	default if not set
 	* @return	String	value of setting
 	*/
-	function get($name, $default='') {
+	function get($name, $default='', $description='') {
+		if(isset($_SESSION['setting'][$name]))
+			return $_SESSION['setting'][$name];
 		global $mysql;
-//		if(isset($_SESSION['setting'][$name]))
-//			return $_SESSION['setting'][$name];
-//		else {
-			$result = $mysql->executeSql("SELECT value, description FROM setting WHERE name='".mysql_escape_string($name)."';");
-			$description = 'please re-login';
-			if(isset($result['value'])) {
-				$description = $result['description'];
-				$result = $result['value'];
-			} else
-				$result = $default;
-			$_SESSION['setting'][$name] = $result;
-			$_SESSION['settingdesc'][$name] = $description;
-//		}
-		return $result;
+		$result = null;
+		$setting = new Setting($name);
+		if (!$setting->exists()) {
+			$result = $default;
+		} else {
+			$result = $setting->data['value'];
+			$description = $setting->data['description'];
+		}
+		$_SESSION['setting'][$name] = $result;
+		$_SESSION['settingdesc'][$name] = $description;
 	}
 }
 ?>

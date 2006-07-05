@@ -1,0 +1,5 @@
+ALTER TABLE `setting` DROP PRIMARY KEY;
+ALTER TABLE `setting` ADD UNIQUE (`name`);
+ALTER TABLE `setting` ADD `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST; 
+
+INSERT INTO dbversion(sql_id, sql_subid) VALUES (21, 0);

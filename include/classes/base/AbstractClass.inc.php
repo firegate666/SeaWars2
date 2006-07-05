@@ -441,8 +441,12 @@ abstract class AbstractClass {
 		foreach($list as $item) {
 			$obj = new $this($item['id']);
 			$selected = "";
-			if ($obj->get($value) == $default)
-				$selected = "SELECTED='SELECTED'";
+			if (is_array($default)) {
+				if (in_array($obj->get($value), $default))
+					$selected = "SELECTED='SELECTED'";
+			} else 
+				if ($obj->get($value) == $default)
+					$selected = "SELECTED='SELECTED'";
 			$options .= "<option $selected value='".$obj->get($value)."'>".$obj->get($field)."</option>";
 		}
 		return $options;

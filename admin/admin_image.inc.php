@@ -66,10 +66,10 @@ if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['filename'])) {
 		<th/>
 	</tr>
 <?
-$where = '';
+$where[] = 'parentid=0';
 if (!empty($_REQUEST['filter_type']))
 	$where[] = "type='{$_REQUEST['filter_type']}'";
-$array = Image :: getImageList($where);
+$array = Image::getImageList($where);
 foreach ($array as $item) {
 ?>
 <tr>

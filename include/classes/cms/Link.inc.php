@@ -4,7 +4,7 @@
 		return $this->link.$this->value;
 	}
 
-	function Link($value) {		$this->link = 'index.php?class=';
+	function Link($value) {		$this->link = 'index.php?';
 		$this->value = $value;
 	}
 }

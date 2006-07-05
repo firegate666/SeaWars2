@@ -53,7 +53,7 @@ class Questionaire extends AbstractClass {
 						WHERE qas.questionanswerid = qa.id
 						AND qa.questionid = q.id
 						AND q.questionaireid = ". ($this->id)."
-						ORDER BY qas.quserid, q.id;";
+						ORDER BY q.id, qas.quserid;";
 //						--AND qas.verified = 1
 		$result = $mysql->select($query, true);
 		$return = array ();

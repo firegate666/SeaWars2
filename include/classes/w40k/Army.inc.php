@@ -117,7 +117,7 @@ class Army extends W40K {
 		$orderby = "name";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
-		$limit = '';
+		$limit = Setting::get('army_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);

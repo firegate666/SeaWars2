@@ -106,7 +106,7 @@ class Battle extends W40K {
 		$orderby = "realdate";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
-		$limit = '';
+		$limit = Setting::get('battle_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);

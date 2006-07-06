@@ -2,12 +2,12 @@
 $template_classes[] = 'guestbook';
 $__userrights[] = array('name'=>'guestbookadmin', 'desc'=>'can edit guestbook'); 
 
-	Setting::set('moderated_guestbook',
+	Setting::write('moderated_guestbook',
 		'1',
 		'Moderated Guestbook? (1=true, 2=false)',
 		false);
 	
-	Setting::set('email_guestbookadmin',
+	Setting::write('email_guestbookadmin',
 		'false',
 		'Email Guestbookadmin',
 		false);
@@ -62,13 +62,13 @@ class Guestbook extends AbstractClass {
 		$gb->set('content', $vars['content']);
 		$gb->set('email', $vars['email']);
 		$gb->set('ip', getClientIP());
-		$gb->set('deleted', Setting::get('moderated_guestbook', 1));
+		$gb->set('deleted', Setting::read('moderated_guestbook', 1));
 		$gb->store();
 
-		if (Setting::get('moderated_guestbook', 1) && Setting::get('email_guestbookadmin', false)) {
+		if (Setting::read('moderated_guestbook', 1) && Setting::read('email_guestbookadmin', false)) {
 			$m = new Mailer();
-			$from = Setting::get('email_guestbookadmin');
-			$to = Setting::get('email_guestbookadmin');
+			$from = Setting::read('email_guestbookadmin');
+			$to = Setting::read('email_guestbookadmin');
 			$subject = 'Neuer Gästebucheintrag';
 			$body = 'Ein neuer Gästebucheintrag von "'.$gb->get('name'). '" wartet auf Freischaltung.';
 			$body .= "\n\n".$gb->get('content');

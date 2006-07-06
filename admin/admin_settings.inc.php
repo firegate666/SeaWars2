@@ -6,7 +6,7 @@ if(empty($adminlogin)) die("DENIED");
 <h3>Systemsettings</h3>
 <?
 	if (isset($_REQUEST['save'])) {
-		Setting::set($_REQUEST['name'], $_REQUEST['value']);
+		Setting::write($_REQUEST['name'], $_REQUEST['value']);
 		unset($_REQUEST['save']);
 		unset($_REQUEST['name']);
 		unset($_REQUEST['value']);

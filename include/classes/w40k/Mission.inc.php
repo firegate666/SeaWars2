@@ -1,6 +1,6 @@
 <?php
 
-Setting::set('mission_defaultpagelimit', '', 'Mission Default Pagelimit', false);
+Setting::write('mission_defaultpagelimit', '', 'Mission Default Pagelimit', false);
 
 class Mission extends W40K {
 
@@ -64,7 +64,7 @@ class Mission extends W40K {
 		$orderby = "name";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
-		$limit = Setting::get('mission_defaultpagelimit');
+		$limit = Setting::read('mission_defaultpagelimit');
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);
 			$limitstart = mysql_escape_string($vars['limitstart']);

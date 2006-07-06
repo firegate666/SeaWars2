@@ -347,7 +347,7 @@ class TTEntry extends AbstractClass {
 		$population = 100;
 		$start = Date::now();
 		$duration = $this->get('aufwand') / $population;
-		$end = strftime(Setting::get('timestampformat', ''), strtotime($start)+$duration);
+		$end = strftime(Setting::read('timestampformat', ''), strtotime($start)+$duration);
 		$ttex = new TTExplored();
 		$ttex->set('spieler_id', SeaWars::player());
 		$ttex->set('techtree_entry_id', $this->id); 

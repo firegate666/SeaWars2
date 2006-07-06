@@ -1,6 +1,6 @@
 <?php
 
-	Setting::set('timestampformat', '%Y-%m-%d %H:%M:%S', 'Timestamp Format', false);
+	Setting::write('timestampformat', '%Y-%m-%d %H:%M:%S', 'Timestamp Format', false);
 
 
 class Date {
@@ -13,7 +13,7 @@ class Date {
 	*/
 	public function now($formatstring = '') {
 		if(empty($formatstring)) {
-			$formatstring = Setting::get("timestampformat");
+			$formatstring = Setting::read("timestampformat");
 		}
 		return strftime("$formatstring", time());
 	}

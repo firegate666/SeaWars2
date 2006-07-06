@@ -1,6 +1,6 @@
 <?php
 
-Setting::set('battle_defaultpagelimit', '', 'Battle Default Pagelimit', false);
+Setting::write('battle_defaultpagelimit', '', 'Battle Default Pagelimit', false);
 
 class Battle extends W40K {
 
@@ -106,7 +106,7 @@ class Battle extends W40K {
 		$orderby = "realdate";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
-		$limit = Setting::get('battle_defaultpagelimit');
+		$limit = Setting::read('battle_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);

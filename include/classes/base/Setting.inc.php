@@ -20,7 +20,7 @@ class Setting extends AbstractClass {
 	* @param	boolean	$override	if true, overwrite if setting already exists
 	* @return	false, if $override = false and setting existed, else true
 	*/		
-	function set($name, $value, $description = '', $override = true) {
+	function write($name, $value, $description = '', $override = true) {
 		global $mysql;
 		$name = mysql_escape_string($name);
 		$value = mysql_escape_string($value);
@@ -44,7 +44,7 @@ class Setting extends AbstractClass {
 	* @param	String	$default	default if not set
 	* @return	String	value of setting
 	*/
-	function get($name, $default='', $description='') {
+	function read($name, $default='', $description='') {
 		if(isset($_SESSION['setting'][$name]))
 			return $_SESSION['setting'][$name];
 		global $mysql;

@@ -1,6 +1,6 @@
 <?php
 
-Setting::set('army_defaultpagelimit', '', 'Army Default Pagelimit', false);
+Setting::write('army_defaultpagelimit', '', 'Army Default Pagelimit', false);
 
 class Army extends W40K {
 
@@ -117,7 +117,7 @@ class Army extends W40K {
 		$orderby = "name";
 		if (isset($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
-		$limit = Setting::get('army_defaultpagelimit');
+		$limit = Setting::read('army_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);

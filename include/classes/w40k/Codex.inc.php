@@ -1,6 +1,6 @@
 <?php
 
-Setting::set('codex_defaultpagelimit', '', 'Codex Default Pagelimit', false);
+Setting::write('codex_defaultpagelimit', '', 'Codex Default Pagelimit', false);
 
 class Codex extends W40K {
 
@@ -112,7 +112,7 @@ class Codex extends W40K {
 		if (isset($vars['orderby']) && !empty($vars['orderby']))
 			$orderby = mysql_escape_string($vars['orderby']);
 		
-		$limit = Setting::get('codex_defaultpagelimit');
+		$limit = Setting::read('codex_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
 			$limit = mysql_escape_string($vars['limit']);

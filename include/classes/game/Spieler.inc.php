@@ -1,5 +1,5 @@
 <?
-	Setting::set('ttpointsfaktor', 0.1, 'Faktor mit denen erforschte Techs in die Punktzahl eingehen', false);
+	Setting::write('ttpointsfaktor', 0.1, 'Faktor mit denen erforschte Techs in die Punktzahl eingehen', false);
 
 	$template_classes[] = 'spieler';
 
@@ -26,7 +26,7 @@ class Spieler extends AbstractNavigationClass {
 				WHERE techtree_entry_id = ttentry.id AND finished=1 AND spieler_id=".$spieler_id.";";
 		$result = $mysql->executeSql($query);
 		
-		return $result['punkte'] * Setting::get('ttpointsfaktor', 1);
+		return $result['punkte'] * Setting::read('ttpointsfaktor', 1);
 	}
 	
 	/**

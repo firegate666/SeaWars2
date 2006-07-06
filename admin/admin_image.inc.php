@@ -52,7 +52,7 @@ if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['filename'])) {
   <? if(isset($img_show)) {
   		$image = new Image();
   		$default = $_REQUEST['filter_type'];
-		$optionlist = $image->getOptionList($default, false, 'type', true, 'type', 'type');
+		$optionlist = $image->getTypeOptionList($default, false);
 ?>
      <td colspan=2 align=left valign=top>
 <form method="get">
@@ -62,8 +62,10 @@ if (isset ($_REQUEST['img_upload']) && isset($HTTP_POST_FILES['filename'])) {
 <table>
 	<tr>
 		<th align=left valign=top>Bildname</th>
+		<th align=left valign=top>Größe</th>
 		<th align=left valign=top><select name="filter_type" onChange="this.form.submit();"><option value="">Dateityp</option><?=$optionlist?></select></th>
 		<th/>
+		<th align=left valign=top>URL</th>
 	</tr>
 <?
 $where[] = 'parentid=0';
@@ -73,9 +75,11 @@ $array = Image::getImageList($where);
 foreach ($array as $item) {
 ?>
 <tr>
-	<td><a href="<?=$item[2]?>" target="_blank"><?=$item[1]?></a></td>
-	<td><?=$item[3]?></td>
-    <td><a href="javascript:dialog_confirm('Wirklich löschen?', 'index.php?admin&image&img_show&img_delete&id=<?=$item[0]?>');"><img src="img/delete.gif" border="0"/></a></td>
+	<td><a href="<?=$item['url']?>" target="_blank"><?=$item['name']?></a></td>
+	<td><?=$item['size']?></td>
+	<td><?=$item['type']?></td>
+    <td><a href="javascript:dialog_confirm('Wirklich löschen?', 'index.php?admin&image&img_show&img_delete&id=<?=$item['id']?>');"><img src="img/delete.gif" border="0"/></a></td>
+	<td><?=$item['url']?></td>
 </tr>
 <? 
 }

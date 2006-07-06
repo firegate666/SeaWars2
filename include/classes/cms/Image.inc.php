@@ -10,6 +10,25 @@ class Image extends AbstractClass {
 		return false;
 	}
 
+	public function getTypeOptionList($default = 0, $cannull = false){
+		global $mysql;
+		$list = $mysql->select("SELECT DISTINCT type FROM image ORDER BY type ASC;", true);//$this->getlist('', $asc, $orderby);
+		$options = "";
+		if ($cannull)
+			$options = "<option></option>";
+		foreach($list as $item) {
+			$selected = "";
+			if (is_array($default)) {
+				if (in_array($item['type'], $default))
+					$selected = "SELECTED='SELECTED'";
+			} else 
+				if ($item['type'] == $default)
+					$selected = "SELECTED='SELECTED'";
+			$options .= "<option $selected value='".$item['type']."'>".$item['type']."</option>";
+		}
+		return $options;
+	}
+
    	public function getFields() {
 		$fields[] = array('name' => 'parent',
                           'type' => 'string',
@@ -86,8 +105,8 @@ class Image extends AbstractClass {
 		global $mysql;
 		if (is_array($where))
 			$where = " WHERE ".implode(' AND ', $where);
-		$query = "SELECT id, name, url, type FROM image $where;";
-		$array = $mysql->select($query);
+		$query = "SELECT * FROM image $where;";
+		$array = $mysql->select($query, true);
 		return $array;
 	}
 

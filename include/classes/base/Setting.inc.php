@@ -10,7 +10,8 @@ class Setting extends AbstractClass {
 		global $mysql;
 		$result = $mysql->executeSql("SELECT id FROM setting WHERE name='".mysql_escape_string($name)."';");
 		$this->id = $result['id'];
-		$this->load();
+		if (!empty($this->id))
+			$this->load();
 	}
 
 	/**

@@ -412,7 +412,11 @@ abstract class AbstractClass {
 		return $mysql->select($query, true);			
 	}
 	
-	
+	/**
+	 * @param String $where needle
+	 * @param String $sfield searchfield
+	 * @param String $fields return fields
+	 */
 	public function search($where, $sfield='id', $fields='id') {
 		global $mysql;
 		if ($where == null)

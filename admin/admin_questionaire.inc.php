@@ -102,7 +102,8 @@ if (!isset($_REQUEST['id'])) {
 					<img src="img/delete.gif" border="0" title="Löschen"/>
 				</a>
 				
-				<a href="?questionaire/csv/<?=$q->get('id');?>"><img src="img/export.png" border="0" title="CSV Export"/></a>
+				<a href="?questionaire/csv/<?=$q->get('id');?>"><img src="img/export.png" border="0" title="CSV Export Antworten"/></a>
+				<a href="?questionaire/csv_emails/<?=$q->get('id');?>"><img src="img/users.png" border="0" title="CSV Export Benutzer"/></a>
 			</td>
 		</tr>
 		<?	

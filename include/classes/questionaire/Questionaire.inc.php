@@ -43,6 +43,16 @@ class Questionaire extends AbstractClass {
 		return $result[0]['anzahl'];
 	}
 
+	public function getUsers() {
+ 		global $mysql;
+ 		$query = "SELECT DISTINCT qu.email
+		FROM question q, questionaireanswers qas, questionanswer qa, questionaireuser qu
+		WHERE qas.quserid = qu.id AND qas.questionanswerid = qa.id AND qa.questionid = q.id AND q.questionaireid = ".$this->get('id')."
+		ORDER  BY qas.quserid, q.id;";
+		$result = $mysql->select($query, true);
+		return $result;
+	}
+
 	/**
 	 * get all given answers as assoc array
 	 */
@@ -69,7 +79,7 @@ class Questionaire extends AbstractClass {
 		$content = "";
 		foreach($result as $row) {
 			foreach($row as $cell) {
-				$content .= "$cell;\t";
+				$content .= "$cell;";
 			}
 			$content .= "\n";
 		}
@@ -78,11 +88,25 @@ class Questionaire extends AbstractClass {
 		print $content;
 	}
 
+	public function csv_emails($vars) {
+		$result = $this->getUsers();
+		$content = "";
+		foreach($result as $row) {
+			foreach($row as $cell) {
+				$content .= "$cell;";
+			}
+			$content .= "\n";
+		}
+		@header("Content-type: text/comma-separated-values;");
+		@header("Content-disposition: attachment; filename=export_"."questionaireusers"."_".time().".csv");
+		print $content;
+	}
+
 	public function acl($method) {
 		if (!$this->exists())
 			return false;
-		if ($method == 'csv')
-			return true;		
+		if (($method == 'csv') || ($method == 'csv_emails'))
+			return ($this->hasright('admin') || $this->hasright('questionaireadmin'));		
 		if (($this->get('published') == 1) && ($this->get('closed') == 0)) {
 			if ($method == 'show')
 				return true;

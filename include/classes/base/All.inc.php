@@ -11,6 +11,8 @@
 
 	require_once $d.'Template.inc.php';
 	require_once $d.'Error.inc.php';
+
+	require_once $d.'Message.inc.php';
 	require_once $d.'User.inc.php';
 	require_once $d.'Usergroup.inc.php';
 ?>

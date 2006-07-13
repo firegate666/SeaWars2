@@ -36,7 +36,8 @@ abstract class AbstractClass {
 					}
 				} else {
 					$obj = new $field['join']();
-					$return .= $obj->getOptionList($this->get($field['name']), true);
+					$cannull = !(isset($field['notnull']) && ($field['notnull'] === true));
+					$return .= $obj->getOptionList($this->get($field['name']), $cannull);
 				}
 				$return .= "</select>\n";
 				break;
@@ -437,8 +438,20 @@ abstract class AbstractClass {
 		error($msg, get_class($this), $action);
 	}
 
-	public function getOptionList($default = 0, $cannull = false, $field = 'name', $asc= true, $orderby='id', $value = 'id') {
-		$list = $this->getlist('', $asc, $orderby);
+	protected function preloaddata($vars) {
+		$fields = $this->getFields();
+		if (!$fields)
+			return;
+			
+		foreach($fields as $field) {
+			if (isset($vars[$field['name']]))
+				$this->set($field['name'], $vars[$field['name']]);
+		}
+	}
+
+	public function getOptionList($default = 0, $cannull = false, $field = 'name', $asc= true,
+			$orderby='id', $value = 'id', $where = array()) {
+		$list = $this->getlist('', $asc, $orderby, array('id'), '', '', $where);
 		$options = "";
 		if ($cannull)
 			$options = "<option></option>";
@@ -447,10 +460,10 @@ abstract class AbstractClass {
 			$selected = "";
 			if (is_array($default)) {
 				if (in_array($obj->get($value), $default))
-					$selected = "SELECTED='SELECTED'";
+					$selected = "selected='selected'";
 			} else 
 				if ($obj->get($value) == $default)
-					$selected = "SELECTED='SELECTED'";
+					$selected = "selected='selected'";
 			$options .= "<option $selected value='".$obj->get($value)."'>".$obj->get($field)."</option>";
 		}
 		return $options;

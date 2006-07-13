@@ -51,7 +51,7 @@ if (get_config('usedefaults', true)) {
 	if (empty ($id))
 		$id = get_config("default_id");
 }
-
+//$user = new User();//$list = $user->getlist();//foreach($list as $entry) {//	$u = new User($entry['id']);//	$u->set('password', myencrypt($u->get('password')));//	$u->store();//}//die;
 /**
 * Class and method invoking
 */
@@ -65,8 +65,7 @@ if (class_exists($class)) { // is there a class with that name?
 			/* count statistic */
 			$ps = new PageStatistic();
 			$ps->set('template', $id);
-			$ps->store();
-			// output			
+			$ps->store();			// output			
 			print $result;
 		} else
 			if (is_string($result)) { // results a string?

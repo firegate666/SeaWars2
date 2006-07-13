@@ -33,20 +33,24 @@ if(isset($_REQUEST['store']) && isset($_REQUEST['userright'])) {
 }
 ?>
 <?
-if (!isset($_REQUEST['usergroup'])) {
+if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 	$ug = new Usergroup();
 ?>
 	<h3>User</h3>
-	<div><form method="post">
-			<input type="hidden" name="admin"/>
-			<input type="hidden" name="user"/>
-			<select name="usergroupid" onChange="this.form.submit()">
-				<option value="">- Gruppenfilter aus -</option>
-				<?=$ug->getOptionList($_REQUEST['usergroupid'], false, 'name', true, 'name')?>
-			</select>
-		</form>
-	</div>
-	<div><a href="?admin&user&userid">Neuen User anlegen</a></div>
+	<form method="post">
+		<input type="hidden" name="admin"/>
+		<input type="hidden" name="user"/>
+		<select name="usergroupid" onChange="this.form.submit()">
+			<option value="">- Gruppenfilter aus -</option>
+			<?=$ug->getOptionList($_REQUEST['usergroupid'], false, 'name', true, 'name')?>
+		</select>
+	</form>
+
+	<form method="get" action="index.php">
+		<input type="hidden" name="admin"/>
+		<input type="hidden" name="user"/>
+		<input type="submit" name="userid" value="Neuen User anlegen"/>
+	</form>
 	
 	<table width="100%">
 		<tr>
@@ -79,7 +83,8 @@ if (!isset($_REQUEST['usergroup'])) {
 	?>
 	</table>
 <?}
-if (!isset($_REQUEST['userid'])) {?>
+if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
+?>
 	<h3>Groups</h3>
 	<table>
 		<tr>
@@ -97,7 +102,7 @@ if (!isset($_REQUEST['userid'])) {?>
 	if (isset($_REQUEST['usergroup'])) {
 		global $__userrights;
 		$ug = new Usergroup($_REQUEST['id']); ?>
-		<h3>Edit Group <?=$ug->get('name')?></h3>
+		<a name="edit"></a><h3>Edit Group <?=$ug->get('name')?></h3>
 		<form action="index.php" method="post">
 			<input type="hidden" name="admin"/>
 			<input type="hidden" name="user"/>
@@ -130,7 +135,7 @@ if (isset($_REQUEST['userid'])) {
 	$u = new User($_REQUEST['userid']);
 	$ug = new Usergroup($u->get('groupid'));
 ?>
-	<h3>Edit User <?=$u->get('login')?></h3>
+	<a name="edit"></a><h3>Edit User <?=$u->get('login')?></h3>
 	<form action="index.php" method="POST">
 		<input type="hidden" name="admin"/>
 		<input type="hidden" name="user"/>

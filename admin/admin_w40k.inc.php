@@ -20,10 +20,11 @@ if (isset($_REQUEST['store'])) {
 		<th><a href="?admin&w40k&type=Codex">Codices</a></th>
 		<th><a href="?admin&w40k&type=Mission">Missionen</a></th>
 		<th><a href="?admin&w40k&type=BattleType">BattleType</a></th>
+		<th><a href="?admin&w40k&type=GameSystem">Spielsystem</a></th>
 	</tr>
 <? if (isset($_REQUEST['type'])) { ?>
 <tr>
-	<td colspan="3">
+	<td colspan="4">
 		<ul><b>Liste</b>
 		<? $t = new $_REQUEST['type']();
 		   $list = $t->getlist('', true, 'name', array('id', 'name'));

@@ -11,6 +11,9 @@ class Battle extends W40K {
 		$fields[] = array('name' => 'points',
                           'type' => 'integer',
                           'notnull' => false);
+		$fields[] = array('name' => 'gamesystem',
+                          'type' => 'integer',
+                          'notnull' => true);
 		$fields[] = array('name' => 'name',
                           'type' => 'string',
                           'size' => 100,
@@ -301,7 +304,7 @@ class Battle extends W40K {
 
 	function edit(&$vars) {
 		$array = array();
-		if (isset($vars['submit'])) {
+		if (isset($vars['submitted'])) {
 			$err = $this->parsefields($vars);
 			if (!empty($err))
 				$array['error'] = implode (", ", $err);
@@ -310,28 +313,45 @@ class Battle extends W40K {
 				$array['error'] = "Object saved";
 			}
 		}
-		$mission = new Mission();
-		$array['missionlist'] = $mission->getOptionList($this->data['mission'], false, 'name', true, 'name');
+
+		$this->preloaddata($vars);
+
 		$bt = new BattleType();
 		if ($this->hasright('w40kuser_extern'))
 			$array['battletypelist'] = "<option value='0'></option>";
 		else 
 			$array['battletypelist'] = $bt->getOptionList($this->data['battletypeid'], true, 'name', true, 'name');
-		$army = new Army();
-		$array['armylist1'] = $army->getOptionList($this->data['player1'], false, 'name', true, 'name');
-		$array['armylist2'] = $army->getOptionList($this->data['player2'], false, 'name', true, 'name');
+		$gamesystem = new GameSystem();
+		$array['gamesystemlist'] = $gamesystem->getOptionList($this->data['gamesystem'], true, 'name', true, 'name');
+		$where = array();
+		$array['armylist1'] = "";
+		$array['armylist2'] = "";
+		$array['mbarmylist1'] = "";
+		$array['mbarmylist2'] = "";
+		$array['missionlist'] = "";
+		if (!empty($this->data['gamesystem'])) {
+			$where[] = array('key'=>'gamesystem', 'value'=>$this->data['gamesystem']);
+			$army = new Army();
+			$array['armylist1'] = $army->getOptionList($this->data['player1'], false, 'name', true, 'name', 'id', $where);
+			$array['armylist2'] = $army->getOptionList($this->data['player2'], false, 'name', true, 'name', 'id', $where);
+	
+			$array['mbarmylist1'] = $army->getOptionList($this->mbarmies1, false, 'name', true, 'name', 'id', $where);
+			$array['mbarmylist2'] = $army->getOptionList($this->mbarmies2, false, 'name', true, 'name', 'id', $where);
+
+			$mission = new Mission();
+			$array['missionlist'] = $mission->getOptionList($this->data['mission'], false, 'name', true, 'name', 'id', $where);
+		}
+
+		switch($this->get('multibattle')) {
+			case 0: $array['multibattleno']="CHECKED='CHECKED'"; break;
+			default: $array['multibattleyes']="CHECKED='CHECKED'"; break;
+		}
+
 		switch($this->get('winner')) {
 			case 0: $array['deuce']="CHECKED='CHECKED'"; break;
 			case 1: $array['win1']="CHECKED='CHECKED'"; break;
 			case 2: $array['win2']="CHECKED='CHECKED'"; break;
 			default: $array['deuce']="CHECKED='CHECKED'"; break;
-		}
-
-		$array['mbarmylist1'] = $army->getOptionList($this->mbarmies1, false, 'name', true, 'name');
-		$array['mbarmylist2'] = $army->getOptionList($this->mbarmies2, false, 'name', true, 'name');
-		switch($this->get('multibattle')) {
-			case 0: $array['multibattleno']="CHECKED='CHECKED'"; break;
-			default: $array['multibattleyes']="CHECKED='CHECKED'"; break;
 		}
 		$image = new Image();
 		$ilist = $image->getlist('', true, 'prio', array('*'));

@@ -14,6 +14,12 @@ class Codex extends W40K {
                           'notnull' => true,
                           'htmltype' => 'input',
                           'desc'=>'Name');
+		$fields[] = array('name' => 'gamesystem',
+                          'type' => 'integer',
+                          'notnull' => true,
+                          'htmltype' => 'select',
+                          'desc'=>'Spielsystem',
+                          'join' => 'gamesystem');
 		$fields[] = array('name' => 'groupname',
                           'type' => 'string',
                           'size' => 10,
@@ -118,9 +124,14 @@ class Codex extends W40K {
 			$limit = mysql_escape_string($vars['limit']);
 			$limitstart = mysql_escape_string($vars['limitstart']);
 		}
+
+		$where = array();
+		if (isset($vars['gamesystem']) && ($vars['gamesystem'] != ''))
+			$where[] = array('key'=>'gamesystem', 'value'=>$vars['gamesystem']);
+
 		$list = $this->getlist('', true, $orderby,
 				array('*',
-				), $limitstart, $limit);
+				), $limitstart, $limit, $where);
 		$array['orderby'] = $orderby;
 		$array['prevlimit'] = '';
 		$array['nextlimit'] = '';
@@ -137,6 +148,11 @@ class Codex extends W40K {
 			$array['limitstart'] = $limitstart;
 		}
 		$rows = '';
+
+		$gs = new GameSystem($vars['gamesystem']);
+		$array['gamesystemoptionlist'] = $gs->getOptionList($vars['gamesystem']); 
+		$array['gamesystem'] = $vars['gamesystem'];
+		
 		foreach($list as $entry) {
 			if (strlen($entry['comment']) > 50)
 				$entry['comment'] = substr(strip_tags($entry['comment']), 0, 50)." [...]";

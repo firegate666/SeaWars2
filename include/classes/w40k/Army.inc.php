@@ -32,7 +32,7 @@ class Army extends W40K {
 
 	function edit(&$vars) {
 		$array = array();
-		if (isset($vars['submit'])) {
+		if (isset($vars['submitted'])) {
 			$err = $this->parsefields($vars);
 			if (!empty($err))
 				$array['error'] = implode (", ", $err);
@@ -41,8 +41,17 @@ class Army extends W40K {
 				$array['error'] = "Object saved";
 			}
 		}
-		$codex = new Codex();
-		$array['codexlist'] = $codex->getOptionList($this->data['codex'], false, 'name', true, 'name');
+		$this->preloaddata($vars);
+		
+		$gamesystem = new GameSystem();
+		$array['gamesystemlist'] = $gamesystem->getOptionList($this->data['gamesystem'], true, 'name', true, 'name');
+		$where = array();
+		$array['codexlist'] = '';
+		if (!empty($this->data['gamesystem'])) {
+			$where[] = array('key'=>'gamesystem', 'value'=>$this->data['gamesystem']);
+			$codex = new Codex();
+			$array['codexlist'] = $codex->getOptionList($this->data['codex'], false, 'name', true, 'name', 'id', $where);
+		}
 		$image = new Image();
 		$ilist = $image->getlist('', true, 'name', array('*'));
 		$array['imagelist'] = "";
@@ -123,6 +132,10 @@ class Army extends W40K {
 			$limit = mysql_escape_string($vars['limit']);
 			$limitstart = mysql_escape_string($vars['limitstart']);
 		}
+		$where = array();
+		if (isset($vars['gamesystem']) && ($vars['gamesystem'] != ''))
+			$where[] = array('key'=>'gamesystem', 'value'=>$vars['gamesystem']);
+		
 		$list = $this->getlist('', true, $orderby,
 				array('id',
 					'name',
@@ -130,7 +143,7 @@ class Army extends W40K {
 					'codex',
 					'userid',
 					'comment',
-				), $limitstart, $limit);
+				), $limitstart, $limit, $where);
 		$array['orderby'] = $orderby;
 		$array['prevlimit'] = '';
 		$array['nextlimit'] = '';
@@ -147,6 +160,11 @@ class Army extends W40K {
 			$array['limitstart'] = $limitstart;
 		}
 		$rows = '';
+
+		$gs = new GameSystem($vars['gamesystem']);
+		$array['gamesystemoptionlist'] = $gs->getOptionList($vars['gamesystem']); 
+		$array['gamesystem'] = $vars['gamesystem'];
+		
 		foreach($list as $entry) {
 			$codex = new Codex($entry['codex']);
 			$entry['codexname'] = $codex->get('name');
@@ -167,6 +185,9 @@ class Army extends W40K {
 	 */
 	public function getFields() {
 		$fields[] = array('name' => 'userid',
+                          'type' => 'integer',
+                          'notnull' => true);
+		$fields[] = array('name' => 'gamesystem',
                           'type' => 'integer',
                           'notnull' => true);
 		$fields[] = array('name' => 'points',

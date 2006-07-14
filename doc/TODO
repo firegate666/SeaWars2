@@ -1,6 +1,12 @@
 ########
 # TODO #
 ########
+* Speichern als Kopie im Backend anlegen
+
+* BBCode einbinden
+
+* Zeilenumbrüche umwandeln \n => <br/>
+
 * Klasse File einführen für abstrakten Zugriff auf alle Uploads
 * entsprechende Klassen, die davon erben (z.B. Image für ausgewählten Zugriff
 

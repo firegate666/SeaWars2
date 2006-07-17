@@ -67,7 +67,7 @@ class Battle extends W40K {
                           'notnull' => false);
 		$fields[] = array('name' => 'multibattle',
                           'type' => 'integer',
-                          'notnull' => true);
+                          'notnull' => false);
 		$fields[] = array('name' => 'realdate',
                           'type' => 'date',
                           'notnull' => true);
@@ -276,26 +276,31 @@ class Battle extends W40K {
 
 		// store multibattle
 		if (($return === false) && ($vars['multibattle'] == 1)) {
-			$mb = new MultiBattle();
-			$mb->store();
-			$this->set('multibattle', $mb->get('id'));
 			
-			$this->mbarmies1 = $vars['multibattle1'];
-			foreach($vars['multibattle1'] as $army1) {
-				$mba = new MultiBattleArmy();
-				$mba->set('army_id', $army1);
-				$mba->set('player', 1);
-				$mba->set('multibattle', $mb->get('id'));
-				$mba->store();
-			}
-
-			$this->mbarmies2 = $vars['multibattle2'];
-			foreach($vars['multibattle2'] as $army2) {
-				$mba = new MultiBattleArmy();
-				$mba->set('army_id', $army2);
-				$mba->set('player', 2);
-				$mba->set('multibattle', $mb->get('id'));
-				$mba->store();
+			if (!is_array($vars['multibattle1']) || !is_array($vars['multibattle2']))
+				$return[] = "No armies for multibattle selected";
+			else {
+				$mb = new MultiBattle();
+				$mb->store();
+				$this->set('multibattle', $mb->get('id'));
+				
+				$this->mbarmies1 = $vars['multibattle1'];
+				foreach($vars['multibattle1'] as $army1) {
+					$mba = new MultiBattleArmy();
+					$mba->set('army_id', $army1);
+					$mba->set('player', 1);
+					$mba->set('multibattle', $mb->get('id'));
+					$mba->store();
+				}
+	
+				$this->mbarmies2 = $vars['multibattle2'];
+				foreach($vars['multibattle2'] as $army2) {
+					$mba = new MultiBattleArmy();
+					$mba->set('army_id', $army2);
+					$mba->set('player', 2);
+					$mba->set('multibattle', $mb->get('id'));
+					$mba->store();
+				}
 			}
 		}
 		

@@ -17,7 +17,7 @@ class Error extends AbstractClass {
 	 * @param	String	$class	who throws the error
 	 * @param	String	$method	when?
 	 */
-	function Error($msg, $class, $method){
+	function Error($msg, $class='', $method=''){
 		$this->msg = $msg;
 		$this->class = $class;
 		$this->method = $method;

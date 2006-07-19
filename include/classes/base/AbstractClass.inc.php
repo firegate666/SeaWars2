@@ -351,7 +351,7 @@ abstract class AbstractClass {
 					if (count($darray) != 3)
 						$err[] = "Unknown date format: $value";
 					else {
-						if (checkdate($darray[1], $darray[2], $darray[0] ) === false)
+						if (@checkdate($darray[1], $darray[2], $darray[0] ) === false)
 							$err[] = "illegal date: $value";
 					}
 					

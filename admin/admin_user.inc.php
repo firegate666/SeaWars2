@@ -59,6 +59,7 @@ if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 			<th align="left" width="5%">Group</th>
 			<th align="left" width="20%">seit</th>
 			<th align="left" width="20%">leztes Login</th>
+			<th>&nbsp;</th>
 		</tr>
 	<?
 		$u = new User();
@@ -86,15 +87,23 @@ if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 ?>
 	<h3>Groups</h3>
-	<table>
+	<form method="get" action="index.php">
+		<input type="hidden" name="admin"/>
+		<input type="hidden" name="user"/>
+		<input type="hidden" name="id" value="0"/>
+		<input type="submit" name="usergroup" value="Neue Gruppe anlegen"/>
+	</form>
+	<table width="100%">
 		<tr>
-			<th>Name (<a href="?admin&user&usergroup&id=0">Neue Gruppe anlegen</a>)</th>
+			<th align="left" width="100%">Gruppennam</th>
+			<th></th>
 		</tr>
 	<?
 		$u = new Usergroup();
 		foreach($u->getlist('', true, 'name', array('*')) as $ug) { ?>
 			<tr>
-				<td><?=$ug['name']?> (<a href="?admin&user&usergroup&id=<?=$ug['id']?>"><img src="img/edit.gif" border="0"/></a>)</td>
+				<td><?=$ug['name']?></td>
+				<td><a href="?admin&user&usergroup&id=<?=$ug['id']?>"><img src="img/edit.gif" border="0"/></a></td>
 			</tr>
 		<? } ?>
 	</table>
@@ -102,7 +111,7 @@ if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 	if (isset($_REQUEST['usergroup'])) {
 		global $__userrights;
 		$ug = new Usergroup($_REQUEST['id']); ?>
-		<a name="edit"></a><h3>Edit Group <?=$ug->get('name')?></h3>
+		<a name="edit"></a><h3>Edit Group: <?=$ug->get('name')?></h3>
 		<form action="index.php" method="post">
 			<input type="hidden" name="admin"/>
 			<input type="hidden" name="user"/>
@@ -110,7 +119,7 @@ if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 			<input type="hidden" name="id" value="<?=$ug->get('id')?>"/>
 			<table>
 				<tr>
-					<th>Name</th>
+					<td>Name</td>
 					<td><input type="text" name="name" value="<?=$ug->get('name')?>"/>
 				</tr>
 				</tr>
@@ -135,7 +144,7 @@ if (isset($_REQUEST['userid'])) {
 	$u = new User($_REQUEST['userid']);
 	$ug = new Usergroup($u->get('groupid'));
 ?>
-	<a name="edit"></a><h3>Edit User <?=$u->get('login')?></h3>
+	<a name="edit"></a><h3>Edit User: <?=$u->get('login')?></h3>
 	<form action="index.php" method="POST">
 		<input type="hidden" name="admin"/>
 		<input type="hidden" name="user"/>

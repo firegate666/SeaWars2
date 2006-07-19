@@ -4,10 +4,6 @@
 		header("Location: index.php");
 	}
 
-//	if(isset($login_name) && isset($login_pass)) {
-//		if(!login($login_name, $login_pass)) $error = "Wrong username or password";
-//		else header("Location: index.php?admin");
-//	}
 	$adminlogin = User::loggedIn();
 
 	if(empty($adminlogin)) {
@@ -37,7 +33,7 @@
     </td>
   </tr>
   <tr>
-    <td align="left" valign="top" width="100">
+    <td align="left" valign="top" width="50px">
       <a href="index.php?admin">Startseite</a>
       <br><a href="index.php?admin&template">Templates</a>
       <? if(get_config("cms", false)) { ?>
@@ -50,13 +46,15 @@
       	<br><a href="index.php?admin&questionaire">Questionaire</a>
       <? } ?>
       <? if(get_config("w40k", false)) { ?>
-      	<br><br><a href="index.php?admin&w40k">W40K</a>
+      	<br><br><a href="index.php?admin&w40k">Games-DB</a>
       	<? if (isset($_REQUEST['w40k'])) { ?>
-      		<br>=&gt; Codices
-      		<br>=&gt; Missionen
-      		<br>=&gt; BattleTypes
+      		<br>=&gt; <a href="?admin&w40k&type=Codex">Codices</a>
+      		<br>=&gt; <a href="?admin&w40k&type=Mission">Missionen</a>
+      		<br>=&gt; <a href="?admin&w40k&type=BattleType">BattleTypes</a>
+      		<br>=&gt; <a href="?admin&w40k&type=GameSystem">GameSystem</a>
       <? }} ?>
       </br></br><a href="index.php?admin&user">User</a>
+      </br><a href="index.php?admin&usergroup">Usergroup</a>
       </br><a href="index.php?admin&settings">Settings</a>
       </br><a href="index.php?admin&config">Configuration</a>
       </br><a href="index.php?user/logout//ref=index.php">Logout</a>
@@ -81,8 +79,10 @@
 			include ('admin/admin_questionaire.inc.php');
 		} else if (isset ($_REQUEST['user'])) {
 			include ('admin/admin_user.inc.php');
-		} else if (isset ($_REQUEST['w40k'])) {
-			include ('admin/admin_w40k.inc.php');
+		} else if (isset ($_REQUEST['usergroup'])) {
+			include ('admin/admin_usergroup.inc.php');
+		} else if (isset ($_REQUEST['w40k']) && isset($_REQUEST['type'])) {
+			include ('admin/admin_w40k_'.$_REQUEST['type'].'.inc.php');
 		} else {
 	    	$admin = new Admin('index');
 	    	$vars = array();

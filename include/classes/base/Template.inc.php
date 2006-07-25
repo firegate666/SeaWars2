@@ -163,7 +163,7 @@ class Template extends AbstractClass {
 			return $string;
 		$keys = array_keys($array);
 		foreach ($keys as $key) {
-			$string = str_replace('${'.$key.'}', $array[$key], $string);
+			$string = stripcslashes(str_replace('${'.$key.'}', $array[$key], $string));
 		}
 		$this->parseTags($string);
 		foreach ($this->tags as $key => $item) {

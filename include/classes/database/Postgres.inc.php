@@ -4,7 +4,7 @@
  * in fact, this isn't yet a wrapper, much improved has
  * to be done
  */
-class MySQL extends SQL {
+class Postgres extends SQL {
 
 	/**
 	* Connects to MySQL Database using global parameters
@@ -22,12 +22,11 @@ class MySQL extends SQL {
 		global $dbdatabase;
 		$this->querycount++;
 		
-		if(($this->dblink != null) && mysql_ping($this->dblink)) // connection still exists?
+		if(($this->dblink != null) && pg_ping($this->dblink)) // connection still exists?
 			return;
 		else {
-	  		$flags = MYSQL_CLIENT_COMPRESS + MYSQL_CLIENT_INTERACTIVE;
-	  		$this->dblink = MYSQL_CONNECT($dbserver, $dbuser, $dbpassword, false, $flags) or die("<H3>MySQL error: Databaseserver not responding.</H3>");
-	  		MYSQL_SELECT_DB($dbdatabase) or die("<H3>MySQL error: Database not available.</H3>");
+			$connectionstring = "host=$dbserver dbname=$dbdatabase user=$dbuser password=$dbpassword";
+	  		$this->dblink = pg_connect($connectionstring) or $this->print_error("connect", "");
 		}
 	}
 
@@ -37,7 +36,7 @@ class MySQL extends SQL {
 	*/
 	function disconnect() {
 		if($this->dblink != null)
-			MYSQL_CLOSE($this->dblink);
+			pg_close($this->dblink);
 	}
 
 	/**
@@ -45,11 +44,16 @@ class MySQL extends SQL {
 	* @param	String	$query	sql query
 	* @return	int	last insert id
 	*/
-	function insert($query) {
+	function insert($query, $seq=null) {
 		$this->connect();
 		$this->queries[] = $query;			
-		$result = MYSQL_QUERY($query) or $this->print_error("insert", $query);
-		$id = MYSQL_INSERT_ID();
+		$result = pg_query($this->dblink, $query) or $this->print_error("insert", $query);
+		$id = 0;
+		if ($seq != null) {
+			$query = "SELECT nextval('$seq') as id";
+			$result = $this->executeSql($query);
+			$id = $result['id'];
+		}
 		return $id;
 	}
 
@@ -62,14 +66,14 @@ class MySQL extends SQL {
 	function select($query, $assoc = false) {
 		$this->connect();
 		$this->queries[] = $query;			
-		$result = MYSQL_QUERY($query) or $this->print_error("select", $query);
+		$result = pg_query($this->dblink, $query) or $this->print_error("select", $query);
 		$return = array ();
 		$counter = 0;
-		if (!$assoc)
-			while ($line = MYSQL_FETCH_ARRAY($result, MYSQL_NUM))
+		if ($assoc)
+			while ($line = pg_fetch_array($result, '', PGSQL_ASSOC))
 				$return[$counter ++] = $line;
 		else
-			while ($line = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC))
+			while ($line = pg_fetch_array($result, '', PGSQL_NUM))
 				$return[$counter ++] = $line;
 		return $return;
 	}
@@ -82,8 +86,8 @@ class MySQL extends SQL {
 	function executeSql($query) {
 		$this->connect();
 		$this->queries[] = $query;			
-		$result = MYSQL_QUERY($query) or $this->print_error("executeSql", $query);
-		$result = MYSQL_FETCH_ARRAY($result, MYSQL_ASSOC);
+		$result = pg_query($this->dblink, $query) or $this->print_error("executeSql", $query);
+		$result = pg_fetch_array($result, '', PGSQL_ASSOC);
 		return $result;
 	}
 
@@ -95,14 +99,15 @@ class MySQL extends SQL {
 	function update($query) {
 		$this->connect();
 		$this->queries[] = $query;			
-		$result = MYSQL_QUERY($query) or $this->print_error("update", $query);
-		$rows = MYSQL_AFFECTED_ROWS();
+		$result = pg_query($this->dblink, $query) or $this->print_error("update", $query);
+		$rows = pg_affected_rows();
 		return $rows;
 	}
 
 	public function print_error($method, $query) {
-		$msg = mysql_error()."<br><b>Query:</b> $query";
+		$msg = pg_last_error()."<br><b>Query:</b> $query";
 		error($msg, "MySQL", $method);
 	}	
+	
 }
 ?>

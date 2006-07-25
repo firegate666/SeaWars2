@@ -28,10 +28,7 @@ abstract class SQL {
 		return $this->queries;
 	}
 
-	public function print_error($method, $query) {
-		$msg = mysql_error()."<br><b>Query:</b> $query";
-		error($msg, "MySQL", $method);
-	}
+	public abstract function print_error($method, $query);
 
 	/**
 	  Connects to Database using global parameters

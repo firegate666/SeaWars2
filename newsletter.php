@@ -5,9 +5,9 @@
  	require_once dirname(__FILE__).'/classes/All.inc.php';
 
 if(!empty($email)) {
-                  $mysql = new MySQL();
+                  global $mysql;
                   $query = "INSERT INTO newsletter(email) VALUES('$email');";
-                  $id = $mysql->insert($query);
+                  $id = $mysql->insert($query, 'newsletter_id_seq');
                   $to = 'marco@firegate.de';
                   $email = $_REQUEST['email'];
                   $subject = "Newslettereintrag";

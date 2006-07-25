@@ -55,6 +55,10 @@ abstract class AbstractClass {
 		return strtolower(get_class($this));
 	}
 	
+	public function sequence_name() {
+		return strtolower(get_class($this)).'_id_seq';
+	}
+	
 	/**
 	 * return xml document of all items
 	 */
@@ -153,7 +157,7 @@ abstract class AbstractClass {
 			return $this->id;
 		if (!isset($this->data[$key]))
 			return null; 
-		return $this->data[$key];
+		return BBCode::parse($this->data[$key]);
 	}
 
 	/**
@@ -225,7 +229,6 @@ abstract class AbstractClass {
      */
     function store() {
 		global $mysql;
-
 		// set timestamps
 		$datenow = Date::now();
 		if($this->id=='')
@@ -242,7 +245,7 @@ abstract class AbstractClass {
 		$tablename = $this->class_name();
 		if($this->id=='') {
 			$query = "INSERT INTO $tablename (".implode(",",$keys).") VALUES (".implode(",",$values).");";
-			$this->id = $mysql->insert($query);
+			$this->id = $mysql->insert($query, $this->sequence_name());
 		} else {
 			$query  = "UPDATE $tablename SET";
 			$query .= " ".$keys[0]."=".$values[0];
@@ -319,14 +322,14 @@ abstract class AbstractClass {
 	 * @return	String	output
 	 */
 	function show(&$vars, $layout = 'page', $array = array()) {
-		if (!empty($array)) {
+//		if (!empty($array)) {
 			foreach($this->data as $key=>$value) {
 				if (!isset($array[$key]))
-					$array[$key] = $value;
+					$array[$key] = $this->get($key);
 			}
-		}
-		else
-			$array = $this->data;
+//		}
+//		else
+//			$array = $this->data;
 		if (!isset($array['id']))
 			$array['id'] = $this->id;
 		return $this->getLayout($array, $layout, $vars);

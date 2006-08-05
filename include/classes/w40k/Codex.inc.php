@@ -116,14 +116,15 @@ class Codex extends W40K {
 	function showlist(&$vars) {
 		$orderby = "name";
 		if (isset($vars['orderby']) && !empty($vars['orderby']))
-			$orderby = mysql_escape_string($vars['orderby']);
+			$orderby = $this->escape($vars['orderby']);
 		
 		$limit = Setting::read('codex_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
-			$limit = mysql_escape_string($vars['limit']);
-			$limitstart = mysql_escape_string($vars['limitstart']);
-		}
+			$limit = $this->escape($vars['limit']);
+			$limitstart = $this->escape($vars['limitstart']);
+		} else if (isset($vars['limit']))
+			$limit = '';
 
 		$where = array();
 		if (isset($vars['gamesystem']) && ($vars['gamesystem'] != ''))

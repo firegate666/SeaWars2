@@ -108,13 +108,15 @@ class Battle extends W40K {
 	function showlist(&$vars) {
 		$orderby = "realdate";
 		if (isset($vars['orderby']))
-			$orderby = mysql_escape_string($vars['orderby']);
+			$orderby = $this->escape($vars['orderby']);
 		$limit = Setting::read('battle_defaultpagelimit');
 		$limitstart = '';
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
-			$limit = mysql_escape_string($vars['limit']);
-			$limitstart = mysql_escape_string($vars['limitstart']);
-		}
+			$limit = $this->escape($vars['limit']);
+			$limitstart = $this->escape($vars['limitstart']);
+		} else if (isset($vars['limit']))
+			$limit = '';
+			
 		$where = array();
 		if(isset($vars['battletype']) && ($vars['battletype'] != ''))
 			$where[] = array('key'=>'battletypeid', 'value'=>$vars['battletype']);
@@ -194,12 +196,12 @@ class Battle extends W40K {
 		global $mysql;
 		$PLAYER = '';
 		if ($playerid != null) {
-			$PLAYER = "AND a.id='".mysql_escape_string($playerid)."'";
+			$PLAYER = "AND a.id='".$this->escape($playerid)."'";
 		}
 
 		$BATTLETYPE = '';
 		if ($battletype != null) {
-			$BATTLETYPE = "AND battletypeid='".mysql_escape_string($battletype)."'";
+			$BATTLETYPE = "AND battletypeid='".$this->escape($battletype)."'";
 		}
 
 		$query1 = "SELECT player1, sum(vp1) as plus, sum(vp2) as minus,

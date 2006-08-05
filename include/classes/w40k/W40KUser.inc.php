@@ -49,12 +49,13 @@ class W40KUser extends W40K {
 	function showlist(&$vars) {
 		$orderby = "id";
 		if (isset($vars['orderby']))
-			$orderby = mysql_escape_string($vars['orderby']);
+			$orderby = $this->escape($vars['orderby']);
 		$limit = Setting::read('w40kuser_defaultpagelimit');
 		if (isset($vars['limit']) && !empty($vars['limit'])) {
-			$limit = mysql_escape_string($vars['limit']);
-			$limitstart = mysql_escape_string($vars['limitstart']);
-		}
+			$limit = $this->escape($vars['limit']);
+			$limitstart = $this->escape($vars['limitstart']);
+		} else if (isset($vars['limit']))
+			$limit = '';
 		$list = $this->user->getlist('', true, $orderby,
 				array('id',
 					'login',

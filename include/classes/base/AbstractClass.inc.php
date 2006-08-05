@@ -131,7 +131,7 @@ abstract class AbstractClass {
 		}
 		else if ($limit != '')
 			$limits = 'LIMIT '.$limit;
-		$query = "SELECT ".$fields." FROM ".mysql_escape_string($classname)." $where $orderdir $limits;";
+		$query = "SELECT ".$fields." FROM ".$this->escape($classname)." $where $orderdir $limits;";
 		$result = $mysql->select($query, true);
 		return $result;
 	}
@@ -192,7 +192,7 @@ abstract class AbstractClass {
 	function load() {
 		global $mysql;
         //if(!$this->exists()) return;
-    	$id 		= mysql_escape_string($this->id);
+    	$id 		= $mysql->escape($this->id);
     	$tablename 	= $this->class_name();
     	$this->data = $mysql->executeSql("SELECT * FROM ".$tablename." WHERE id=$id;");
     	$this->id	= $this->data['id'];
@@ -239,7 +239,9 @@ abstract class AbstractClass {
 		$keys   = array_keys($this->data);
 		$values = array_values($this->data);
 		for($i=0;$i<count($values);$i++) {
-			$values[$i] = "'".mysql_escape_string($values[$i])."'";
+			$nextval = $this->escape($values[$i]);
+			$nextval = "'$nextval'";
+			$values[$i] = $nextval;
 		}
 		// CREATE SQL Statement
 		$tablename = $this->class_name();
@@ -472,6 +474,9 @@ abstract class AbstractClass {
 		return $options;
 	}
 
-
+	function escape($string) {
+		global $mysql;
+		return $mysql->escape($string);
+	}
 }
 ?>

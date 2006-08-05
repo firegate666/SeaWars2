@@ -8,7 +8,7 @@ class Setting extends AbstractClass {
 		if (($name == null) || ($name == '')) 
 			return;
 		global $mysql;
-		$result = $mysql->executeSql("SELECT id FROM setting WHERE name='".mysql_escape_string($name)."';");
+		$result = $mysql->executeSql("SELECT id FROM setting WHERE name='".$mysql->escape($name)."';");
 		$this->id = $result['id'];
 		if (!empty($this->id))
 			$this->load();
@@ -23,9 +23,9 @@ class Setting extends AbstractClass {
 	*/		
 	function write($name, $value, $description = '', $override = true) {
 		global $mysql;
-		$name = mysql_escape_string($name);
-		$value = mysql_escape_string($value);
-		$description = mysql_escape_string($description);
+		$name = $mysql->escape($name);
+		$value = $mysql->escape($value);
+		$description = $mysql->escape($description);
 		$setting = new Setting($name);
 		$setting->data['name'] = $name;
 		$setting->data['description'] = $description;

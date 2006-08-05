@@ -68,8 +68,8 @@ class Template extends AbstractClass {
 	 */
 	function deleteTemplate($class, $layout) {
 		global $mysql;
-		$class = mysql_escape_string($class);
-		$layout = mysql_escape_string($layout);
+		$class = $mysql->escape($class);
+		$layout = $mysql->escape($layout);
 		$query = "DELETE FROM template WHERE class='$class' AND layout='$layout';";
 		$mysql->update($query);
 	}
@@ -82,8 +82,8 @@ class Template extends AbstractClass {
 	 */
 	function createTemplate($class, $layout) {
 		global $mysql;
-		$class = mysql_escape_string($class);
-		$layout = mysql_escape_string($layout);
+		$class = $mysql->escape($class);
+		$layout = $mysql->escape($layout);
 		$query = "INSERT INTO template(class, layout) VALUES('$class', '$layout');";
 		$mysql->insert($query);
 	}
@@ -115,7 +115,7 @@ class Template extends AbstractClass {
 	 */
 	function getLayouts($class) {
 		global $mysql;
-		$class = mysql_escape_string($class);
+		$class = $mysql->escape($class);
 		$result = $mysql->select("SELECT layout, id FROM template WHERE class='$class';");
 		return $result;
 	}
@@ -147,8 +147,8 @@ class Template extends AbstractClass {
 	 */
 	function getLayout($class, $layout, $array = array (), $noparse = false, $vars = array (), $nocache = false) {
 		global $mysql;
-		$class = mysql_escape_string($class);
-		$layout = mysql_escape_string($layout);
+		$class = $mysql->escape($class);
+		$layout = $mysql->escape($layout);
 		$string = '';
 		$array['__ref__'] = $vars['ref'];
 		if (isset ($_SESSION['template'][$class][$layout]) && !$nocache && get_config('cache_enabled', false))
@@ -167,7 +167,7 @@ class Template extends AbstractClass {
 		}
 		$this->parseTags($string);
 		foreach ($this->tags as $key => $item) {
-			$type = mysql_escape_string($item['type']);			$value= mysql_escape_string($item['value']);
+			$type = $mysql->escape($item['type']);			$value= $mysql->escape($item['value']);
 			$obj = new $type ($value);
 			$array[$key] = $obj->show($vars);
 		}

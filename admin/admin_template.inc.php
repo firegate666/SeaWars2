@@ -1,6 +1,6 @@
 <?$adminlogin = (User::hasright('admin') || User::hasright('templateadmin'));if(empty($adminlogin)) die("DENIED");
 if (isset ($tpl_content)) {
-	global $mysql;	$tpl_content = html_entity_decode($tpl_content);	$tpl_class = mysql_escape_string($tpl_class);	$tpl_layout = mysql_escape_string($tpl_layout);
+	global $mysql;	$tpl_content = html_entity_decode($tpl_content);	$tpl_class = $mysql->escape($tpl_class);	$tpl_layout = $mysql->escape($tpl_layout);
 	$tpl_query = "UPDATE template SET content='$tpl_content' WHERE class='$tpl_class' AND layout = '$tpl_layout';";
 	$mysql->update($tpl_query);
 	if (!isset($_REQUEST['submitandstay']))		unset ($tpl_layout);

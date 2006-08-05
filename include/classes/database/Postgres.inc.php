@@ -50,7 +50,7 @@ class Postgres extends SQL {
 		$result = pg_query($this->dblink, $query) or $this->print_error("insert", $query);
 		$id = 0;
 		if ($seq != null) {
-			$query = "SELECT nextval('$seq') as id";
+			$query = "SELECT currval('$seq') as id";
 			$result = $this->executeSql($query);
 			$id = $result['id'];
 		}
@@ -85,7 +85,7 @@ class Postgres extends SQL {
 	*/
 	function executeSql($query) {
 		$this->connect();
-		$this->queries[] = $query;			
+		$this->queries[] = $query;	
 		$result = pg_query($this->dblink, $query) or $this->print_error("executeSql", $query);
 		$result = pg_fetch_array($result, '', PGSQL_ASSOC);
 		return $result;
@@ -108,6 +108,10 @@ class Postgres extends SQL {
 		$msg = pg_last_error()."<br><b>Query:</b> $query";
 		error($msg, "MySQL", $method);
 	}	
+	
+	public function escape($string) {
+		return pg_escape_string($string);
+	} 
 	
 }
 ?>

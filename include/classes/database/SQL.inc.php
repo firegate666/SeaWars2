@@ -59,5 +59,7 @@ abstract class SQL {
 	  return : number of affected rows
 	*/
 	abstract function update($query);
+	
+	abstract function escape ($string);
 }
 ?>

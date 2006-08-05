@@ -104,5 +104,9 @@ class MySQL extends SQL {
 		$msg = mysql_error()."<br><b>Query:</b> $query";
 		error($msg, "MySQL", $method);
 	}	
+	
+	public function escape($string) {
+		return mysql_escape_string($string);
+	} 
 }
 ?>

@@ -1,7 +1,14 @@
 <?
 // TODO better handling in contact class
+require_once dirname(__FILE__).'/config/All.inc.php';
 
-$to = 'marco@firegate.de';
+session_save_path('cache');
+session_start();
+
+require_once dirname(__FILE__).'/include/All.inc.php';
+$s = new Session();
+
+$to = get_config('receiver', 'marco@firegate.de');
 $from = $_REQUEST['email'];
 $subject1 = $_REQUEST['subject'];
 $subject2 = $_REQUEST['subject2'];

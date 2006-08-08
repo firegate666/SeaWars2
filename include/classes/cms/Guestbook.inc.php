@@ -35,10 +35,20 @@ class Guestbook extends AbstractClass {
 	function acl($action) {
 		if ($action == 'newentry')
 			return true;
-		else if ($action == 'togglestate')
+		else if (($action == 'togglestate') || ($action == 'del'))
 			return $this->hasright('guestbookadmin');
 		else
 			return parent::acl($action);
+	}
+	
+	function del($vars) {
+		if ($this->exists()) {
+			$this->delete();
+		}
+		if (isset($vars['ref']))
+			return redirect($vars['ref']);
+		else
+			return redirect($_SERVER['HTTP_REFERER']);
 	}
 	
 	function newentry($vars) {
@@ -65,12 +75,12 @@ class Guestbook extends AbstractClass {
 		$gb->set('deleted', Setting::read('moderated_guestbook', 1));
 		$gb->store();
 
-		if (Setting::read('moderated_guestbook', 1) && Setting::read('email_guestbookadmin', false)) {
+		if (Setting::read('email_guestbookadmin', false)) {
 			$m = new Mailer();
 			$from = Setting::read('email_guestbookadmin');
 			$to = Setting::read('email_guestbookadmin');
 			$subject = 'Neuer Gästebucheintrag';
-			$body = 'Ein neuer Gästebucheintrag von "'.$gb->get('name'). '" wartet auf Freischaltung.';
+			$body = 'Ein neuer Gästebucheintrag von "'.$gb->get('name'). '" wurde erstellt.';
 			$body .= "\n\n".$gb->get('content');
 			$m->simplesend($from, $to, $subject, $body);
 		}
@@ -95,11 +105,12 @@ class Guestbook extends AbstractClass {
 			$array['body'] = $gb->get('content');
 			$array['timestamp'] = $gb->get('__createdon');
 			if ($this->hasright('guestbookadmin')) {
-				$link = '<a href="index.php?class=guestbook&method=togglestate&id='.($gb->id).'">';
+				$link = '<a href="index.php?guestbook/togglestate/'.($gb->id).'">';
+				$dellink = '<a href="index.php?guestbook/del/'.($gb->id).'">Delete</a>';
 				if ($gb->get('deleted'))
-					$output .= '<div>'.$link.'Show</a></div>';
+					$output .= '<div>'.$link.'Show</a> - '.$dellink.'</div>';
 				else
-					$output .= '<div>'.$link.'Hide</a></div>';
+					$output .= '<div>'.$link.'Hide</a> - '.$dellink.'</div>';
 			}
 			$output .= $this->getLayout($array, $this->layout, $vars);
 		}

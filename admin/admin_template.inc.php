@@ -1,7 +1,7 @@
 <?$adminlogin = (User::hasright('admin') || User::hasright('templateadmin'));if(empty($adminlogin)) die("DENIED");
 if (isset ($tpl_content)) {
 	global $mysql;	$tpl_content = html_entity_decode($tpl_content);	$tpl_class = $mysql->escape($tpl_class);	$tpl_layout = $mysql->escape($tpl_layout);
-	$tpl_query = "UPDATE template SET content='$tpl_content' WHERE class='$tpl_class' AND layout = '$tpl_layout';";
+	$contenttype = $mysql->escape($contenttype);	$tpl_query = "UPDATE template SET content='$tpl_content', contenttype='$contenttype' WHERE class='$tpl_class' AND layout = '$tpl_layout';";
 	$mysql->update($tpl_query);
 	if (!isset($_REQUEST['submitandstay']))		unset ($tpl_layout);
 }
@@ -66,8 +66,7 @@ if (isset ($tpl_layout)) {
             <li>{page:seitenname} bindet die Seite "seitenname" an dieser Stelle ins Dokument ein
           </ul>
         </td>
-      </tr>
-    </table>
+      </tr>      <tr>      	<td>      		<select name="contenttype">				<?=Template::contenttypeoptionlist($tpl_class, $tpl_layout);?>      		</select>      	</td>      </tr>    </table>
     <input type="submit" name="submit" value="Speichern und schließen">    <input type="submit" name="submitandstay" value="Nur Speichern">    <input type="hidden" name="template" value="">
     <input type="hidden" name="admin" value="">
     <input type="hidden" name="tpl_class" value="<?=$tpl_class?>">

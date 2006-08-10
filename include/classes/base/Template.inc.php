@@ -9,6 +9,25 @@ class Template extends AbstractClass {
 	protected $layout;
 	protected $tags = array ();
 
+	function contenttypeoptionlist($class, $layout) {
+		global $mysql;
+		$list[] = "text/html";
+		$list[] = "text/plain";
+		$list[] = "text/css";
+		$list[] = "text/javascript";
+		$list[] = "text/xml";
+		$result = $mysql->select("SELECT contenttype FROM template WHERE class='$class' AND layout='$layout'");
+		$contenttype = $result[0][0];
+		$return = "";
+		foreach($list as $item) {
+			$SELECTED = "";
+			if ($item == $contenttype)
+				$SELECTED = "selected='selectetd'";
+			$return .= "<option $SELECTED value='$item'>$item</option>\n";
+		}
+		return $return;
+	}
+
 	function idbyname($name) {
 	} 
 	

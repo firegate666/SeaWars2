@@ -29,17 +29,24 @@ class Page extends AbstractClass {
 		$result = '';
 		$result .= '<a href="';
 		$result .= 'index.php?admin&template&tpl_class=page&tpl_layout='.$layout;
-		$result .= '" TARGET="_BLANK">Edit Template "'.$this->name.'"</a> - <a href="index.php?admin&logout">Adminlogout</a><hr>';
+		$result .= '" TARGET="_BLANK">Edit Template "'.$this->name.'"</a> - <a href="index.php?user/logout//">Adminlogout</a><hr>';
 		return $result;
 	}
 	
 	function show(&$vars) {
 		if($this->name=='') return error("Pagename not given",$this->class_name(),"show");
 		$output = $this->getLayout(array(),$this->name, $vars);
-		$adminlogin = Session::getCookie('adminlogin');
-		if(!empty($adminlogin) && get_config('quickedit'))
+		if($this->hasright('templateadmin') && get_config('quickedit'))
 			$output = $this->adminbar($this->name).$output;
 		return $output;
+	}
+	
+	function contenttype() {
+		global $mysql;
+		if($this->name=='') return error("Pagename not given",$this->class_name(),"show");
+		$result = $mysql->select("SELECT contenttype FROM template WHERE class='page' AND layout='".$this->name."'");
+		$contenttype = $result[0][0];
+		return $contenttype;				
 	}
 }
 

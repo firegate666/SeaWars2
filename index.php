@@ -65,7 +65,7 @@ if (class_exists($class)) { // is there a class with that name?
 			/* count statistic */
 			$ps = new PageStatistic();
 			$ps->set('template', $id);
-			$ps->store();			// output			
+			$ps->store();			// output				$ct = $newclass->contenttype();			header("Content-Type: $ct;");		
 			print $result;
 		} else
 			if (is_string($result)) { // results a string?

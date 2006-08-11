@@ -24,7 +24,10 @@ class User extends AbstractClass {
 	}
 	
 	public function acl($method) {
-		if ($method=='logout')
+		if (($method=='logout')
+				|| ($method == 'passwordreminder')
+				|| ($method == 'resetpassword')
+		)
 			return true;
 		if ($method=='edit')
 			return $this->get('id') == $this->loggedIn();
@@ -47,8 +50,11 @@ class User extends AbstractClass {
 		if (count($ids) != 1)
 			return error('Login does not exist', 'user', 'login', $vars);
 		$u = new User($ids[0]['id']);
-		if (myencrypt($vars['password']) != $u->get('password'))
+		if (myencrypt($vars['password']) != $u->get('password')) {
+			$u->set('errorlogins', $u->get('errorlogins')+1);
+			$u->store();
 			return error('Password error', 'user', 'login', $vars);
+		}
 		Session::setCookie('user', $u->get('id'));
 		Session::setCookie('usergroup', $u->get('groupid'));
 		Session::setCookie('userrights', Usergroup::getUserrights($u->get('groupid')));
@@ -56,6 +62,8 @@ class User extends AbstractClass {
 			Session::cleanUpCookies();
 			return error('User disabled', 'user', 'login', $vars);
 		}
+		$u->set('errorlogins', 0);
+		$u->set('lastlogin', Date::now());
 		$u->store();
 		return redirect($vars['ref']);
 	}
@@ -81,6 +89,15 @@ class User extends AbstractClass {
                           'size' => 100,
                           'notnull' => true,
                           'password' => true);
+		$fields[] = array('name' => 'errorlogins',
+                          'type' => 'integer',
+                          'notnull' => false);
+		$fields[] = array('name' => 'lastlogin',
+                          'type' => 'date',
+                          'notnull' => false);
+		$fields[] = array('name' => 'hash',
+                          'type' => 'string',
+                          'notnull' => false);
 
 		return $fields;
 	}
@@ -105,6 +122,44 @@ class User extends AbstractClass {
 		else if ($err)
 			return $err;
 		return false;
+	}
+	
+	public function resetpassword($vars) {
+		if (isset($vars['hash'])) {
+			if($this->get('hash') == $vars['hash']) {
+				$array['newpass'] = randomstring(8);
+				$this->set('hash', '');
+				$this->set('password', myencrypt($array['newpass']));
+				$this->store();
+				$body = $this->show($vars, 'passwordmail', $array);
+				$mailer = new Mailer();
+				$mailer->simplesend(get_config('sender', 'marco@firegate.de'),
+					$this->get('email'),
+					'Password Reset', $body);
+			}
+		}
+		if (isset($vars['destination']))
+			return redirect($vars['destination']);
+		return '';
+	}
+	
+	public function passwordreminder($vars) {
+		if (isset($vars['login'])) {
+			$ids = $this->search($vars['login'], 'login');
+			$u = new User($ids[0]['id']);
+			$hash = randomstring(32);
+			$array['hashlink'] = get_config('system', '').'/index.php?user/resetpassword/'.$u->get('id').'/hash='.$hash;
+			$u->set('hash', $hash);
+			$u->store();
+			$body = $u->show($vars, 'remindermail', $array);
+			$mailer = new Mailer();
+			$mailer->simplesend(get_config('sender', 'marco@firegate.de'),
+				$u->get('email'),
+				'Password Reminder', $body);
+		}
+		if (isset($vars['destination']))
+			return redirect($vars['destination']);
+		return '';
 	}
 	
 	public function register($vars){

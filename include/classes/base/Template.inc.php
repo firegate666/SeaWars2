@@ -180,6 +180,8 @@ class Template extends AbstractClass {
 		}
 		if ($noparse)
 			return $string;
+		$string = html_entity_decode($string);
+		$string = HTML::convert_specialchars($string);
 		$keys = array_keys($array);
 		foreach ($keys as $key) {
 			$string = stripcslashes(str_replace('${'.$key.'}', $array[$key], $string));
@@ -197,5 +199,6 @@ class Template extends AbstractClass {
 		$this->removeLostTags($string);
 		return $string;
 	}
+	
 }
 ?>

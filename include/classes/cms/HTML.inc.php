@@ -3,6 +3,18 @@
  * HTML Wrappers, much improved has to done
  */
 class HTML {
+
+	public function convert_specialchars($string) {
+		$string = str_replace('&', '&amp;', $string);
+		$string = str_replace('ä', '&auml;', $string);
+		$string = str_replace('ö', '&ouml;', $string);
+		$string = str_replace('ü', '&uuml;', $string);
+		$string = str_replace('Ä', '&Auml;', $string);
+		$string = str_replace('Ö', '&Ouml;', $string);
+		$string = str_replace('Ü', '&Uuml;', $string);
+		$string = str_replace('ß', '&szlig;', $string);
+		return $string;
+	}
 	
 	function input($type, $name, $value, $length=false) {
 		$attr[] = array('name' => 'name', 'value' => $name);

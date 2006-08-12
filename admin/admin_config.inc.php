@@ -4,7 +4,7 @@ if(empty($adminlogin)) die("DENIED");
 ?>
 
 <h3>System Configuration</h3>
-<table border="1" width="100%">
+<table class="adminlist" width="100%">
   <tr>
     <th align="left">Name</th><th align="left">Value</th>
   </tr>

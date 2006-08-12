@@ -12,8 +12,9 @@
 ?>
 <html>
   <head>
+  	<title>smallCMS Admin</title>
     <link href="?admin/show/css" rel="stylesheet" type="text/css"/>
-	<script>
+	<script type="text/javascript">
 		function dialog_confirm(question, dest) 
 		{
   			if (confirm(question)) location = dest;
@@ -21,7 +22,7 @@
 	</script>
   </head>
 <body>
-<table width="100%"">
+<table width="100%">
   <tr>
     <td align="left" valign="absmiddle" width="200">CMS Manager</td>
     <td align="left" valign="absmiddle">

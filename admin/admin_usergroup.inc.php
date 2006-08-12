@@ -26,7 +26,7 @@ if (!isset($_REQUEST['id'])) {
 		<input type="hidden" name="id" value="0"/>
 		<input type="submit" name="usergroup" value="Neue Gruppe anlegen"/>
 	</form>
-	<table width="100%">
+	<table class="adminlist" width="100%">
 		<tr>
 			<th align="left" width="100%">Name</th>
 			<th></th>
@@ -44,12 +44,14 @@ if (!isset($_REQUEST['id'])) {
 	if (isset($_REQUEST['id'])) {
 		global $__userrights;
 		$ug = new Usergroup($_REQUEST['id']); ?>
-		<h3>Edit Group: <?=$ug->get('name')?></h3><a name="edit"></a>
+		<a name="edit"></a>
 		<form action="index.php" method="post">
 			<input type="hidden" name="admin"/>
 			<input type="hidden" name="usergroup"/>
 			<input type="hidden" name="id" value="<?=$ug->get('id')?>"/>
-			<table>
+			<table class="adminedit">
+				<tr>
+					<th colspan="2"><h3>Edit Group: <?=$ug->get('name')?></h3></th>
 				<tr>
 					<td colspan="2"><span class="error"><?=implode(' ', $error);?></span></td>
 				</tr>

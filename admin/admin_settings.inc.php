@@ -18,10 +18,15 @@ if(empty($adminlogin)) die("DENIED");
   			<input type="hidden" name="settings"/>
   			<input type="hidden" name="save"/>
   			<input type="hidden" name="name" value="<?=$_REQUEST['name']?>"/>
-  			<table>
+  			<table class="adminedit">
   				<tr>
-  					<td>Setting (<?=$_SESSION['settingdesc'][$_REQUEST['name']]?>)</td>
-  					<td><input name="value" type="text" value="<?=$_SESSION['setting'][$_REQUEST['name']]?>"/></td>
+  					<th colspan="2"><h3>Setting bearbeiten</h3></th>
+  				<tr>
+  					<td><?=$_SESSION['settingdesc'][$_REQUEST['name']]?></td>
+  					<td><input size="25" name="value" type="text" value="<?=$_SESSION['setting'][$_REQUEST['name']]?>"/></td>
+  				</tr>
+  				<tr>
+  					<td></td>
   					<td><input type="submit"/></td>
   				</tr>
   			</table>
@@ -29,7 +34,7 @@ if(empty($adminlogin)) die("DENIED");
   	</div>
   <? }
 ?>
-<table border="1" width="100%">
+<table class="adminlist" width="100%">
   <tr>
     <th align="left">Name</th><th align="left">Value</th><th align="left">&nbsp;</th>
   </tr>
@@ -42,7 +47,7 @@ if(empty($adminlogin)) die("DENIED");
 		  		else if ($value === false) echo "false";
 		  		else echo $value;
 		  ?></td>
-		  <td>(<a href="?admin&settings&edit&name=<?=$name?>"><img src="img/edit.gif" border="0"/></a>)</td>
+		  <td><a href="?admin&settings&edit&name=<?=$name?>"><img src="img/edit.gif" border="0"/></a></td>
 		</tr>
 	<? }
 ?></table>

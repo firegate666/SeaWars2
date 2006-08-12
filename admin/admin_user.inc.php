@@ -52,7 +52,7 @@ if ((!isset($_REQUEST['usergroup'])) && (!isset($_REQUEST['userid']))) {
 		<input type="submit" name="userid" value="Neuen User anlegen"/>
 	</form>
 	
-	<table width="100%">
+	<table class="adminlist" width="100%">
 		<tr>
 			<th align="left" width="20%">Login</th>
 			<th align="left" width="30%">Email</th>
@@ -90,12 +90,15 @@ if (isset($_REQUEST['userid'])) {
 	$u = new User($_REQUEST['userid']);
 	$ug = new Usergroup($u->get('groupid'));
 ?>
-	<a name="edit"></a><h3>Edit User: <?=$u->get('login')?></h3>
+	<a name="edit"></a>
 	<form action="index.php" method="POST">
 		<input type="hidden" name="admin"/>
 		<input type="hidden" name="user"/>
 		<input type="hidden" name="userid" value="<?=$u->get('id')?>"/>
-		<table>
+		<table class="adminedit">
+			<tr>
+				<th colspan="2"><h3>Edit User: <?=$u->get('login')?></h3></th>
+			</tr>
 			<tr>
 				<td>Login</td>
 				<td><input type="text" name="login" value="<?=$u->get('login')?>"/></td>

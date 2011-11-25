@@ -1,0 +1,8 @@
+config/config.inc.php
+config/config.inc.php.local
+config/config.inc.php.remote
+config/config.inc.php.tim
+cache/sess*
+upload/*.png
+upload/*.jpg
+upload/*.gif
